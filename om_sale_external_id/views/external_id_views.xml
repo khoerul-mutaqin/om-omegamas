@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Action for opening the view -->
+        <record id="action_sale_id_external" model="ir.actions.act_window">
+            <field name="name">Product External ID</field>
+            <field name="res_model">sale.id.external</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Tambahkan data Product External ID di sini.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu item for Product External ID -->
+        <menuitem
+            id="menu_sale_id_external"
+            name="Product External ID"
+            parent="sale.product_menu_catalog"
+            action="action_sale_id_external"
+            sequence="60"
+        />
+
+        <!-- List View -->
+        <record id="view_sale_id_external_list" model="ir.ui.view">
+            <field name="name">sale.id_external.list</field>
+            <field name="model">sale.id.external</field>
+            <field name="arch" type="xml">
+                <list editable="bottom">
+                    <field name="primary_id" placeholder="External ID"/>
+                    <field name="name" placeholder="Nama - Buyer - Product"/>
+                    <field name="buyer" placeholder="Name Buyer"/>
+                    <field name="product" placeholder="Name Product"/>
+                    <field name="secondary_id" placeholder="Secondary ID"/>
+                </list>
+            </field>
+        </record>
+
+         <!-- Form View (optional, for full edit mode) -->
+        <record id="view_sale_id_external_form" model="ir.ui.view">
+            <field name="name">sale.id_external.form</field>
+            <field name="model">sale.id.external</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="primary_id" placeholder="External ID"/>
+                            <field name="name" placeholder="Nama - Buyer - Product"/>
+                            <field name="buyer" placeholder="Name Buyer"/>
+                            <field name="product" placeholder="Name Product"/>
+                            <field name="secondary_id" placeholder="Secondary ID"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_sale_id_external_search" model="ir.ui.view">
+            <field name="name">sale.id.external.search</field>
+            <field name="model">sale.id.external</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="primary_id" placeholder="External ID"/>
+                    <field name="name" placeholder="Nama - Buyer - Product"/>
+                    <field name="buyer" placeholder="Name Buyer"/>
+                    <field name="product" placeholder="Name Product"/>
+                    <field name="secondary_id" placeholder="Secondary ID"/>
+                </search>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.rule" id="currency_filter_rule">
+        <field name="name">Currency Filter for Group</field>
+        <field name="model_id" ref="base.model_res_currency"/>
+        <field name="groups" eval="[(4, ref('__export__.res_groups_156_7dbda6e9')), (4, ref('__export__.res_groups_158_d50f4120'))]"/>
+        <field name="domain_force">[('name', 'in', ['AUD','IDR','NZD','USD'])]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+</odoo>

@@ -1,0 +1,442 @@
+<section class="pt32 pb32">
+ <div class="container">
+  <div class="row s_nb_column_fixed">
+   <div class="col-lg-12 s_title pt16 pb16" data-name="Title" data-snippet="s_title" style="text-align: center;">
+    <h1 class="s_title_default">
+     <font style="color: rgb(41, 82, 24);">
+      STORY BEHIND THE FEATURE
+     </font>
+    </h1>
+   </div>
+  </div>
+ </div>
+</section>
+<section class="s_text_block pt32 pb32 o_colored_level" data-name="Text" data-snippet="s_text_block" style="background-image: none;">
+ <div class="container">
+  <div class="row">
+   <div class="pt32 pb32 col-lg-4 o_colored_level">
+    <h5 style="text-align: center;">
+     ODOO BEHAVIOR
+    </h5>
+    <p>
+    </p>
+    <div style="text-align: justify;">
+     In Odoo, stock moves can be validated even when the company does not have sufficient stock on hand. This means that if you validate a stock move with a quantity greater than what is available in the inventory, Odoo allows it, resulting in a negative stock quantity. Negative stock is displayed in the inventory, representing a shortage or an unfulfilled quantity for that particular product. This flexibility allows for easy transaction processing but can lead to inventory inaccuracies if not carefully managed.
+    </div>
+    <h5 style="text-align: center;">
+     CLUEDOO BEHAVIOR
+    </h5>
+    <p style="text-align: left;">
+     Cluedoo introduces a new feature with an
+     <span style="margin: 0px; padding: 0px;">
+      <strong>
+       "Allow Negative Stock"
+      </strong>
+      checkbox
+     </span>
+     in
+     <strong>
+      Products/Product Categories/Locations
+     </strong>
+     . This checkbox gives you precise control over whether negative stock levels are permitted. When the checkbox is unchecked, the system blocks the validation of stock moves if there is insufficient stock, preventing the stock level from going negative. However, if the checkbox is checked, validation is allowed regardless of the stock quantity, and the stock can become negative. This feature provides an extra layer of control, allowing businesses to prevent negative stock levels based on their specific inventory policies.
+    </p>
+   </div>
+   <div class="pt32 pb32 col-lg-4 o_colored_level">
+    <h5 style="text-align: center;">
+     MODULE +
+    </h5>
+    <p>
+    </p>
+    <div style="text-align: justify;">
+     The
+     <strong>
+      "Allow Negative Stock"
+     </strong>
+     feature by Cluedoo offers a significant advantage for companies that need strict inventory control. Preventing accidental negative stock quantities helps maintain accurate stock levels, reducing potential errors in inventory records and avoiding issues with stock planning and replenishment. This feature is particularly beneficial for companies that require precise stock management to avoid overselling or encountering discrepancies in stock reports. Additionally, the flexibility to allow negative stock when needed ensures that the feature can adapt to various business workflows and inventory management strategies.
+    </div>
+   </div>
+   <div class="pt32 pb32 col-lg-4 o_colored_level">
+    <h5 style="text-align: center;">
+     CLUEDOO RECOMMENDATIONS
+    </h5>
+    <p style="text-align: justify;">
+     <span class="oe-tabs" style="width: 18.425px;">
+     </span>
+     ​​Install on 100% of the database.
+    </p>
+    <p style="text-align: justify;">
+     <br/>
+    </p>
+   </div>
+  </div>
+ </div>
+</section>
+<section class="pt32 pb32">
+ <div class="container">
+  <div class="row s_nb_column_fixed">
+   <div class="col-lg-12 s_title pt16 pb16" data-name="Title" data-snippet="s_title" style="text-align: left;">
+    <h1 class="s_title_default">
+     <font style="color: rgb(41, 82, 24);">
+      <span class="oe-tabs" style="width: 18.4px;">
+      </span>
+      ​
+      <span class="oe-tabs" style="width: 40px;">
+      </span>
+      ​
+      <span class="oe-tabs" style="width: 40px;">
+      </span>
+      ​
+      <span class="oe-tabs" style="width: 40px;">
+      </span>
+      ​
+      <span class="oe-tabs" style="width: 40px;">
+      </span>
+      ​
+      <span class="oe-tabs" style="width: 40px;">
+      </span>
+      ​
+      <span class="oe-tabs" style="width: 40px;">
+      </span>
+      ​
+      <span class="oe-tabs" style="width: 40px;">
+      </span>
+      ​
+      <span class="oe-tabs" style="width: 40px;">
+      </span>
+      ​
+      <span class="oe-tabs" style="width: 40px;">
+      </span>
+      ​  HOW TO USE THIS MODULE
+     </font>
+    </h1>
+    <table class="table table-bordered o_table" style="width: 1246.25px;">
+     <tbody>
+      <tr>
+       <td style="width: 302.912px;">
+        1. Go to
+        <strong>
+         <em>
+          Products/Product Categories/Locations
+         </em>
+        </strong>
+        &gt; You will see a checkbox called
+        <strong>
+         <em>
+          Allow Negative Stock
+         </em>
+        </strong>
+        &gt; Fill in the necessary information &gt;
+        <strong>
+         <em>
+          Save
+          <br/>
+          <br/>
+          <br/>
+         </em>
+         Note that:
+        </strong>
+        If you allow negative stock at the location/product category level then the validation of stock moves of every product inside that location/product category
+        <strong>
+         will not be blocked
+        </strong>
+        if the stock level becomes negative (even when you do not allow negative stock in that product).
+        <br/>
+        <p>
+        </p>
+       </td>
+       <td style="width: 942.597px;">
+        <p>
+         <img class="img-fluid" data-file-name="image.png" src="/web/image/327109-cd9b71f7/image.png?access_token=b56b3b64-018a-4143-9300-210fbc87343e"/>
+        </p>
+       </td>
+      </tr>
+      <tr>
+       <td style="width: 622.755px;">
+        <p>
+         2. Go to
+         <strong>
+          <em>
+           Sales Orders
+          </em>
+         </strong>
+         &gt;
+         <strong>
+          <em>
+           New
+          </em>
+         </strong>
+         &gt; Select the product and make sure the Quantity demanded is greater than the Quantity on hand &gt;
+         <strong>
+          <em>
+           Confirm
+          </em>
+         </strong>
+        </p>
+        <p>
+         <em>
+          e.g. Quantity on hand: 1, Quantity demanded: 2
+         </em>
+        </p>
+       </td>
+       <td style="width: 622.755px;">
+        <p>
+         <img class="img-fluid" data-file-name="image.png" src="/web/image/327110-108060f1/image.png?access_token=11f599b7-67bf-4ae2-9147-8e13ab78308e"/>
+        </p>
+       </td>
+      </tr>
+      <tr>
+       <td style="width: 622.755px;">
+        <p>
+         3. Head to
+         <strong>
+          <em>
+           Inventory
+          </em>
+         </strong>
+         &gt;
+         <strong>
+          <em>
+           Delivery Orders
+          </em>
+         </strong>
+         &gt; Manually change the Quantity as Odoo will set the Quantity as available (on hand) quantity &gt;
+         <strong>
+          <em>
+           Validate
+          </em>
+         </strong>
+        </p>
+        <p>
+         If
+         <strong>
+          Allow Negative Stock
+         </strong>
+         is
+         <strong>
+          not checked
+         </strong>
+         , the validation of related stock moves
+         <strong>
+          will be blocked
+         </strong>
+         if the stock level becomes negative.
+        </p>
+        <p>
+         If
+         <strong>
+          Allow Negative Stock
+         </strong>
+         is
+         <strong>
+          checked
+         </strong>
+         , the validation of related stock moves
+         <strong>
+          will not be blocked
+         </strong>
+         if the stock level becomes negative, and a
+         <strong>
+          Product Label
+         </strong>
+         will be automatically downloaded.
+        </p>
+       </td>
+       <td style="width: 622.755px;">
+        <p>
+         <img class="img-fluid" data-file-name="image.png" src="/web/image/327111-c82c8a80/image.png?access_token=3571f5b4-adca-4433-9e4c-a1ef98643e5a"/>
+        </p>
+        <p>
+         <em>
+          <strong>
+           Allow Negative Stock not checked:
+          </strong>
+         </em>
+        </p>
+        <p>
+         <img class="img-fluid" data-file-name="image.png" src="/web/image/327112-347ef65c/image.png?access_token=45c683b1-7148-4fe0-9942-aebf142861c3"/>
+        </p>
+        <p>
+         <em>
+          <strong>
+           Allow Negative Stock checked:
+          </strong>
+         </em>
+        </p>
+        <p>
+         <img class="img-fluid" data-file-name="image.png" src="/web/image/327113-5c344d5a/image.png?access_token=54af799a-0e57-4237-8e00-2012d4917e54"/>
+        </p>
+        <p>
+         <img class="img-fluid" data-file-name="image.png" src="/web/image/327114-768200fa/image.png?access_token=1e56ad4c-aa49-4804-bd76-5a560cb216ac"/>
+        </p>
+       </td>
+      </tr>
+      <tr>
+       <td style="width: 622.755px;">
+        <p>
+         4. The same behavior happens if you create a
+         <strong>
+          Manufacturing Order (MO)
+         </strong>
+         with Component(s) that allows/does not allow negative stock
+        </p>
+       </td>
+       <td style="width: 622.755px;">
+        <p>
+         <img class="img-fluid" data-file-name="image.png" src="/web/image/327146-d955a5dc/image.png?access_token=04aa2cea-6acf-42d2-b375-18676e48ad01"/>
+        </p>
+        <p>
+         <img class="img-fluid" data-file-name="image.png" src="/web/image/327147-e77414b3/image.png?access_token=43c47347-96c0-4398-885f-1a57986af3c9"/>
+        </p>
+        <p>
+         <img class="img-fluid" data-file-name="image.png" src="/web/image/327148-a460a1ee/image.png?access_token=96615ddb-0b95-4bad-a261-d22547a6b669"/>
+        </p>
+       </td>
+      </tr>
+      <tr>
+       <td style="width: 622.755px;">
+        <p>
+         5. For
+         <strong>
+          <em>
+           Subcontracting
+          </em>
+         </strong>
+         , go to
+         <strong>
+          <em>
+           Manufacturing
+          </em>
+         </strong>
+         &gt;
+         <strong>
+          <em>
+           Products
+          </em>
+         </strong>
+         &gt;
+         <strong>
+          <em>
+           Bills of Materials
+          </em>
+         </strong>
+         &gt; Select Subcontractors &gt;
+         <em>
+         </em>
+         <strong>
+          <em>
+           Save
+          </em>
+         </strong>
+        </p>
+        <p>
+         Make sure the components have
+         <em>
+          Resupply Subcontractor on Order
+         </em>
+         as their
+         <em>
+          Routes
+         </em>
+        </p>
+       </td>
+       <td style="width: 622.755px;">
+        <p>
+         <img class="img-fluid" data-file-name="image.png" src="/web/image/327150-8707ea71/image.png?access_token=2803d7ed-1ea3-4247-ac68-8a3ddd09db90"/>
+        </p>
+        <p>
+         <img class="img-fluid" data-file-name="image.png" src="/web/image/327155-43d5ade7/image.png?access_token=bc610beb-bb7a-4580-a6d1-cdca9ad0252a"/>
+        </p>
+       </td>
+      </tr>
+      <tr>
+       <td style="width: 622.755px;">
+        <p>
+         5.1
+         <strong>
+          <em>
+           Purchase Orders
+          </em>
+         </strong>
+         &gt;
+         <strong>
+          <em>
+           New
+          </em>
+         </strong>
+         &gt; Select the product and make sure the Quantity demanded is greater than the Quantity on hand &gt;
+         <em>
+          <strong>
+           Confirm Order
+          </strong>
+         </em>
+        </p>
+       </td>
+       <td style="width: 622.755px;">
+        <p>
+         <img class="img-fluid" data-file-name="image.png" src="/web/image/327160-2941a1cf/image.png?access_token=5db17f4f-86a5-4f22-916e-306741070d65"/>
+        </p>
+       </td>
+      </tr>
+      <tr>
+       <td style="width: 622.755px;">
+        <p>
+         5.2 Head to
+         <strong>
+          <em>
+           Inventory
+          </em>
+         </strong>
+         &gt;
+         <strong>
+          <em>
+           Receipts
+          </em>
+         </strong>
+         &gt;
+         <strong>
+          <em>
+           Validate
+          </em>
+         </strong>
+        </p>
+        <p>
+         If you do not check
+         <em>
+          Allow Negative Stock
+         </em>
+         on the product, there will be a
+         <em>
+          Validation Error.
+         </em>
+        </p>
+        <p>
+         <strong>
+          Note that:
+         </strong>
+         For Subcontracting, you will need to install
+         <em>
+          fal_mrp_subcontract_negative_qty
+         </em>
+         to bypass the validation error of negative stock.
+         <i class="fa fa-lg fa-star-o">
+         </i>
+         <i class="btn fa fa-lg fa-ellipsis-h">
+         </i>
+        </p>
+       </td>
+       <td style="width: 622.755px;">
+        <p>
+         <img class="img-fluid" data-file-name="image.png" src="/web/image/327162-941627a4/image.png?access_token=9d1e05b4-b5e1-4fd9-b985-e1b17e9a2c6d"/>
+        </p>
+       </td>
+      </tr>
+     </tbody>
+    </table>
+    <p class="s_title_default">
+     <br/>
+    </p>
+   </div>
+  </div>
+ </div>
+</section>
+

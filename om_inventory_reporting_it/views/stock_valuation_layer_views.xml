@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_stock_valuation_layer_inherit" model="ir.ui.view">
+            <field name="name">stock.valuation.layer.inherit</field>
+            <field name="model">stock.valuation.layer</field>
+            <field name="inherit_id" ref="stock_account.stock_valuation_layer_tree"/>
+            <field name="arch" type="xml">
+                 <!-- Menambahkan atribut digits pada field quantity -->
+                <xpath expr="//field[@name='quantity']" position="attributes">
+                    <attribute name="digits">[16, 4]</attribute>
+                </xpath>
+                <!-- Hidden Date -->
+                <xpath expr="//field[@name='create_date']" position="attributes">
+                    <attribute name="column_invisible">True</attribute>
+                    <attribute name="invisible">False</attribute>
+                </xpath>
+                <xpath expr="//field[@name='reference']" position="before">
+                    <field name="accounting_date" optional="hidden"/>
+                    <field name="date_inventory" optional="hidden"/>
+                    <field name="date_manufacturing" optional="hidden"/>
+                </xpath>
+                
+                <xpath expr="//field[@name='product_id']" position="before">
+                    <field name="depart_per_stock_move_for_valuation" optional="show"/>
+                    <field name="analytic_per_stock_move_for_valuation" optional="show" widget="analytic_distribution" groups="analytic.group_analytic_accounting" />
+                    <field name="note_per_stock_move_for_valuation" optional="show"/>
+                    <field name="depart_per_mrp_production" optional="show"/>
+                    <field name="analytic_per_mrp_production" optional="show"/>
+                    <field name="note_per_mrp_production" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

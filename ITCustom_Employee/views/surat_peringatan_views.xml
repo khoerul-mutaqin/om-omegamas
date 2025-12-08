@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- /Users/admin/Documents/odoo-18E/omegamas/ITCustom_Employee/views/surat_peringatan_views.xml -->
+    <!-- Tree View -->
+    <record id="view_employee_surat_peringatan_tree" model="ir.ui.view">
+        <field name="name">employee.surat.peringatan.tree</field>
+        <field name="model">employee.surat.peringatan</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="employee_id" widget="many2one_avatar_employee"/>
+                <field name="date_reference"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="status"/>
+                <field name="keterangan"/>
+            </list>
+        </field>
+    </record>
+    <!-- Form View -->
+    <record id="view_employee_surat_peringatan_form" model="ir.ui.view">
+        <field name="name">employee.surat.peringatan.form</field>
+        <field name="model">employee.surat.peringatan</field>
+        <field name="arch" type="xml">
+            <form string="Data Pelanggaran">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="employee_id" widget="many2one_avatar_employee" 
+                            options="{'no_open': True}" class="oe_inline" required="1"/>
+                        </h1>
+                    </div>
+                    <div class="oe_button_box" name="button_box">
+                        <!-- Tambahkan button-box jika diperlukan -->
+                    </div>
+                    <div class="oe_form_container">
+                        <div class="oe_form_sheetbg">
+                            <div class="clearfix oe_form_sheet_width">
+                                <!-- Header Section -->
+                                <div class="oe_form_header">
+                                    <h2 class="oe_form_title">
+                                        <span class="fa fa-exclamation-triangle mr-2"/> 
+                                    Data Pelanggaran Karyawan
+                                    </h2>
+                                </div>
+                                <!-- Main Content -->
+                                <div class="oe_form_group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <group string="Informasi Dasar">
+                                                <field name="date_reference" required="1" class="oe_inline"/>
+                                                <field name="status" class="oe_inline"/>
+                                            </group>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <group string="Periode Berlaku">
+                                                <field name="start_date" class="oe_inline"/>
+                                                <field name="end_date" class="oe_inline"/>
+                                            </group>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-4">
+                                        <div class="col-md-12">
+                                            <group string="Keterangan">
+                                                <field name="keterangan" placeholder="Masukkan detail keterangan data pelanggaran..." 
+                                                class="oe_inline" style="min-height: 100px; width: 100%;"/>
+                                            </group>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Footer -->
+                    <div class="oe_form_footer">
+                        <!-- Tambahkan footer jika diperlukan -->
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- Then create the new window action -->
+    <record id="action_export_employee_surat_peringatan" model="ir.actions.act_window">
+        <field name="name">Export Klaim</field>
+        <field name="res_model">export.employee.surat.peringatan.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="ITCustom_Employee.model_employee_surat_peringatan"/>
+    </record>
+</odoo>

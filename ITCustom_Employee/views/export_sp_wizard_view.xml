@@ -1,0 +1,28 @@
+<odoo>
+<!-- /Users/admin/Documents/odoo-18E/omegamas/ITCustom_Employee/views/export_sp_wizard_view.xml -->
+    <record id="view_employee_surat_peringatan_wizard_form" model="ir.ui.view">
+        <field name="name">export.employee.surat.peringatan.wizard.form</field>
+        <field name="model">export.employee.surat.peringatan.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Periode Export Pelanggaran">
+                <sheet>
+                    <group>
+                        <field name="date_start" string="Tanggal Mulai" class="oe_inline"/>
+                        <field name="date_end" string="Tanggal Selesai" class="oe_inline"/>
+                    </group>
+                    <footer>
+                        <button name="action_export" string="Export" type="object" class="btn-primary"/>
+                        <button string="Batal" special="cancel" class="btn-secondary"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_employee_surat_peringatan_wizard" model="ir.actions.act_window">
+        <field name="name">Export Pelanggaran</field>
+        <field name="res_model">export.employee.surat.peringatan.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_employee_surat_peringatan_wizard_form"/>
+    </record>
+</odoo>

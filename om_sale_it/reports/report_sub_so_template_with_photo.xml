@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="report_sub_so_template_with_photo">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="supplier_groups" t-value="o.get_supplier_grouped_lines().get('docs')"/>
+                    <t t-foreach="supplier_groups" t-as="group">
+                        <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+                        <t t-call="web.external_layout">
+                            <div class="page" t-att-style="'orientation: landscape;'">
+                                <div class="container-fluid">
+                                    <!-- Recipient -->
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <b class="pb-0" style="font-size:13px;">To:</b>
+                                            <span t-field="group['lines'][0].supp_order" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                                        </div>
+                                        <div class="col-6 mt-2 text-end">
+                                            <p class="text-end fs-4 fw-bolder">SUB # <span t-field="o.name"/>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Note -->
+                                    <div class="border p-2 mt-2 mb-3" style="height: 80px">
+                                        <small>
+                                            <strong>NOTE :</strong>
+                                            <span t-field="o.note"/>
+                                        </small>
+                                    </div>
+
+                                    <!-- Sub SO Info -->
+                                    <div class="row mb-2">
+                                        <div class="col-5 d-flex">
+                                            <div class="me-3">
+                                                <strong>Sub SO :</strong>
+                                            </div>
+                                            <div class="me-3">
+                                                <span t-field="o.client_order_ref"/>
+                                                <span> - </span><span t-field="group['supplier'][0].name"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                        </div>
+                                        <div class="col-5 d-flex">
+                                            <div class="me-3">
+                                                <strong>Confirmation Date :</strong>
+                                            </div>
+                                            <div>
+                                                <t t-if="o.confirmation_date_order">
+                                                    <span t-field="o.confirmation_date_order"/> 
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-5 d-flex">
+                                            <div class="me-3">
+                                                <strong>Buyer :</strong>
+                                            </div>
+                                            <div>
+                                                <span t-field="o.partner_id.name"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                        </div>
+                                        <div class="col-5 d-flex">
+                                            <div class="me-3">
+                                                <strong>Due Date :</strong>
+                                            </div>
+                                            <div>
+                                                <t t-if="o.due_date_order">
+                                                    <span t-field="o.due_date_order"/>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Table -->
+                                    <div class="table-responsive mb-3">
+                                        <table class="table table-bordered text-center align-middle" style="font-family: Arial; letter-spacing:0.15em">
+                                            <thead class="table-dark">
+                                                <tr style="background-color: #181a1c; color: white; font-size:11px;" class="text-center table-dark align-middle">
+                                                    <th colspan="2" style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1">PRODUCT ID</th>
+                                                    <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1">PRODUCT NAME</th>
+                                                    <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1">Price</th>
+                                                    <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1">Qty</th>
+                                                    <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1">Finish</th>
+                                                    <th colspan="3" style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1">SUB TOTAL</th>
+                                                    <th rowspan="2" style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1">Picture</th>
+                                                </tr>
+                                                <tr style="background-color: #181a1c; color: white; font-size:11px;" class="text-center table-dark align-middle">
+                                                    <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1">CUST.STYLE</th>
+                                                    <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1">CUST PRODUCT ID</th>
+                                                    <th colspan="4" style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1">Product Remark</th>
+                                                    <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1">H</th>
+                                                    <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1">W</th>
+                                                    <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1">D</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="group['lines']" t-as="line" t-index="idx">
+                                                    <tr>
+                                                        <td colspan="2" class="allign-middle">
+                                                            <span style="font-size:11px; letter-spacing:0.15em; font-family: Arial" t-field="line.product_template_id.default_code"/>
+                                                        </td>
+                                                        <td class="text-start">
+                                                            <span style="font-size:11px; letter-spacing:0.15em; font-family: Arial" t-field="line.product_template_id.name"/>
+                                                        </td>
+                                                        <td class="align-middle p-1">
+                                                            <t t-set="supplierinfo_price" t-value="0.0"/>
+                                                                <t t-foreach="line.product_template_id.seller_ids" t-as="supplierinfo">
+                                                                    <t t-if="supplierinfo.partner_id.id == group['supplier'].id">
+                                                                        <t t-set="supplierinfo_price" t-value="supplierinfo.price"/>
+                                                                    </t>
+                                                                </t>
+                                                            <span style="font-size:11px; letter-spacing:0.15em; font-family: Arial" t-esc="'{:,.2f}'.format(supplierinfo_price or 0.0)"/>
+                                                        </td>
+                                                        <td class="align-middle p-1">
+                                                            <span style="font-size:11px; letter-spacing:0.15em; font-family: Arial" t-field="line.product_uom_qty"/>
+                                                        </td>
+                                                        <td></td>
+                                                        <td colspan="3" class="align-middle p-1">
+                                                            <t t-set="sub_total" t-value="(supplierinfo_price or 0.0) * line.product_uom_qty"/>
+                                                            <span style="font-size:11px; letter-spacing:0.15em; font-family: Arial" t-esc="'{:,.2f}'.format(sub_total or 0.0)"/>
+                                                        </td>
+                                                        <td rowspan="2" class="text-center align-middle p-1">
+                                                            <div class="w-100 h-100 d-table">
+                                                                <div class="d-table-cell align-middle">
+                                                                    <img t-if="line.product_id.image_1920" t-att-src="image_data_uri(line.product_id.image_1920)" class="img-fluid" style="max-height: 70px;"/>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <!-- Ambil external ID dari product_id di group['lines'][0] -->
+                                                        <t t-set="first_product" t-value="line.product_id.product_tmpl_id.id"/>
+                                                        <t t-set="external_id" t-value="env['sale.id.external'].search([('product', '=', first_product)], limit=1)"/>
+                                                        <td class="align-middle p-1">
+                                                            <span style="font-size:11px; letter-spacing:0.15em; font-family: Arial" t-field="external_id.primary_id"/>
+                                                        </td>
+                                                        <td>
+                                                            <span style="font-size:11px; letter-spacing:0.15em; font-family: Arial" t-field="external_id.secondary_id"/>
+                                                        </td>
+                                                        <td colspan="4"></td>
+                                                        <td class="align-middle p-1">
+                                                            <span style="font-size:11px; letter-spacing:0.15em; font-family: Arial" t-field="line.product_id.height"/>
+                                                        </td>
+                                                        <td class="align-middle p-1">
+                                                            <span style="font-size:11px; letter-spacing:0.15em; font-family: Arial" t-field="line.product_id.width"/>
+                                                        </td>
+                                                        <td class="align-middle p-1">
+                                                            <span style="font-size:11px; letter-spacing:0.15em; font-family: Arial" t-field="line.product_id.depth"/>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                                <tr>
+                                                    <td colspan="10"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="4" class="text-start">
+                                                        <strong>TOTAL QTY</strong>
+                                                    </td>
+                                                    <td >
+                                                        <strong><t t-esc="group['total_qty']"/></strong>
+                                                    </td>
+                                                    <td></td>
+                                                    <td colspan="3" class="text-end">
+                                                        <strong>Total Price</strong>
+                                                    </td>
+                                                    <td>
+                                                        <strong><t t-esc="'{:,.2f}'.format(group['total_price'] or 0.0)"/></strong>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="row">
+                                        <!-- Footer on the left -->
+                                        <div class="col-5">
+                                            <strong>
+                                                <small>
+                                                        Pemberitahuan pengiriman harap dilakukan minimal 1 (satu) hari sebelumnya ke alamat pengiriman.<br />
+                                                        Segala pembayaran akan diselesaikan melalui kantor PT. OMEGA MAS Pasuruan.
+                                                </small>
+                                            </strong>
+                                        </div>
+                                        <div class="col-1"></div>
+
+                                        <!-- Amount on the right -->
+                                        <div class="col-6 text-end">
+                                        <t t-set="amount_in_words" t-value="env.user.company_id.currency_id.amount_to_text(group['total_price'])"/>
+                                            <strong>Amount:</strong>
+                                            <br />
+                                            <strong><t t-esc="amount_in_words"/></strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,39 @@
+<odoo>
+    <record id="view_wizard_request_dp_form" model="ir.ui.view">
+        <field name="name">wizard.request.dp.blanket.order.form</field>
+        <field name="model">wizard.request.dp.blanket.order</field>
+        <field name="arch" type="xml">
+            <form string="Set Request DP">
+                <group name="down_payment_specification">
+                    <field name="dp_type"/>
+
+                    <field name="base_on" 
+                        invisible="dp_type != 'percentage'"
+                        class="oe_inline"/>
+
+                    <field name="percentage"
+                        invisible="dp_type != 'percentage'"
+                        class="oe_inline"/>
+
+                    <field name="fixed_amount"
+                        invisible="dp_type != 'fixed'"
+                        class="oe_inline"/>
+                </group>
+                <footer>
+                    <button string="Confirm" type="object" name="action_confirm_dp" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <record id="action_wizard_dp_blanket_order" model="ir.actions.act_window">
+        <field name="name">Request DP</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.request.dp.blanket.order</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_wizard_request_dp_form"/>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

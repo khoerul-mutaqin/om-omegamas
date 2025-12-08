@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="ITCustom_ReportShipping.report_commercial_invoice_template">
+            <t t-set="report_type" t-value="'base'"/>
+            <t t-call="ITCustom_ReportShipping.report_commercial_invoice_template_content"/>
+        </template>
+
+        <template id="ITCustom_ReportShipping.report_commercial_invoice_template_vlegal">
+            <t t-set="report_type" t-value="'vlegal'"/>
+            <t t-call="ITCustom_ReportShipping.report_commercial_invoice_template_content"/>
+        </template>
+
+        <template id="ITCustom_ReportShipping.report_commercial_invoice_template_cube">
+            <t t-set="report_type" t-value="'cube'"/>
+            <t t-call="ITCustom_ReportShipping.report_commercial_invoice_template_content"/>
+        </template>
+
+        <template id="ITCustom_ReportShipping.report_commercial_invoice_template_content">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.basic_layout">
+                        <div class="page" style="font-size: 13px; font-family: 'Arial', sans-serif;">
+                            <div class="row" style="text-align: center;">
+                                <div class="col-1">
+                                    <img src="/ITCustom_ReportShipping/static/src/img/SICS.png" alt="SICS Logo" style="max-height: 50px; object-fit: contain;" />
+                                    <div style="font-size:7px; margin-top: 1px">VLK 00361</div>
+                                </div>
+                                <div class="col-1">
+                                    <img src="/ITCustom_ReportShipping/static/src/img/svlk.png" alt="svlk Logo" style="max-height: 50px; object-fit: contain;" />
+                                    <div style="font-size:7px; margin-top: 1px">Sustainable</div>
+                                    <div style="font-size:7px;">VLHH-35-07-0106</div>
+                                </div>
+                                <div class="col-8">
+                                    </div>
+                                <div class="col-2" style="text-align: center; top: 0">
+                                    <t t-if="doc.company_id.logo">
+                                        <img t-att-src="'data:image/png;base64,%s' % (doc.company_id.logo.decode())"
+                                             style="max-height: 100px; object-fit: contain;"
+                                             alt="Company Logo"/>
+                                    </t>
+                                    <div style="text-align: center; font-size: 11px; margin-top: -20px;">
+                                        <t t-set="now" t-value="datetime.datetime.utcnow() + datetime.timedelta(hours=7)"/>
+                                        <span>Printed on :
+                                            <t t-esc="now.strftime('%d %b %Y %H:%M:%S')"/> (UTC+7)
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row text-center mb-3">
+                                <div class="col-12">
+                                    <span style="font-size:20px; text-decoration: underline; color: #747474ff">(DRAFT)</span>
+                                    <br/>
+                                    <span style="font-weight: bold; font-size: 20px;">COMMERCIAL INVOICE / PACKING LIST</span>
+                                </div>
+                            </div>
+                            <table class="table" style="width: 100%; border: 1px solid black">
+                                <tbody>
+                                    <tr>
+                                        <td style="vertical-align: top; border: 1px solid black; width: 33.33%;">
+                                            <strong>SHIPPER:</strong>
+                                            <br/>
+                                            <span t-esc="doc.company_id.name"/>
+                                            <br/>
+                                            <span t-esc="doc.company_id.street or ''"/>
+                                            <br/>
+                                            <span t-esc="(doc.company_id.city or '') + (', ' if doc.company_id.city and doc.company_id.state_id else '') + (doc.company_id.state_id.name or '') + (' ' if doc.company_id.state_id and doc.company_id.zip else '') + (doc.company_id.zip or '')"/>
+                                            <br/>
+                                            <span t-esc="doc.company_id.country_id.name or ''"/>
+                                        </td>
+                                        <td style="vertical-align: top; border: 1px solid black; width: 33.33%;">
+                                            <strong>BUYER:</strong>
+                                            <br/>
+                                            <span t-esc="doc.buyer_id.name or ''"/>
+                                            <br/>
+                                            <span t-esc="doc.buyer_id.street or ''"/>
+                                            <br/>
+                                            <span t-esc="(doc.buyer_id.city or '') + (' ' if doc.buyer_id.city and doc.buyer_id.zip else '') + (doc.buyer_id.zip or '') + (', Phone ' if doc.buyer_id.phone else '') + (doc.buyer_id.phone or '') + (' - ' if doc.buyer_id.country_id else '') + (doc.buyer_id.country_id.name or '')"/>
+                                            <br/>
+                                            <span t-esc="(doc.buyer_id.child_ids and doc.buyer_id.child_ids[0].name or '')"/>
+                                        </td>
+                                        <td style="vertical-align: top; border: 1px solid black; width: 33.33%;">
+                                            <strong>INVOICE NO. AND DATE:</strong>
+                                            <br/>
+                                            <span>
+                                                <t t-set="roman_months" t-value="['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII']"/>
+                                                <t t-set="number" t-value="(doc.name.split('/')[-1].lstrip('0') if doc.name else '')"/>
+                                                <t t-esc="f'{number}/{doc.description}/EXP/{roman_months[doc.scheduled_date.month]}/{doc.scheduled_date.year % 100}'"/>
+                                            </span>
+                                            <br/>
+                                            <span>
+                                                <t t-esc="doc.scheduled_date.strftime('%d %B %Y')"/>
+                                            </span>
+                                            <br/>
+                                            <strong>L/C NO. AND DATE OF ISSUE:</strong>
+                                            <br/>
+                                            <span>-</span>
+                                        </td>
+                                    </tr>
+                                    <tr style="width: 30%;">
+                                        <td style="vertical-align: top; border: 1px solid black">
+                                            <strong>CONSIGNEE:</strong>
+                                            <br/>
+                                            <span t-esc="doc.consignee_id.name or ''"/>
+                                            <br/>
+                                            <span t-esc="doc.consignee_id.street or ''"/>
+                                            <br/>
+                                            <span t-esc="(doc.consignee_id.city or '') + (' ' if doc.consignee_id.city and doc.consignee_id.zip else '') + (doc.consignee_id.zip or '') + (', Phone ' if doc.consignee_id.phone else '') + (doc.consignee_id.phone or '') + (' - ' if doc.consignee_id.country_id else '') + (doc.consignee_id.country_id.name or '')"/>
+                                            <br/>
+                                            <span t-esc="(doc.consignee_id.child_ids and doc.consignee_id.child_ids[0].name or '')"/>
+                                        </td>
+                                        <td style="vertical-align: top; border: 1px solid black">
+                                            <strong>SHIP TO:</strong>
+                                            <br/>
+                                            <span t-esc="doc.ship_to_id.name or ''"/>
+                                            <br/>
+                                            <span t-esc="doc.ship_to_id.street or ''"/>
+                                            <br/>
+                                            <span t-esc="doc.ship_to_id.street2 or ''"/>
+                                            <br/>
+                                            <span t-esc="(doc.ship_to_id.city or '') + (' ' if doc.ship_to_id.city and doc.ship_to_id.zip else '') + (doc.ship_to_id.zip or '') + (', Phone ' if doc.ship_to_id.phone else '') + (doc.ship_to_id.phone or '') + (' - ' if doc.ship_to_id.country_id else '') + (doc.ship_to_id.country_id.name or '')"/>
+                                            <br/>
+                                            <span t-esc="(doc.ship_to_id.child_ids and doc.ship_to_id.child_ids[0].name or '')"/>
+                                        </td>
+                                        <td style="vertical-align: top; border: 1px solid black">
+                                            <strong>NOTIFY PARTY:</strong>
+                                            <br/>
+                                            <span t-esc="doc.notify_party_id.name or ''"/>
+                                            <br/>
+                                            <span t-esc="doc.notify_party_id.street or ''"/>
+                                            <br/>
+                                            <span t-esc="(doc.notify_party_id.city or '') + (' ' if doc.notify_party_id.city and doc.notify_party_id.zip else '') + (doc.notify_party_id.zip or '') + (', Phone ' if doc.notify_party_id.phone else '') + (doc.notify_party_id.phone or '') + (' - ' if doc.notify_party_id.country_id else '') + (doc.notify_party_id.country_id.name or '')"/>
+                                            <br/>
+                                            <span t-esc="(doc.notify_party_id.child_ids and doc.notify_party_id.child_ids[0].name or '')"/>
+                                        </td>
+                                    </tr>
+                                    <tr style="width: 30%;">
+                                        <td style="vertical-align: top; border: 1px solid black">
+                                            <strong>DEPARTURE DATE:</strong>
+                                            <span t-esc="doc.scheduled_date.strftime('%d %b %y') if doc.scheduled_date else ''"/>
+                                            <br/>
+                                            <strong>ARRIVAL DATE:</strong>
+                                            <span t-esc="doc.eta_vessel.strftime('%d %b %y') if doc.eta_vessel else ''"/>
+                                            <br/>
+                                            <strong>COUNTRY OF ORIGIN:</strong> INDONESIA
+                                        </td>
+                                        <td style="vertical-align: top; border: 1px solid black">
+                                            <strong>VESSEL/FLIGHT:</strong>
+                                            <t t-esc="doc.feeder"/>
+                                            <br/>
+                                            <strong>PORT OF LOADING:</strong>
+                                            <t t-esc="doc.from_feeder"/>, INDONESIA
+                                            <br/>
+                                            <strong>PORT OF DISCHARGE:</strong>
+                                            <t t-esc="doc.to_vessel"/>
+                                        </td>
+                                        <td style="vertical-align: top; border: 1px solid black">
+                                            <strong>REMARKS:</strong>
+                                            <br/>
+                                            <strong>Terms of Delivery and Payment</strong>
+                                            <br/>
+                                            <span>Payment terms: D/A 30days</span>
+                                            <br/>
+                                            <span>Currency: NZD</span>
+                                            <br/>
+                                            <span>Shipment Mode:
+                                                <t t-set="shipment_mode_label" t-value="dict(doc._fields['shipment_mode'].selection).get(doc.shipment_mode, '')"/>
+                                                <t t-esc="shipment_mode_label"/>
+                                            </span>
+                                            <br/>
+                                            <span>Shipment Terms: FOB</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row mt-3">
+                                <div class="col-12" style="font-size: 14px; line-height: 1.2;">
+                                    <strong>Description of goods:</strong>
+                                    <br/>
+                                    <span t-esc="doc.jenis_kontainer"/>
+                                    <span> container, contains of:</span>
+                                    <br/>
+                                    <t t-set="total_qty" t-value="int(sum(doc.picking_ids.mapped('move_ids.quantity')))"/>
+                                    <span t-esc="total_qty"/> PCS OF Accessories Furniture, Wooden Furniture
+                                    <br/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4" style="font-size: 14px; line-height: 1.2;">
+                                    <!-- Hitung total GW dan NW secara dinamis di sini -->
+                                    <t t-set="total_gw" t-value="sum(sum(move.product_id.gross_weight * move.quantity for move in picking.move_ids) for picking in doc.picking_ids)"/>
+                                    <t t-set="total_nw" t-value="sum(sum(move.product_id.weight * move.quantity for move in picking.move_ids) for picking in doc.picking_ids)"/>
+                                    <span>
+                                        <strong>GW:</strong>
+                                        <span t-esc="'%.2f' % total_gw"/> KGS
+                                    </span>
+                                    <br/>
+                                    <span>
+                                        <strong>No. Cont.:</strong>
+                                        <span t-esc="doc.kode_kontainer"/>
+                                    </span>
+                                </div>
+                                <div class="col-4">
+                                    <span>
+                                        <strong>NW:</strong>
+                                        <span t-esc="'%.2f' % total_nw"/> KGS
+                                    </span>
+                                    <br/>
+                                    <span>
+                                        <strong>Seal:</strong>
+                                        <span t-esc="doc.seal"/>
+                                    </span>
+                                </div>
+                                <div class="col-4" style="font-size: 14px; line-height: 1.2;">
+                                    <t t-if="report_type == 'vlegal'">
+                                        <span>
+                                            <strong>Kayu:</strong>
+                                            <t t-set="total_m3" t-value="0"/>
+                                            <t t-foreach="doc.picking_ids" t-as="picking">
+                                                <t t-foreach="picking.move_ids" t-as="move">
+                                                    <t t-set="bom" t-value="env['mrp.bom'].search([('product_tmpl_id', '=', move.product_id.product_tmpl_id.id), ('code', '=', move.product_id.default_code)], limit=1)"/>
+                                                    <t t-if="bom">
+                                                        <t t-foreach="bom.bom_line_ids" t-as="line">
+                                                            <t t-if="line.product_uom_id.name == 'm3'">
+                                                                <t t-set="total_m3" t-value="total_m3 + (line.product_qty * move.quantity)"/>
+                                                            </t>
+                                                        </t>
+                                                    </t>
+                                                </t>
+                                            </t>
+                                            <t t-esc="'%.2f' % total_m3"/>
+                                        </span>
+                                    </t>
+                                    <t t-if="report_type == 'cube'">
+                                        <span>
+                                            <strong>Cube:</strong>
+                                            <t t-set="product_groups" t-value="{}"/>
+                                            <t t-foreach="doc.picking_ids" t-as="picking">
+                                                <t t-foreach="picking.move_ids" t-as="move">
+                                                    <t t-set="product_name" t-value="move.product_id.name or 'N/A'"/>
+                                                    <t t-if="product_name not in product_groups">
+                                                        <t t-set="volume_packing" t-value="sum(p.cbm for p in move.product_id.packaging_ids) or 0"/>
+                                                        <t t-set="product_groups" t-value="dict(product_groups, **{product_name: {'volume_packing': volume_packing}})"/>
+                                                    </t>
+                                                </t>
+                                            </t>
+                                            <t t-set="total_volume_packing" t-value="sum(product_groups[p]['volume_packing'] for p in product_groups)"/>
+                                            <t t-esc="'%.2f' % total_volume_packing"/> CBM
+                                        </span>
+                                    </t>
+                                </div>
+                            </div>
+                            <table class="table table-borderless table-sm mt-3" style="font-size: 12px; border-collapse: collapse; line-height: 1.1;">
+                                <t t-set="currency" t-value="doc.picking_ids and doc.picking_ids[0].sale_id and doc.picking_ids[0].sale_id.pricelist_id.currency_id.name or 'NZD'"/>
+                                <thead>
+                                    <tr class="text-center"  style="background-color: #181a1c;">
+                                        <th class="text-center" style="border: 1px solid white; vertical-align: middle; color: white" rowspan="2">
+                                            <strong>No</strong>
+                                        </th>
+                                        <th class="text-center" style="border: 1px solid white; vertical-align: middle; color: white" rowspan="2">
+                                            <strong>Description</strong>
+                                        </th>
+                                        <th class="text-center" style="border: 1px solid white; vertical-align: middle; color: white" rowspan="2">
+                                            <strong>Commodity</strong>
+                                        </th>
+                                        <th class="text-center" style="border: 1px solid white; vertical-align: middle; color: white" rowspan="2">
+                                            <strong>Material</strong>
+                                        </th>
+                                        <th class="text-center" style="border: 1px solid white; vertical-align: middle; color: white" rowspan="2">
+                                            <strong>Qty Pcs</strong>
+                                        </th>
+                                        <th class="text-center" style="border: 1px solid white; vertical-align: middle; color: white" colspan="2">
+                                            <strong>Unit (Kg)</strong>
+                                        </th>
+                                        <th class="text-center" style="border: 1px solid white; vertical-align: middle; color: white">
+                                            <strong>Total Price
+                                            </strong>
+                                        </th>
+                                    </tr>
+                                    <tr class="text-center" style="background-color: #181a1c;">
+                                        <td style="border: 1px solid white; color: white">GW</td>
+                                        <td style="border: 1px solid white; color: white">NW</td>
+                                        <td style="border: 1px solid white; color: white">
+                                            <span t-esc="currency"/>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="8" style="height: 0.5px">
+                                        </td>
+                                    </tr>
+                                    <t t-set="hs_descriptions" t-value="{'4420.19.00': 'Accessories Furniture', '9403.60.90': 'Wooden Furniture'}"/>
+                                    <t t-set="hs_groups" t-value="{}"/>
+                                    <t t-foreach="doc.picking_ids" t-as="picking">
+                                        <t t-foreach="picking.move_ids" t-as="move">
+                                            <t t-set="hs_code" t-value="move.product_id.hs_code or 'N/A'"/>
+                                            <t t-if="hs_code not in hs_groups">
+                                                <t t-set="hs_groups" t-value="dict(hs_groups, **{hs_code: {'qty': 0, 'gw': 0, 'nw': 0, 'price': 0}})"/>
+                                            </t>
+                                            <t t-set="sale_lines" t-value="move.picking_id.sale_id and move.picking_id.sale_id.order_line.filtered(lambda l: l.product_id == move.product_id) or []"/>
+                                            <t t-set="price" t-value="sum(sale_lines.mapped('price_subtotal')) if sale_lines else (move.product_id.list_price * move.quantity)"/>
+                                            <t t-set="hs_groups" t-value="dict(hs_groups, **{hs_code: {'qty': hs_groups[hs_code]['qty'] + move.quantity, 'gw': hs_groups[hs_code]['gw'] + (move.product_id.gross_weight * move.quantity), 'nw': hs_groups[hs_code]['nw'] + (move.product_id.weight * move.quantity), 'price': hs_groups[hs_code]['price'] + price}})"/>
+                                        </t>
+                                    </t>
+                                    <tr style="background-color: #a0a0a0;">
+                                        <td colspan="8" style="border: 1px solid black">
+                                            <span style="font-size: 14px; font-weight: bold">
+                                                <span t-esc="doc.description"/></span>
+                                        </td>
+                                    </tr>
+                                    <t t-set="sorted_hs_groups" t-value="sorted(hs_groups.items(), key=lambda item: hs_descriptions.get(item[0], 'Furniture'))"/>
+                                    <t t-set="counter" t-value="1"/>
+                                    <t t-foreach="sorted_hs_groups" t-as="hs_item">
+                                        <t t-set="hs_code" t-value="hs_item[0]"/>
+                                        <t t-set="dynamic_description" t-value="hs_descriptions.get(hs_code, 'Furniture')"/>
+                                        <tr>
+                                            <td style="border: 1px solid black; font-weight: bold" class="text-center">
+                                                <span t-esc="counter"/>
+                                            </td>
+                                            <td style="border: 1px solid black; font-weight: bold">
+                                                <span t-esc="dynamic_description"/> |
+                                                <span t-esc="hs_code"/>
+                                            </td>
+                                            <td style="border: 1px solid black; font-weight: bold" class="text-center">Furniture</td>
+                                            <td style="border: 1px solid black; font-weight: bold" class="text-center">Wood</td>
+                                            <td style="border: 1px solid black; font-weight: bold" class="text-center">
+                                                <span t-esc="int(hs_groups[hs_code]['qty'])"/>
+                                            </td>
+                                            <td style="border: 1px solid black; font-weight: bold; text-align: right">
+                                                <span t-esc="'%.2f' % hs_groups[hs_code]['gw']"/>
+                                            </td>
+                                            <td style="border: 1px solid black; font-weight: bold; text-align: right">
+                                                <span t-esc="'%.2f' % hs_groups[hs_code]['nw']"/>
+                                            </td>
+                                            <td style="border: 1px solid black; font-weight: bold; text-align: right">
+                                                <span t-esc="'%.2f' % hs_groups[hs_code]['price']"/>
+                                            </td>
+                                        </tr>
+                                        <t t-set="counter" t-value="counter + 1"/>
+                                    </t>
+                                    <t t-set="total_qty" t-value="int(sum(hs_groups[hs]['qty'] for hs in hs_groups))"/>
+                                    <t t-set="total_gw" t-value="sum(hs_groups[hs]['gw'] for hs in hs_groups)"/>
+                                    <t t-set="total_nw" t-value="sum(hs_groups[hs]['nw'] for hs in hs_groups)"/>
+                                    <t t-set="total_price" t-value="sum(hs_groups[hs]['price'] for hs in hs_groups)"/>
+                                    <tr>
+                                        <td colspan="8" style="height: 0.5px">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr style="font-weight: bold; background-color: #a0a0a0;">
+                                        <td  style="border: 1px solid black; font-weight: bold; text-align: right" colspan="4">TOTAL AMOUNT :</td>
+                                        <td style="border: 1px solid black; font-weight: bold" class="text-center">
+                                            <span t-esc="total_qty"/>
+                                        </td>
+                                        <td style="border: 1px solid black; font-weight: bold; text-align: right">
+                                            <span t-esc="'%.2f' % total_gw"/>
+                                        </td>
+                                        <td style="border: 1px solid black; font-weight: bold; text-align: right">
+                                            <span t-esc="'%.2f' % total_nw"/>
+                                        </td>
+                                        <td style="border: 1px solid black; font-weight: bold; text-align: right">
+                                            <span t-esc="'%.2f' % total_price"/>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <div class="row">
+                                <div class="col-9">
+                                    </div>
+                                <div class="col-3 text-center">
+                                    <span>Pasuruan,
+                                        <t t-esc="now.strftime('%d %B %Y')"/>
+                                    </span>
+                                    <br/>
+                                    <span>PT. OMEGA MAS</span>
+                                    <br/>
+                                    <t t-if="doc.company_id.logo">
+                                        <img t-att-src="'data:image/png;base64,%s' % (doc.company_id.logo.decode())"
+                                             style="max-height: 100px; object-fit: contain;"
+                                             alt="Company Logo"/>
+                                    </t>
+                                    <br/>
+                                    <span style="text-decoration: underline; font-weight: bold;">FRISCHA SIBUEA</span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

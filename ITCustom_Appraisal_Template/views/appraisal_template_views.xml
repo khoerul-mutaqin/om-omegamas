@@ -1,0 +1,105 @@
+<odoo>
+    <!-- FORM VIEW -->
+    <record id="view_appraisal_template_form" model="ir.ui.view">
+        <field name="name">appraisal.template.form</field>
+        <field name="model">appraisal.template</field>
+        <field name="arch" type="xml">
+            <form string="Appraisal Template">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="department_id"/>
+                        <label for="atasan" string="Kepemimpinan"/>
+                        <field name="atasan" widget="boolean_toggle" nolabel="1"/>
+                    </group>
+                    <group string="Skill Types">
+                        <field name="skill_types" widget="many2many_tags"/>
+                    </group>
+                    <group string="Skills">
+                        <field name="skills" widget="many2many_tags" domain="[('skill_type_id', 'in', skill_types)]"/>
+                    </group>
+                    <group string="Skill Names">
+                        <field name="skill_names" nolabel="1" readonly="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Pedoman Penilaian Kerja Umum" name="guidelines_umum">
+                            <group>
+                                <field name="performance_guidelines_umum" nolabel="1">
+                                    <list string="Pedoman Penilaian Kerja Umum" editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="factor" string="Faktor Perilaku Kerja"/>
+                                        <field name="definition" string="Definisi"/>
+                                        <field name="value_1" string="NILAI 20% (Kurang Diterima)"/>
+                                        <field name="value_2" string="NILAI 40% (Butuh Arahan)"/>
+                                        <field name="value_3" string="NILAI 60% (Standart)"/>
+                                        <field name="value_4" string="NILAI 80% (Performa Bagus)"/>
+                                        <field name="value_5" string="NILAI 100% (Luar Biasa)"/>
+                                    </list>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Pedoman Penilaian Kerja Khusus" name="guidelines_khusus">
+                            <group>
+                                <field name="performance_guidelines_khusus" nolabel="1">
+                                    <list string="Pedoman Penilaian Kerja Khusus" editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="factor" string="Faktor Perilaku Kerja"/>
+                                        <field name="definition" string="Definisi"/>
+                                        <field name="value_1" string="NILAI 20% (Kurang Diterima)"/>
+                                        <field name="value_2" string="NILAI 40% (Butuh Arahan)"/>
+                                        <field name="value_3" string="NILAI 60% (Standart)"/>
+                                        <field name="value_4" string="NILAI 80% (Performa Bagus)"/>
+                                        <field name="value_5" string="NILAI 100% (Luar Biasa)"/>
+                                    </list>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Pedoman Penilaian Kepemimpinan" name="guidelines_kepemimpinan">
+                            <group>
+                                <field name="performance_guidelines_kepemimpinan" nolabel="1">
+                                    <list string="Pedoman Penilaian Kepemimpinan" editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="factor" string="Faktor Perilaku Kerja"/>
+                                        <field name="definition" string="Definisi"/>
+                                        <field name="value_1" string="NILAI 20% (Kurang Diterima)"/>
+                                        <field name="value_2" string="NILAI 40% (Butuh Arahan)"/>
+                                        <field name="value_3" string="NILAI 60% (Standart)"/>
+                                        <field name="value_4" string="NILAI 80% (Performa Bagus)"/>
+                                        <field name="value_5" string="NILAI 100% (Luar Biasa)"/>
+                                    </list>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- TREE VIEW -->
+    <record id="view_appraisal_template_tree" model="ir.ui.view">
+        <field name="name">appraisal.template.tree</field>
+        <field name="model">appraisal.template</field>
+        <field name="arch" type="xml">
+            <list string="Appraisal Template">
+                <field name="name"/>
+                <field name="department_id"/>
+                <field name="atasan" widget="boolean_toggle"/>
+                <field name="skill_types" widget="many2many_tags"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ACTION & MENU -->
+    <record id="action_appraisal_template" model="ir.actions.act_window">
+        <field name="name">Template</field>
+        <field name="res_model">appraisal.template</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_appraisal_template_config"
+              name="Template"
+              parent="hr_appraisal.menu_hr_appraisal_configuration"
+              action="action_appraisal_template"
+              sequence="30"/>
+</odoo>

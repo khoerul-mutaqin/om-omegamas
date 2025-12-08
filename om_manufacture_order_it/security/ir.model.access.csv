@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_confirm_mark_done_wizard_user,model.confirm.mark.done.wizard.user,model_mrp_confirm_mark_done_wizard,,1,1,1,1
+access_confirm_action_wizard_user,model.confirm.action.wizard.user,model_mrp_confirm_action_wizard,,1,1,1,1

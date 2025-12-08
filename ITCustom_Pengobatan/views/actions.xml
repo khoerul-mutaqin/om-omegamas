@@ -1,0 +1,14 @@
+
+<odoo>
+
+    <record id="action_pengobatan_klaim" model="ir.actions.act_window">
+        <field name="name">Klaim</field>
+        <field name="res_model">pengobatan.klaim</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="action_pengobatan_alokasi" model="ir.actions.act_window">
+        <field name="name">Alokasi</field>
+        <field name="res_model">pengobatan.alokasi</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

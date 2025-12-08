@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_purchase_request_line_make_purchase_order_inherit" model="ir.ui.view">
+        <field name="name">Purchase Request Line Make Purchase Order Inherit</field>
+        <field name="model">purchase.request.line.make.purchase.order</field>
+        <field name="inherit_id" ref="om_purchase_request.view_purchase_request_line_make_purchase_order"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='item_ids']/list/field[@name='product_qty']" position="before">
+                <field name="remaining_qty" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

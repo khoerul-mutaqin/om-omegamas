@@ -1,0 +1,349 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <template id="report_pro_forma_invoice_template_with_photo">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page" t-att-style="'orientation: landscape;'">
+                            <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+                            <div class="row justify-content-between">
+                                <div class="col-6">
+                                    <div class="text-left fs-5 fw-bolder" style="margin-bottom: -10px;">PO #
+                                        <span t-field="o.client_order_ref"/>
+                                    </div>
+                                    <div class="text-left fs-5 fw-bolder" style="margin-bottom: -10px;">PO CUST #
+                                        <span t-field="o.po_cust"/>
+                                    </div>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <div class="text-end fs-4 fw-bolder" style="margin-bottom: -10px;">Pro Forma Invoice #
+                                        <span t-field="o.name"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-4">
+                                    <b class="pb-0" style="font-size:13px;">Bill To:</b>
+                                    <span t-field="o.billing_partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                                </div>
+                                <div class="col-4">
+                                    <div style="display: table; font-size:13px; border: none; margin-left: auto;">
+                                        <div style="display: table-row; border: none;">
+                                            <div style="display: table-cell; border: none;">
+                                                <b>Order Date</b>
+                                            </div>
+                                            <div class="text-left" style="display: table-cell; border: none; text-align: left;">:
+                                                <span t-field="o.date_create_blanket_order"/>
+                                            </div>
+                                        </div>
+                                        <div style="display: table-row; border: none;">
+                                            <div style="display: table-cell; border: none;">
+                                                <b>Production Time</b>
+                                            </div>
+                                            <div class="text-left" style="display: table-cell; border: none; text-align: left;">:
+                                                <span t-field="o.production_time"/> Week
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <div style="display: table; font-size:13px; border: none; margin-left: auto;">
+                                        <div style="display: table-row; border: none;">
+                                            <div style="display: table-cell; border: none; text-align: right;">
+                                                <b>Confirmation Date :</b>
+                                            </div>
+                                            <div class="text-end" style="display: table-cell; border: none; text-align: left;">
+                                                <span t-field="o.confirmation_date_order"/>
+                                            </div>
+                                        </div>
+                                        <div style="display: table-row; border: none;">
+                                            <div style="display: table-cell; border: none; text-align: right;">
+                                                <b>Due Date :</b>
+                                            </div>
+                                            <div style="display: table-cell; border: none; text-align: left;">
+                                                <span t-field="o.due_date_order"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-borderless mt-0">
+                                <tr class="p-0">
+                                    <td rowspan="3" class="align-middle fw-bolder p-1">Ship To</td>
+                                    <td class="p-1" style="font-size:13px;">Company</td>
+                                    <td class="p-1" style="font-size:13px;">
+                                        <span t-field="o.partner_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr class="p-0">
+                                    <td class="p-1" style="font-size:13px;">Address</td>
+                                    <td class="p-1" style="font-size:13px;">
+                                        <span t-field="o.partner_id.street"/>
+                                        <span t-field="o.partner_id.street2"/>
+                                    </td>
+                                </tr>
+                                <tr class="p-0">
+                                    <td class="p-1" style="font-size:13px;">Port</td>
+                                    <td class="p-1" style="font-size:13px;">
+                                        <span t-field="o.partner_id.zip"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="table table-borderless mt-4"  style="font-family: Arial; letter-spacing:0.15em">
+                                <thead>
+                                    <tr style="background-color: #181a1c; color: white; font-size:11px;" class="text-center table-dark align-middle p-1">
+                                        <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1">OM Product ID</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1" colspan="3">Description</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-2">Qty</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1">CUST Price
+                                            <br/>(
+                                            <t t-esc="o.currency_id.name"/>)
+                                        </th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1">OM Price
+                                            <br/>(
+                                            <t t-esc="o.currency_id.name"/>)
+                                        </th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1">Total Cust Price
+                                            <br/>(
+                                            <t t-esc="o.currency_id.name"/>)
+                                        </th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1">Total OM Price
+                                            <br/>(
+                                            <t t-esc="o.currency_id.name"/>)
+                                        </th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1">Finish</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1" rowspan="4">Picture</th>
+                                    </tr>
+                                    <tr style="background-color: #181a1c; color: white; font-size:11px;" class="text-center table-dark align-middle p-1">
+                                        <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1">CUST.STYLE</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1">CUST PRODUCT ID</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1">Item Dim (cm)</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1">Item Dim (inch)</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1" colspan="6" rowspan="2">Product Info to Buyer</th>
+                                    </tr>
+                                    <tr style="background-color: #181a1c; color: white; font-size:11px;">
+                                        <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center table-dark align-middle p-1" colspan="4">Color / Attribute / Size</th>
+                                    </tr>
+                                </thead>
+                                <t t-foreach="o.line_ids" t-as="line">
+                                    <tbody style="page-break-inside: avoid;">
+                                        <tr>
+                                            <td class="p-1">
+                                                <span style="font-size:11px; font-family: Arial; letter-spacing:0.15em;" t-field="line.product_id.default_code"/>
+                                            </td>
+                                            <td class="p-1" colspan="3">
+                                                <span style="font-size:11px; font-family: Arial; letter-spacing:0.15em;" t-field="line.product_id.name"/>
+                                            </td>
+                                            <td class="p-1 text-center">
+                                                <span style="font-size:11px; font-family: Arial;" t-esc="'%.0f'% line.original_uom_qty"/>
+                                            </td>
+                                            <td class="p-1 text-center">
+                                                <span style="font-size:14px;" t-esc="'{:,.2f}'.format(line.price_unit or 0.0)"/>
+                                            </td>
+                                            <td class="p-1 text-center">
+                                                <span style="font-size:14px;" t-esc="'{:,.2f}'.format(line.sec_price or 0.0)"/>
+                                            </td>
+                                            <td class="p-1 text-center">
+                                                <span style="font-size:14px;" t-esc="'{:,.2f}'.format(line.price_subtotal or 0.0)"/>
+                                            </td>
+                                            <td class="p-1 text-center">
+                                                <span style="font-size:14px;" t-esc="'{:,.2f}'.format(line.total_sec_price or 0.0)"/>
+                                            </td>
+                                            <td class="p-1">
+                                                <span style="font-size:11px; font-family: Arial; letter-spacing:0.15em;"/>
+                                            </td>
+                                            <td class="text-center align-middle p-1" rowspan="3" style="border-bottom: 2px solid black;">
+                                                <div class="w-100 h-100 d-table">
+                                                    <div class="d-table-cell align-middle">
+                                                        <img t-if="line.product_id.image_1920" t-att-src="image_data_uri(line.product_id.image_1920)" class="img-fluid" style="max-height: 70px;"/>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-1">
+                                                <t t-set="external_id" t-value="env['sale.id.external'].search([('product', '=', line.product_id.product_tmpl_id.id)], limit=1)"/>
+                                                <span style="font-size:11px; font-family: Arial; letter-spacing:0.15em;" t-field="external_id.primary_id"/>
+                                            </td>
+                                            <td class="p-1">
+                                                <span style="font-size:11px; font-family: Arial; letter-spacing:0.15em;" t-field="external_id.secondary_id"/>
+                                            </td>
+                                            <td class="p-1">
+                                                <span style="font-size:11px; font-family: Arial; letter-spacing:0.15em;" t-esc="'H{} W{} D{}'.format(line.product_id.height, line.product_id.width, line.product_id.depth)"/>
+                                            </td>
+                                            <td class="p-1">
+                                                <span style="font-size:11px; font-family: Arial; letter-spacing:0.15em;" t-esc="'H{:.2f} W{:.2f} D{:.2f}'.format((line.product_id.height or 0)/2.54, (line.product_id.width or 0)/2.54, (line.product_id.depth or 0)/2.54)"/>
+                                            </td>
+                                            <td class="p-1" colspan="5" rowspan="2" style="border-bottom: 2px solid black;">
+                                                <span style="font-size:11px; font-family: Arial; letter-spacing:0.15em;" t-field="line.info_to_buyer"/>
+                                            </td>
+                                            <td class="p-1" rowspan="2" style="border-bottom: 2px solid black; text-align: center; vertical-align: middle;">
+                                                <span style="font-size:11px; font-family: Arial; letter-spacing:0.15em;">Fins</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-1" colspan="4" style="border-bottom: 2px solid black; font-size:11px;"></td>
+                                        </tr>
+                                    </tbody>
+                                </t>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="11" class="p-0 border-white"/>
+                                    </tr>
+                                    <tr style="page-break-before: auto;">
+                                        <td style="font-size:12px; text-align: right;" colspan="4">
+                                            <span class="text-right" style="font-size:12px;">Grand Total</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-esc="'%.0f'% o.total_order_qty" style="font-size:10px;"/>
+                                        </td>
+                                        <td class="text-center" colspan="2"></td>
+                                        <td class="text-center" style="white-space: nowrap; width: 1%;">
+                                            <span t-esc="o.currency_id.name" style="font-size:10px;"/>
+                                            <span style="font-size:10px;" t-esc="'{:,.2f}'.format(o.amount_total or 0.0)"/>
+                                        </td>
+                                        <td class="text-center" style="white-space: nowrap; width: 1%;">
+                                            <span t-esc="o.currency_id.name" style="font-size:10px;"/>
+                                            <span style="font-size:10px;" t-esc="'{:,.2f}'.format(o.amount_total_sec_price or 0.0)"/>
+                                        </td>
+                                        <td class="text-center" colspan="2" style="font-size:14px;"></td>
+                                    </tr>
+                                    <t t-if="o.req_dp_amount">
+                                        <tr>
+                                            <td colspan="4" style="font-size:12px; text-align: right; padding-right: 18px;">
+                                                <span style="font-size:12px;" t-field="o.ket_request_dp"></span>
+                                            </td>
+                                            <t t-if="o.req_dp_amount and 'Fixed Amount' not in o.ket_request_dp">
+                                                <td class="text-center">
+                                                    <span style="font-size:10px;">
+                                                        <t t-esc="'{:.0f}%'.format(float(o.ket_request_dp.split('%')[0].split()[-1]))"/>
+                                                    </span>
+                                                </td>
+                                            </t>
+                                            <t t-if="o.req_dp_amount and 'Fixed Amount' in o.ket_request_dp">
+                                                <td class="text-center">
+                                                    <span t-esc="o.currency_id.name" style="font-size:10px;"/>
+                                                    <span style="font-size:10px;" t-esc="'{:,.2f}'.format(o.req_dp_amount or 0.0)"/>
+                                                </td>
+                                            </t>
+                                            <t t-if="o.req_dp_amount and 'OM Price' not in o.ket_request_dp">
+                                                <td class="text-center" colspan="2">
+                                            </td>
+                                                <td class="border-top border-dark" style="white-space: nowrap; width: 1%;">
+                                                    <span t-esc="o.currency_id.name" style="font-size:10px;"/>
+                                                    <span style="font-size:10px;" t-esc="'{:,.2f}'.format(o.req_dp_amount or 0.0)"/>
+                                                </td>
+                                                <td class="text-center" colspan="3">
+                                            </td>
+                                            </t>
+                                            <t t-if="o.req_dp_amount and 'OM Price' in o.ket_request_dp">
+                                                <td class="text-center" colspan="3">
+                                            </td>
+                                                <td class="border-top border-dark" style="white-space: nowrap; width: 1%;">
+                                                    <span t-esc="o.currency_id.name" style="font-size:10px;"/>
+                                                    <span style="font-size:10px;" t-esc="'{:,.2f}'.format(o.req_dp_amount or 0.0)"/>
+                                                </td>
+                                                <td class="text-center" colspan="2">
+                                            </td>
+                                            </t>
+                                        </tr>
+                                    </t>
+                                    <t t-if="o.req_dp_amount">
+                                        <tr>
+                                            <td colspan="4" style="font-size:12px; text-align: right;">
+                                                <span style="font-size:12px;">Balance</span>
+                                            </td>
+                                            <t t-if="o.req_dp_amount and 'OM Price' not in o.ket_request_dp">
+                                                <td colspan="3">
+                                            </td>
+                                                <td class="border-top border-dark" style="white-space: nowrap; width: 1%;">
+                                                    <span t-esc="o.currency_id.name" style="font-size:10px;"/>
+                                                    <span style="font-size:10px;" t-esc="'{:,.2f}'.format((o.amount_total - o.req_dp_amount) or 0.0)"/>
+                                                </td>
+                                                <td class="text-center" colspan="3">
+                                            </td>
+                                            </t>
+                                            <t t-if="o.req_dp_amount and 'OM Price' in o.ket_request_dp">
+                                                <td colspan="4">
+                                            </td>
+                                                <td class="border-top border-dark" style="white-space: nowrap; width: 1%;">
+                                                    <span t-esc="o.currency_id.name" style="font-size:10px;"/>
+                                                    <span style="font-size:10px;" t-esc="'{:,.2f}'.format((o.amount_total_sec_price - o.req_dp_amount) or 0.0)"/>
+                                                </td>
+                                                <td class="text-center" colspan="2">
+                                            </td>
+                                            </t>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                            <div class="row mt-2">
+                                <div class="col-4">
+                                    <div style="display: table; font-size:13px; border: none;">
+                                        <div style="display: table-row; border: none;">
+                                            <div style="display: table-cell; border: none;">
+                                                <b>Note</b>
+                                            </div>
+                                            <div class="text-left" style="display: table-cell; border: none; text-align: left;">:
+                                                <span style="font-size:14px;" t-field="o.note"/>
+                                            </div>
+                                        </div>
+                                        <div style="display: table-row; border: none;">
+                                            <div style="display: table-cell; border: none;">
+                                                <b>Payment Terms</b>
+                                            </div>
+                                            <div class="text-left" style="display: table-cell; border: none; text-align: left;">:
+                                                <span style="font-size:14px;" t-field="o.payment_term_id.name"/>
+                                            </div>
+                                        </div>
+                                        <div style="display: table-row; border: none;">
+                                            <div style="display: table-cell; border: none;">
+                                                <b>Account</b>
+                                            </div>
+                                            <div class="text-left" style="display: table-cell; border: none; text-align: left;">:
+                                                <t t-if="o.partner_bank_id">
+                                                    <t t-foreach="o.partner_bank_id" t-as="bank">
+                                                        <t t-if="bank.acc_number">
+                                                            <span style="font-size:14px;">
+                                                                <t t-esc="bank.acc_number"/> -
+                                                                <t t-esc="bank.bank_id.name or ''"/>
+                                                            </span>
+                                                        </t>
+                                                    </t>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <!-- Kolom kosong untuk spacing -->
+                                </div>
+                                <div class="col-4 text-end">
+                                    <div style="display: table; font-size:13px; border: none; margin-left: auto;">
+                                        <div style="display: table-row; border: none;">
+                                            <div style="display: table-cell; border: none; text-align: right;">
+                                                <b>Sales Person :</b>
+                                            </div>
+                                            <div class="text-end" style="display: table-cell; border: none; text-align: left;">
+                                                <span t-field="o.user_id.name"/>
+                                            </div>
+                                        </div>
+                                        <div style="display: table-row; border: none;">
+                                            <div style="display: table-cell; border: none; text-align: right;">
+                                                <b>Email :</b>
+                                            </div>
+                                            <div style="display: table-cell; border: none; text-align: left;">
+                                                <span t-field="o.user_id.email"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

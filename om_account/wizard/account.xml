@@ -1,0 +1,21 @@
+<odoo>
+  <data>
+   
+    <record id="inherit_view_id_inherit_acoount" model="ir.ui.view">
+      <field name="name">account.payment.register.view.form.inherit</field>
+      <field name="model">account.payment.register</field>
+      <field name="inherit_id" ref="account.view_account_payment_register_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='payment_date']" position="before">
+          <label for="amount_to_paid" invisible="not can_edit_wizard or can_group_payments and not group_payment"/>
+          <div name="amount_div" class="o_row" invisible="not can_edit_wizard or can_group_payments and not group_payment">
+              <field name="amount_to_paid"/>
+              <field name="currency_id" required="1" options="{'no_create': True, 'no_open': True}" groups="base.group_multi_currency"/>
+          </div>
+        </xpath>
+      </field>
+    </record>
+
+
+  </data>
+</odoo>

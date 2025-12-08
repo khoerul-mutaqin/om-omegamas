@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_employee_surat_peringatan,employee.surat.peringatan.access,model_employee_surat_peringatan,hr.group_hr_user,1,1,1,1
+access_export_surat_peringatan_wizard,Export Surat Peringatan Wizard,model_export_employee_surat_peringatan_wizard,base.group_user,1,1,1,0

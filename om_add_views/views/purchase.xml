@@ -1,0 +1,15 @@
+<odoo>
+    <record id="view_purchase_report_tree_inherit" model="ir.ui.view">
+        <field name="name">purchase.report.tree.inherit</field>
+        <field name="model">purchase.report</field>
+        <field name="inherit_id" ref="purchase.purchase_report_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='price_total']" position="after">
+                <field name="dp_blanket" optional="hide"/>
+                <field name="receipt_status" optional="hide"/>
+                <field name="invoice_status" optional="hide"/>
+                <field name="partner_ref" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

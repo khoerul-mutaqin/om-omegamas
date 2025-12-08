@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Inherit purchase.order form view to hide Confirm Order button based on user -->
+        <record id="view_purchase_order_form_hide_button" model="ir.ui.view">
+            <field name="name">purchase.order.form.hide.button</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <!-- Hide Confirm Order button for sent state (the manual delivery module replaces the original buttons) -->
+                <xpath expr="//button[@name='button_confirm_manual' and @id='bid_confirm_manual']" position="attributes">
+                    <attribute name="invisible">state in ('purchase', 'done') or hide_confirm_button</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

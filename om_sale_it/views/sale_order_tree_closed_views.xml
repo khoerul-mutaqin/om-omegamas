@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_order_tree_custom" model="ir.ui.view">
+            <field name="name">sale.order.tree.closed.badge</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_status']" position="after">
+                    <field name="closed_badge" widget="badge" invisible="not is_closed" options="{
+                        'terminology': 'Closed',
+                        'badge_danger': True
+                    }"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

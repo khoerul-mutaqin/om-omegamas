@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- purchase_discount_wizard.xml -->
+
+<odoo>
+    <record id="view_purchase_order_discount_wizard_form" model="ir.ui.view">
+        <field name="name">purchase.order.discount.wizard.form</field>
+        <field name="model">purchase.order.discount</field>
+        <field name="arch" type="xml">
+             <form string="Discount">
+               <sheet>
+                    <group>
+                        <field name="discount_type" class="mb-3"/>
+                        <field name="discount_amount" widget="monetary" options="{'currency_field': 'currency_id'}"
+                               invisible="discount_type != 'fixed'" class="mb-3"/>
+                        <field name="discount_percentage" widget="percentage"
+                               invisible="discount_type != 'percent'" class="mb-3"/>
+                    </group>
+                    <footer>
+                        <button string="Apply" type="object" name="apply_discount" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

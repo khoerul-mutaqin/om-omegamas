@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_picking_form_add_line_inherit" model="ir.ui.view">
+            <field name="name">stock.picking.form.add.line.inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_id']" position="after">
+                    <field name="info_to_buyer" optional="hide"/>
+                    <field name="info_to_production" optional="hide"/>
+                    <field name="external_id" optional="hide"/>
+                    <field name="depart_per_prod" optional="show"/>
+                    <field name="analytic_distribution" widget="analytic_distribution" groups="analytic.group_analytic_accounting" optional="show"/>
+                    <field name="analytic_distribution_sale" widget="analytic_distribution" groups="analytic.group_analytic_accounting" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_picking_form_custom" model="ir.ui.view">
+            <field name="name">stock.picking.form.custom.total</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='operations']" position="inside">
+                    <div class="oe_clear" name="total_delivery_qty_section">
+                        <div class="mt-1">
+                            <!-- Menambahkan Total Sales Order dibawah line-->
+                            <label class="me-1 fw-semibold" for="total_sales_order_qty" string="Total Order Quantity: "/>
+                            <field class="fw-bold" name="total_sales_order_qty" readonly="1"/>
+                        </div>
+                        <div class="mt-1">
+                            <!-- Menambahkan Total Delivery Order dibawah line-->
+                            <label class="me-1 fw-semibold" for="total_delivery_qty" string="Total Delivered Quantity: "/>
+                            <field class="fw-bold" name="total_delivery_qty" readonly="1"/>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+         <record id="view_picking_form_inherit_qty" model="ir.ui.view">
+            <field name="name">stock.picking.form.inherit.qty</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+
+                <!-- Edit Demand menjadi Qty SO -->
+                <xpath expr="//field[@name='product_uom_qty']" position="attributes">
+                    <attribute name="string">Qty SO</attribute>
+                </xpath>
+                <!-- Edit Demand menjadi Qty SO -->
+                <xpath expr="//field[@name='quantity']" position="attributes">
+                    <attribute name="string">Qty DO</attribute>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,44 @@
+<odoo>
+    <data>
+        <!-- Tree view for performance guidelines -->
+        <record id="view_performance_guidelines_tree" model="ir.ui.view">
+            <field name="name">performance.guidelines.tree</field>
+            <field name="model">performance.guidelines</field>
+            <field name="arch" type="xml">
+                <list string="Pedoman Penilaian Kerja">
+                    <field name="sequence" widget="handle"/>
+                    <field name="factor"/>
+                    <field name="definition"/>
+                    <field name="value_1"/>
+                    <field name="value_2"/>
+                    <field name="value_3"/>
+                    <field name="value_4"/>
+                    <field name="value_5"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Form view for performance guidelines (optional) -->
+        <record id="view_performance_guidelines_form" model="ir.ui.view">
+            <field name="name">performance.guidelines.form</field>
+            <field name="model">performance.guidelines</field>
+            <field name="arch" type="xml">
+                <form string="Pedoman Penilaian Kerja">
+                    <sheet>
+                        <group>
+                            <field name="factor"/>
+                            <field name="definition"/>
+                        </group>
+                        <group string="Nilai">
+                            <field name="value_1"/>
+                            <field name="value_2"/>
+                            <field name="value_3"/>
+                            <field name="value_4"/>
+                            <field name="value_5"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

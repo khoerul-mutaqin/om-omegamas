@@ -1,0 +1,134 @@
+/* Container khusus untuk sticky table */
+.sticky-table-container {
+    position: relative;
+    overflow-x: auto;
+    max-height: 80vh;
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Header tetap */
+.sticky-table-container .o_list_view thead {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: #f8f9fa;
+    box-shadow: 0 2px 3px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Kolom sticky */
+.sticky-table-container .o_list_view tbody td.sticky-col,
+.sticky-table-container .o_list_view thead th.sticky-col {
+    position: sticky;
+    background: inherit;
+    z-index: 10;
+    box-shadow: 1px 0 0 0 #e9ecef;
+    padding: 8px 12px;
+    white-space: nowrap;
+}
+
+/* Kolom 1 (Checkbox/Nomor) */
+.sticky-table-container .o_list_view tbody td:nth-child(1),
+.sticky-table-container .o_list_view thead th:nth-child(1) {
+    position: sticky;
+    left: 0;
+    z-index: 19;
+    background: #f8f9fa;
+    width: 48px;
+    min-width: 48px;
+    max-width: 48px;
+}
+
+/* Kolom 2 (Employee ID) */
+.sticky-table-container .o_list_view tbody td:nth-child(2),
+.sticky-table-container .o_list_view thead th:nth-child(2) {
+    position: sticky;
+    left: 48px;
+    z-index: 18;
+    background: #f8f9fa;
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+}
+
+/* Kolom 3 (Employee Type) */
+.sticky-table-container .o_list_view tbody td:nth-child(3),
+.sticky-table-container .o_list_view thead th:nth-child(3) {
+    position: sticky;
+    left: 198px;
+    z-index: 17;
+    background: #f8f9fa;
+    width: 120px;
+    min-width: 120px;
+    max-width: 120px;
+}
+
+/* Kolom 4 (Barcode) */
+.sticky-table-container .o_list_view tbody td:nth-child(4),
+.sticky-table-container .o_list_view thead th:nth-child(4) {
+    position: sticky;
+    left: 318px;
+    z-index: 16;
+    background: #f8f9fa;
+    width: 120px;
+    min-width: 120px;
+    max-width: 120px;
+}
+
+/* Kolom 5 (Bank Name) */
+.sticky-table-container .o_list_view tbody td:nth-child(5),
+.sticky-table-container .o_list_view thead th:nth-child(5) {
+    position: sticky;
+    left: 438px;
+    z-index: 15;
+    background: #f8f9fa;
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+}
+
+/* Kolom non-sticky */
+.sticky-table-container .o_list_view td:not([class*="nth-child"]),
+.sticky-table-container .o_list_view th:not([class*="nth-child"]) {
+    background: white;
+}
+
+/* Hover effect */
+.sticky-table-container .o_list_view tbody tr:hover td {
+    background-color: #f1f3f5 !important;
+}
+
+/* Border untuk kolom */
+.sticky-table-container .o_list_view td,
+.sticky-table-container .o_list_view th {
+    border-right: 1px solid #e9ecef;
+    border-bottom: 1px solid #e9ecef;
+}
+
+/* Scrollbar styling */
+.sticky-table-container::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+
+.sticky-table-container::-webkit-scrollbar-thumb {
+    background: #adb5bd;
+    border-radius: 4px;
+}
+
+/* Text styling */
+.sticky-table-container .o_list_view td {
+    vertical-align: middle;
+    color: #343a40;
+    font-size: 13px;
+}
+
+.sticky-table-container .o_list_view th {
+    font-weight: 500;
+    color: #495057;
+    font-size: 12px;
+    text-transform: uppercase;
+    padding: 10px 12px;
+}

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    
+    <record id="view_picking_form_inherit_om_sale_manual_delivery" model="ir.ui.view">
+        <field name="name">view.picking.form.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='operations']/field[@name='move_ids_without_package']/list" position="inside">
+                <field name="sale_id" optional="hide"/>
+            </xpath>
+
+
+            <xpath expr="//form/sheet/notebook/page[@name='extra']/group/group[1]" position="inside">
+                <field name="analytic_account_id" />
+                <field name="department_id" />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

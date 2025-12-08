@@ -1,0 +1,34 @@
+<odoo>
+	<data>
+
+		<record id="action_stock_card_list" model="ir.actions.act_window">
+			<field name="name">Stock Card List</field>
+			<field name="res_model">fal.stock.card</field>
+			<field name="view_mode">list,form</field>
+		</record>
+
+		<record id="action_stock_summary_list" model="ir.actions.act_window">
+			<field name="name">Stock Summary List</field>
+			<field name="res_model">fal.stock.summary</field>
+			<field name="view_mode">list,form</field>
+		</record>
+
+		<menuitem id="fal_stock_card_main"
+		 name="Stock Evaluation"
+		 sequence="141"
+		 parent="stock.menu_warehouse_report"/>
+
+		<menuitem id="fal_stock_card"
+		 action="action_stock_card_list"
+		 name="Stock Card"
+		 sequence="40"
+		 parent="fal_stock_card.fal_stock_card_main"/>
+
+		<menuitem id="fal_stock_summary"
+		 action="action_stock_summary_list"
+		 name="Stock Summary"
+		 sequence="50"
+		 parent="fal_stock_card.fal_stock_card_main"/>
+
+	</data>
+</odoo>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_report_sub_so_with_photo" model="ir.actions.report">
+        <field name="name">Sub Sales Order</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">om_sale_it.report_sub_so_template_with_photo</field>
+        <field name="report_file">om_sale_it.report_sub_so_template_with_photo</field>
+        <field name="print_report_name">'Sub Sales Order - %s' % object.name</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_mto_so" model="ir.actions.report">
+        <field name="name">Master SO Report</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">om_sale_it.report_mto_so_template</field>
+        <field name="report_file">om_sale_it.report_mto_so_template</field>
+        <field name="print_report_name">'Master SO Report - %s' % object.name</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_omd" model="ir.actions.report">
+        <field name="name">Report Order Processing</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">om_sale_it.report_omd_template</field>
+        <field name="report_file">om_sale_it.report_omd_template</field>
+        <field name="print_report_name">'Report Order Processing - %s' % object.name</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

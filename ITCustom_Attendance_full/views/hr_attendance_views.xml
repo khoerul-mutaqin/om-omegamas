@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_hr_attendance_form_inherit" model="ir.ui.view">
+        <field name="name">hr.attendance.form.inherit</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='check_in']" position="after">
+                <field name="calendar_id" invisible="1"/>
+                <field name="day_code" invisible="1"/>
+                <field name="work_from" invisible="1"/>
+                <field name="employee_type" invisible="1"/>
+                <field name="hari" />
+                <field name="work_from_display" />
+                <field name="terlambat_count"/>
+                <field name="terlambat_display"/>
+                <field name="alasan_terlambat" placeholder="Alasan keterlambatan..."/>
+                <field name="valid" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='check_out']" position="after">
+                <field name="work_to" invisible="1"/>
+                <field name="pulang_dini" invisible="1"/>
+                <field name="terlambat"  invisible="1"/>
+                <field name="work_to_display" />
+                <field name="pulang_dini_count"/>
+                <field name="pulang_dini_display"/>
+                <field name="alasan_pulang_dini" placeholder="Alasan pulang dini..."/>
+                <field name="valid_out" invisible="1"/>
+                <field name="istirahat_from" invisible="1"/>
+                <field name="istirahat_to" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='worked_hours']" position="before">
+                <div class="o_row">
+                    <label for="presensi" string="Presensi"/>
+                    <field name="presensi"/>
+                    <field name="tidak_efektif" invisible="1"/>
+                    <label for="lembur" string="Lembur" invisible="not (employee_type != 'staff')"/>
+                    <field name="lembur" invisible="not (employee_type != 'staff')"/>
+                    <label for="insentif" string="Insentif" invisible="not (employee_type == 'staff')"/>
+                    <field name="insentif" invisible="not (employee_type == 'staff')"/>
+                </div>
+                <field name="status_insentif" invisible="not (employee_type == 'staff')"/>
+                <field name="catatan_insentif" invisible="not (employee_type == 'staff')"/>
+                <field name="kategori_selection"/>
+                <field name="durasi" invisible="not (kategori_selection in ['MP', 'MSH'])"/>
+                <field name="durasi_menit" invisible="1"/>
+                <field name="msh_count" invisible="1"/>
+                <field name="mp_count" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_attendance_pivot_inherit_presensi" model="ir.ui.view">
+        <field name="name">hr.attendance.pivot.inherit.presensi</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_pivot"/>
+        <field name="arch" type="xml">
+            <xpath expr="//pivot" position="inside">
+                <field name="presensi" string="Presensi" type="measure"/>
+                <field name="insentif" string="Insentif" type="measure"/>
+                <field name="terlambat_count" string="Terlambat" type="measure"/>
+                <field name="pulang_dini_count" string="Pulang Dini" type="measure"/>
+                <field name="msh_count" string="MSH" type="measure"/>
+                <field name="mp_count" string="MP" type="measure"/>
+            </xpath>
+            <xpath expr="//field[@name='employee_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='check_in']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='worked_hours']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='expected_hours']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='overtime_hours']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='validated_overtime_hours']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_attendance_pivot_inherit_presensi" model="ir.ui.view">
+        <field name="name">hr.attendance.pivot.inherit.presensi</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_pivot"/>
+        <field name="arch" type="xml">
+            <xpath expr="//pivot" position="inside">
+                <field name="insentif" string="Insentif" type="measure"/>
+                <field name="terlambat_count" string="Terlambat" type="measure"/>
+                <field name="pulang_dini_count" string="Pulang Dini" type="measure"/>
+                <field name="msh_count" string="MSH" type="measure"/>
+                <field name="mp_count" string="MP" type="measure"/>
+            </xpath>
+            <xpath expr="//field[@name='employee_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='check_in']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='worked_hours']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='expected_hours']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='overtime_hours']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='validated_overtime_hours']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    <!-- Update action to remove default grouping -->
+    <!-- <record id="hr_attendance.hr_attendance_action" model="ir.actions.act_window">
+        <field name="context">{"group_by": ["employee_id"]}</field>
+    </record> -->
+    <record id="view_attendance_tree_inherit" model="ir.ui.view">
+        <field name="name">hr.attendance.tree.inherit</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='check_in']" position="before">
+                <field optional="show" name="hari"/>
+            </xpath>
+            <xpath expr="//field[@name='check_out']" position="after">
+                <field optional="show" name="presensi"/>
+                <field optional="show" name="insentif"/>
+                <field optional="show" name="lembur"/>
+                <field optional="show" name="catatan_insentif"/>
+                <field optional="show" name="msh_count"/>
+                <field optional="show" name="terlambat_count"/>
+                <field optional="show" name="terlambat_display"/>
+                <field optional="show" name="alasan_terlambat"/>
+                <field optional="show" name="pulang_dini_count"/>
+                <field optional="show" name="pulang_dini_display"/>
+                <field optional="show" name="alasan_pulang_dini"/>
+                <field optional="show" name="mp_count"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

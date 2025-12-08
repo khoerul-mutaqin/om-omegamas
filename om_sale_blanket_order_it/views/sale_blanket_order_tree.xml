@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_sale_blanket_order_tree_inherit" model="ir.ui.view">
+            <field name="name">sale.blanket.order.tree.inherit</field>
+            <field name="model">sale.blanket.order</field>
+            <field name="inherit_id" ref="sale_blanket_order.view_blanket_order_tree"/>
+            <field name="arch" type="xml">
+                  <xpath expr="//field[@name='partner_id']" position="after">
+                    <field optional="show" name="client_order_ref"/>
+                    <field optional="hide" name="down_payment"/>
+                    <field optional="hide" name="dp_order"/>
+                    <field optional="hide" name="dp_sisa"/>
+                  </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

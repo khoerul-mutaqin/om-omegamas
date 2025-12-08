@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_hr_payslip_tree_inherit" model="ir.ui.view">
+        <field name="name">hr.payslip.tree.inherit</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_tree"/>
+        <field name="arch" type="xml">
+            <!-- Tambahkan field sebelum employee_id -->
+            <xpath expr="//field[@name='employee_id']" position="before">
+                <field optional="show" name="employee_type" class="green-column"/>
+                <field optional="show" name="barcode"/>
+                <field optional="show" name="bank_name"/>
+            </xpath>
+            <!-- Ubah tampilan basic_wage ke integer -->
+            <xpath expr="//field[@name='basic_wage']" position="attributes">
+                <attribute name="widget">integer</attribute>
+            </xpath>
+            <!-- Tambahkan field setelah basic_wage -->
+            <xpath expr="//field[@name='basic_wage']" position="after">
+                <field optional="show" name="t_alrapel" widget="integer"/>
+                <field optional="show" name="t_makan"  widget="integer"/>
+                <field optional="show" name="t_jkk"  widget="integer"/>
+                <field optional="show" name="t_jkm"  widget="integer"/>
+                <field optional="show" name="t_jht_comp"  widget="integer"/>
+                <field optional="show" name="t_bpjs_kesehatan"  widget="integer"/>
+                <field optional="show" name="t_jp_company"  widget="integer"/>
+                <field optional="show" name="t_jabatan"  widget="integer"/>
+                <field optional="show" name="t_tidak_tetap"  widget="integer"/>
+                <field optional="show" name="t_pencairan_pinjaman"  widget="integer"/>
+                <field optional="show" name="t_lain_lain"  widget="integer"/>
+                <field optional="show" name="t_insentif"  widget="integer"/>
+                <field optional="show" name="t_pph21"  widget="integer"/>
+                <field optional="show" name="sub_gross"  widget="integer"/>
+            </xpath>
+            <!-- Ubah tampilan gross_wage ke integer -->
+            <xpath expr="//field[@name='gross_wage']" position="attributes">
+                <attribute name="widget">integer</attribute>
+            </xpath>
+            <!-- Tambahkan field setelah gross_wage -->
+            <xpath expr="//field[@name='gross_wage']" position="after">
+                <field optional="show" name="p_jht_comp"  widget="integer"/>
+                <field optional="show" name="p_jht_employee"  widget="integer"/>
+                <field optional="show" name="p_bpjs_jkk"  widget="integer"/>
+                <field optional="show" name="p_bpjs_jkm"  widget="integer"/>
+                <field optional="show" name="p_bpjs_kes_comp"  widget="integer"/>
+                <field optional="show" name="p_bpjs_kes_emp"  widget="integer"/>
+                <field optional="show" name="p_jp_company"  widget="integer"/>
+                <field optional="show" name="p_jp_employee"  widget="integer"/>
+                <field optional="show" name="p_meal"  widget="integer"/>
+                <field optional="show" name="p_tunj_tidak_tetap"  widget="integer"/>
+                <field optional="show" name="p_absensi"  widget="integer"/>
+                <field optional="show" name="p_terlambat"  widget="integer"/>
+                <field optional="show" name="p_pd"  widget="integer"/>
+                <field optional="show" name="p_mp"  widget="integer"/>
+                <field optional="show" name="p_pinjaman"  widget="integer"/>
+                <field optional="show" name="p_gaji"  widget="integer"/>
+                <field optional="show" name="p_pph21"  widget="integer"/>
+                <field optional="show" name="p_potongan"  widget="integer"/>
+            </xpath>
+            <!-- Ubah tampilan net_wage ke integer -->
+            <xpath expr="//field[@name='net_wage']" position="attributes">
+                <attribute name="widget">integer</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+    <template id="document_tax_totals_template_inherit" inherit_id="account.document_tax_totals_template">
+        <xpath expr="//tr[@class='o_subtotal']" position="after">
+            <tr t-if="dpp_other_amount" class="o_subtotal">
+                <td>
+                    <span>DPP Other Amount</span>
+                </td>
+                <td class="text-end">
+                    <span t-att-class="oe_subtotal_footer_separator"
+                        t-out="dpp_other_amount"
+                        t-options='{"widget": "monetary", "display_currency": currency}'
+                    >27.00</span>
+                </td>
+            </tr>
+        </xpath>
+    </template>
+        
+    <!-- <template id="sales_report"  inherit_id="account.report_invoice_document">
+        <xpath expr="//div[@id='payment_term']" position="after">
+            <div>
+                    <t>
+                        <p class="">
+                            No.Rek: 
+                            <span t-field="env.company.partner_id.bank_ids[0].acc_number"/>
+                        </p>
+                        <p class="">
+                            Nama Bank: 
+                            <span t-field="env.company.partner_id.bank_ids[0].bank_id.name"/>
+                        </p>
+                        <p class="">
+                            Nama Akun Rek: 
+                            <span t-field="env.company.partner_id.bank_ids[0].acc_holder_name"/>
+                        </p>
+                        <p class="">
+                            Code: 
+                            <span t-field="env.company.partner_id.bank_ids[0].bank_id.bic"/>
+                        </p>
+                        <p class="">
+                            Alamat: 
+                            <span t-field="env.company.partner_id.bank_ids[0].bank_id.street"/>
+                            <span t-field="env.company.partner_id.bank_ids[0].bank_id.city"/>
+                            <span t-field="env.company.partner_id.bank_ids[0].bank_id.zip"/>
+                            <span t-field="env.company.partner_id.bank_ids[0].bank_id.country"/>
+                        </p>
+                
+                    </t>
+                   
+            </div>
+        </xpath>
+    </template> -->
+
+    </data>
+</odoo>

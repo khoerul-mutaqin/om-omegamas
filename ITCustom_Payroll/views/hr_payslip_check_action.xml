@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_hr_payslip_check" model="ir.actions.server">
+        <field name="name">Update to Check</field>
+        <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
+        <field name="binding_model_id" ref="hr_payroll.model_hr_payslip"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="sequence">1</field>
+        <!-- Ganti ini biar muncul di tengah -->
+        <field name="code">
+        action = records.action_check()
+    </field>
+    </record>
+    <record id="view_hr_payslip_form_inherit_check" model="ir.ui.view">
+        <field name="name">hr.payslip.form.inherit.check</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+            <field name="state" position="replace">
+                <field name="state" widget="statusbar"
+               statusbar_visible="draft,verify,check,done,paid,cancel"
+               readonly="1"/>
+      </field>
+        </field>
+    </record>
+</odoo>

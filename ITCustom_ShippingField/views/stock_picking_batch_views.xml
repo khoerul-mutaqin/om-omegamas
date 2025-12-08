@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_stock_picking_batch_form_buyer" model="ir.ui.view">
+            <field name="name">stock.picking.batch.form.buyer</field>
+            <field name="model">stock.picking.batch</field>
+            <field name="inherit_id" ref="stock_picking_batch.stock_picking_batch_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='properties']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='scheduled_date']" position="after">
+                    <field name="tujuan"/>
+                </xpath>
+                <xpath expr="//group[@id='batch_delivery_data']" position="after">
+                    <group id="address_info" string="Address Information">
+                        <group col="2">
+                            <field name="buyer_id"/>
+                            <field name="consignee_id"/>
+                        </group>
+                        <group col="2">
+                            <field name="ship_to_id"/>
+                            <field name="notify_party_id"/>
+                        </group>
+                    </group>
+                    <group id="container_info" string="Container Information">
+                        <group col="2">
+                            <field name="jenis_kontainer"/>
+                            <field name="kode_kontainer"/>
+                            <field name="seal"/>
+                            <field name="booking"/>
+                            <field name="shipment_mode"/>
+                            <field name="penjualan"/>
+                        </group>
+                        <group col="2">
+                            <field name="do_bc"/>
+                            <field name="kurs"/>
+                            <field name="currencies"/>
+                            <field name="kurs_equals"/>
+                            <field name="kurs_saat_isi_barang"/>
+                        </group>
+                    </group>
+                    <group id="remarks_info" string="Remarks">
+                            <field name="remark_ext"/>
+                            <field name="remark_int"/>
+                            <field name="remark_packing_list"/>
+                    </group>
+                    <group id="feeder_info" string="Feeder Information">
+                        <group col="2">
+                            <field name="feeder"/>
+                            <field name="etd_feeder"/>
+                            <field name="from_feeder"/>
+                        </group>
+                        <group col="2">
+                            <field name="from_lengkap"/>
+                            <field name="eta_feeder"/>
+                            <field name="to_feeder"/>
+                        </group>
+                    </group>
+                    <group id="vessel_info" string="Vessel Information">
+                        <group col="2">
+                            <field name="mother_vessel"/>
+                            <field name="etd_vessel"/>
+                            <field name="from_vessel"/>
+                        </group>
+                        <group col="2">
+                            <field name="to_lengkap"/>
+                            <field name="eta_vessel"/>
+                            <field name="to_vessel"/>
+                        </group>
+                    </group>
+                    <group id="shipping_info" string="Shipping Details">
+                        <field name="tanggal_kirim_si"/>
+                        <field name="cara_pengiriman"/>
+                        <field name="revised"/>
+                        <field name="tanggal"/>
+                    </group>
+                    <group id="shipping_info2" string="Forwarder and EMKL Information">
+                        <field name="forwarder"/>
+                        <field name="telepon"/>
+                        <field name="pic"/>
+                        <field name="emkl"/>
+                        <field name="fax"/>
+                    </group>
+                    <group id="info_peb" string="PEB Information">
+                        <field name="no_peb"/>
+                        <field name="tanggal_peb"/>
+                        <field name="no_bl"/>
+                        <field name="tanggal_bl"/>
+                    </group>
+                    <group id="info_npe" string="NPE Information">
+                        <field name="no_npe"/>
+                        <field name="tanggal_npe"/>
+                        <field name="no_coo"/>
+                        <field name="tanggal_coo"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_documents_selection_wizard_form" model="ir.ui.view">
+        <field name="name">product.documents.selection.wizard.form</field>
+        <field name="model">product.documents.selection.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Select Documents or Upload Image">
+                <sheet>
+                    <group>
+                        <field name="document_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                    </group>
+                    <group>
+                        <field name="upload_file" filename="upload_filename" widget="binary" options="{'accept': 'image/*'}"/>
+                        <field name="upload_filename"/>
+                    </group>
+                    <footer>
+                        <button string="Link Documents" type="object" name="action_link_documents" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Default button record for Confirm Order in purchase.order -->
+        <record id="button_confirm_order" model="itcustom.button">
+            <field name="name">Confirm Order</field>
+            <field name="model">purchase.order</field>
+            <field name="button_name">button_confirm_manual</field>
+            <field name="button_string">Confirm Order</field>
+            <field name="description">Confirm Order button in Purchase Orders</field>
+        </record>
+        <!-- Default button record for Confirm in sale.order -->
+        <record id="button_confirm_sale" model="itcustom.button">
+            <field name="name">Confirm Sale</field>
+            <field name="model">sale.order</field>
+            <field name="button_name">action_confirm</field>
+            <field name="button_string">Confirm</field>
+            <field name="description">Confirm button in Sale Orders</field>
+        </record>
+        <!-- Default button record for Approve in purchase.request -->
+        <record id="button_approve_request" model="itcustom.button">
+            <field name="name">Approve Request</field>
+            <field name="model">purchase.request</field>
+            <field name="button_name">button_approved</field>
+            <field name="button_string">Approve</field>
+            <field name="description">Approve button in Purchase Requests</field>
+        </record>
+        <!-- Default button record for Reset in purchase.request -->
+        <record id="button_reset_request" model="itcustom.button">
+            <field name="name">Reset Request</field>
+            <field name="model">purchase.request</field>
+            <field name="button_name">button_draft</field>
+            <field name="button_string">Reset</field>
+            <field name="description">Reset button in Purchase Requests</field>
+        </record>
+        <!-- Default button record for Pay in account.move -->
+        <record id="button_pay_invoice" model="itcustom.button">
+            <field name="name">Pay Invoice</field>
+            <field name="model">account.move</field>
+            <field name="button_name">action_register_payment</field>
+            <field name="button_string">Pay</field>
+            <field name="description">Pay button in Journal Entries (Invoices/Receipts)</field>
+        </record>
+        <!-- Default button record for Confirm in sale.blanket.order -->
+        <record id="button_confirm_blanket_order" model="itcustom.button">
+            <field name="name">Confirm Blanket Order</field>
+            <field name="model">sale.blanket.order</field>
+            <field name="button_name">action_confirm</field>
+            <field name="button_string">Confirm</field>
+            <field name="description">Confirm button in Blanket Orders</field>
+        </record>
+    </data>
+</odoo>

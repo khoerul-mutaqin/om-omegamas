@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_contract_history_employee,contract.history.employee,model_contract_history_employee,,1,1,1,1
+access_contract_history_wizard,contract.history.confirmation.wizard.access,model_contract_history_confirmation_wizard,base.group_user,1,1,1,1
+access_export_history_period_wizard,Access Export History Period Wizard,model_export_history_period_wizard,,1,1,1,1

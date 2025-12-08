@@ -1,0 +1,58 @@
+<!-- purchase_import_model_view.xml -->
+
+<odoo>
+    <record id="view_purchase_import_model_tree" model="ir.ui.view">
+        <field name="name">purchase.import.model.tree</field>
+        <field name="model">purchase.import</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="order_number"/>
+                <field name="product_id"/>
+                <field name="quantity"/>
+                <field name="serial_number"/>
+                <field name="purchase_date"/>
+                <field name="cost"/>
+                <field name="purchase_order_id"/>
+                <field name="processed_purchase"/>
+                <field name="picking_type_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_purchase_import_model_form" model="ir.ui.view">
+        <field name="name">purchase.import.model.form</field>
+        <field name="model">purchase.import</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="order_number"/>
+                        <field name="product_id"/>
+                        <field name="quantity"/>
+                        <field name="serial_number"/>
+                        <field name="purchase_date"/>
+                        <field name="cost"/>
+                        <field name="purchase_order_id"/>
+                        <field name="processed_purchase"/>
+                        <field name="picking_type_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_purchase_import_model" model="ir.actions.act_window">
+        <field name="name">Purchase Imports</field>
+        <field name="res_model">purchase.import</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_purchase_import_model_tree"/>
+    </record>
+
+    <menuitem name="Purchase Imports"
+        id="menu_purchase_import" action="action_purchase_import_model" web_icon="cdp_purchase_import,static/description/icon.png"/>
+
+    <!-- <menuitem id="menu_purchase_import_model"
+              name="Purchase Imports"
+              action="action_purchase_import_model"/> -->
+</odoo>

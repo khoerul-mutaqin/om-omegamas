@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- List view for itcustom.button -->
+        <record id="view_itcustom_button_list" model="ir.ui.view">
+            <field name="name">itcustom.button.list</field>
+            <field name="model">itcustom.button</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="model"/>
+                    <field name="button_name"/>
+                    <field name="button_string"/>
+                    <field name="description"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Form view for itcustom.button -->
+        <record id="view_itcustom_button_form" model="ir.ui.view">
+            <field name="name">itcustom.button.form</field>
+            <field name="model">itcustom.button</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="model"/>
+                            <field name="button_name"/>
+                            <field name="button_string"/>
+                            <field name="description"/>
+                        </group>
+                        <notebook>
+                            <page string="Restricted Users">
+                                <field name="restrict_user_ids" widget="many2many_tags"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action for itcustom.button -->
+        <record id="action_itcustom_button" model="ir.actions.act_window">
+            <field name="name">Buttons to Hide</field>
+            <field name="res_model">itcustom.button</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="view_itcustom_button_list"/>
+        </record>
+        <!-- Menu item for itcustom.button -->
+        <menuitem id="menu_itcustom_button" name="Buttons to Hide" action="action_itcustom_button" parent="base.menu_administration"/>
+    </data>
+</odoo>

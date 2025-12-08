@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Paper Format for Portrait A4 -->
+        <record id="paperformat_commercial_invoice_portrait" model="report.paperformat">
+            <field name="name">Commercial Invoice Portrait</field>
+            <field name="default">False</field>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line">False</field>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <!-- Paper Format for Landscape A4 -->
+        <record id="paperformat_shipping_plan_landscape" model="report.paperformat">
+            <field name="name">Shipping Plan Landscape</field>
+            <field name="default">False</field>
+            <field name="format">A4</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line">False</field>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <!-- Report Action for Commercial Invoice -->
+        <record id="report_commercial_invoice_action" model="ir.actions.report">
+            <field name="name">Commercial Invoice - Default</field>
+            <field name="model">stock.picking.batch</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ITCustom_ReportShipping.report_commercial_invoice_template</field>
+            <field name="report_file">ITCustom_ReportShipping.report_commercial_invoice_template</field>
+            <field name="print_report_name">'Commercial Invoice - %s' % (object.name)</field>
+            <field name="paperformat_id" ref="ITCustom_ReportShipping.paperformat_commercial_invoice_portrait"/>
+            <field name="binding_model_id" ref="stock_picking_batch.model_stock_picking_batch"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Report Action for Commercial Invoice - Vlegal -->
+        <record id="report_commercial_invoice_wood_action" model="ir.actions.report">
+            <field name="name">Commercial Invoice - Vlegal</field>
+            <field name="model">stock.picking.batch</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ITCustom_ReportShipping.report_commercial_invoice_template_vlegal</field>
+            <field name="report_file">ITCustom_ReportShipping.report_commercial_invoice_template_vlegal</field>
+            <field name="print_report_name">'Commercial Invoice - Vlegal - %s' % (object.name)</field>
+            <field name="paperformat_id" ref="ITCustom_ReportShipping.paperformat_commercial_invoice_portrait"/>
+            <field name="binding_model_id" ref="stock_picking_batch.model_stock_picking_batch"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Report Action for Commercial Invoice - Cube -->
+        <record id="report_commercial_invoice_cube_action" model="ir.actions.report">
+            <field name="name">Commercial Invoice - Cube</field>
+            <field name="model">stock.picking.batch</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ITCustom_ReportShipping.report_commercial_invoice_template_cube</field>
+            <field name="report_file">ITCustom_ReportShipping.report_commercial_invoice_template_cube</field>
+            <field name="print_report_name">'Commercial Invoice - Cube - %s' % (object.name)</field>
+            <field name="paperformat_id" ref="ITCustom_ReportShipping.paperformat_commercial_invoice_portrait"/>
+            <field name="binding_model_id" ref="stock_picking_batch.model_stock_picking_batch"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Report Action for Packing List -->
+        <record id="report_packing_list_action" model="ir.actions.report">
+            <field name="name">Packing List</field>
+            <field name="model">stock.picking.batch</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ITCustom_ReportShipping.report_packing_list_template</field>
+            <field name="report_file">ITCustom_ReportShipping.report_packing_list_template</field>
+            <field name="print_report_name">'Packing List - %s' % (object.name)</field>
+            <field name="paperformat_id" ref="ITCustom_ReportShipping.paperformat_commercial_invoice_portrait"/>
+            <field name="binding_model_id" ref="stock_picking_batch.model_stock_picking_batch"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Report Action for Invoice Document -->
+        <record id="report_invoice_doc_action" model="ir.actions.report">
+            <field name="name">Invoice Document</field>
+            <field name="model">stock.picking.batch</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ITCustom_ReportShipping.report_invoice_doc_template</field>
+            <field name="report_file">ITCustom_ReportShipping.report_invoice_doc_template</field>
+            <field name="print_report_name">'Invoice Document - %s' % (object.name)</field>
+            <field name="paperformat_id" ref="ITCustom_ReportShipping.paperformat_commercial_invoice_portrait"/>
+            <field name="binding_model_id" ref="stock_picking_batch.model_stock_picking_batch"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Report Action for Packing List Buyer Bern -->
+        <record id="report_packing_list_buyer_bern_action" model="ir.actions.report">
+            <field name="name">Packing List Buyer</field>
+            <field name="model">stock.picking.batch</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ITCustom_ReportShipping.report_packing_list_buyer_bern_template</field>
+            <field name="report_file">ITCustom_ReportShipping.report_packing_list_buyer_bern_template</field>
+            <field name="print_report_name">'Packing List Buyer Bern - %s' % (object.name)</field>
+            <field name="paperformat_id" ref="ITCustom_ReportShipping.paperformat_commercial_invoice_portrait"/>
+            <field name="binding_model_id" ref="stock_picking_batch.model_stock_picking_batch"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Report Action for Invoice Doc Buyer Bern -->
+        <record id="report_invoice_doc_buyer_bern_action" model="ir.actions.report">
+            <field name="name">Invoice Document Buyer</field>
+            <field name="model">stock.picking.batch</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ITCustom_ReportShipping.report_invoice_doc_buyer_bern_template</field>
+            <field name="report_file">ITCustom_ReportShipping.report_invoice_doc_buyer_bern_template</field>
+            <field name="print_report_name">'Invoice Doc Buyer Bern - %s' % (object.name)</field>
+            <field name="paperformat_id" ref="ITCustom_ReportShipping.paperformat_commercial_invoice_portrait"/>
+            <field name="binding_model_id" ref="stock_picking_batch.model_stock_picking_batch"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Report Action for Shipping Plan -->
+        <record id="report_shipping_plan_action" model="ir.actions.report">
+            <field name="name">Shipping Plan</field>
+            <field name="model">stock.picking.batch</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ITCustom_ReportShipping.report_shipping_plan_template</field>
+            <field name="report_file">ITCustom_ReportShipping.report_shipping_plan_template</field>
+            <field name="print_report_name">'Shipping Plan - %s' % (object.name)</field>
+            <field name="paperformat_id" ref="ITCustom_ReportShipping.paperformat_shipping_plan_landscape"/>
+            <field name="binding_model_id" ref="stock_picking_batch.model_stock_picking_batch"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <template id="report_omd_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <style>
+                            @media print {
+                                .line-paket {
+                                    page-break-inside: avoid !important;
+                                    break-inside: avoid !important;
+                                }
+                                .line-paket tbody {
+                                    page-break-inside: avoid !important;
+                                    break-inside: avoid !important;
+                                }
+                                .line-paket tr {
+                                    page-break-inside: avoid !important;
+                                }
+                                .line-paket tr:first-child {
+                                    page-break-after: avoid !important;
+                                }
+                                .line-paket tr:nth-child(2) {
+                                    page-break-after: avoid !important;
+                                }
+                                .line-paket tr:nth-child(3) {
+                                    page-break-after: avoid !important;
+                                }
+                                .line-paket tr:last-child {
+                                    page-break-before: avoid !important;
+                                    page-break-after: auto !important;
+                                }
+                                .total-paket {
+                                    page-break-inside: avoid !important;
+                                    break-inside: avoid !important;
+                                }
+                                /* Pastikan rowspan tidak terpotong */
+                                .line-paket td[rowspan], .line-paket th[rowspan] {
+                                    page-break-inside: avoid !important;
+                                }
+                            }
+                        </style>
+                        <div class="page" t-att-style="'orientation: landscape; page-break-inside: avoid;'">
+                            <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+                            <div class="row justify-content-between">
+                                <div>
+                                    <div class="text-left fs-5 fw-bolder" style="margin-bottom: -10px;">
+                                        <span t-field="o.partner_id"/> LIST DUE DATE
+                                        <span t-esc="o.due_date_order.strftime('%d %b %Y') if o.due_date_order else ''"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-borderless mt-4" style="font-family: Arial; letter-spacing:0.15em; table-layout: fixed; width: 100%;">
+                                <thead>
+                                    <tr style="background-color: #181a1c; color: white; font-size:11px;" class="text-center table-dark align-middle p-1">
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 4%;" class="text-center align-middle p-1" rowspan="2">No</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 9%;" class="text-center align-middle p-1" rowspan="2">ID
+                                            <br/>Produk
+                                        </th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 9%;" class="text-center align-middle p-1" rowspan="2">Nama
+                                            <br/>Produk
+                                        </th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 7%;" class="text-center align-middle p-1" rowspan="2">Finish</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 11%;" class="text-center align-middle p-1" rowspan="2">Gambar Produk</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 18%;" class="text-center align-middle p-1" rowspan="2">Product Extra Info to Factory Production</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 8%;" class="text-center align-middle p-1" rowspan="2">Due Date Order Update</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 9%;" class="text-center align-middle p-1" rowspan="2">Due Date Item Update</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 6%;" class="text-center align-middle p-1" rowspan="2">QTY Order</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 6%;" class="text-center align-middle p-1" rowspan="2">QTY TTB</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 8%;" class="text-center align-middle p-1" rowspan="2">Tgl Terima Gbr</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:9px; width: 11%;" class="text-center align-middle p-1">Pembahanan</th>
+                                    </tr>
+                                    <tr style="background-color: #181a1c; color: white; font-size:11px;" class="text-center table-dark align-middle p-1">
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 8%;" class="text-center align-middle p-1">Assy &amp; Proses</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="min-height: 35px; page-break-after: avoid; page-break-inside: avoid;">
+                                        <td  class="p-1" colspan="6">
+                                            <span style="font-size:11px; font-family: Arial; letter-spacing:0.15em;">
+                                            Id Order :
+                                            </span>
+                                            <br/>
+                                            <span style="font-size:20px; font-family: Arial; font-weight:bold;" t-field="o.client_order_ref"/>
+                                        </td>
+                                        <td  class="p-1" colspan="2">
+                                            <span style="font-size:11px; font-family: Arial; letter-spacing:0.15em;">
+                                            Due Date Shp :
+                                            </span>
+                                            <br/>
+                                            <span style="font-size:16px; font-weight:bold; font-family: Arial; letter-spacing:0.15em;" t-esc="o.due_date_order.strftime('%d %b %Y') if o.due_date_order else ''"/>
+                                        </td>
+                                        <td  class="p-1" colspan="3">
+                                            <span style="font-size:11px; font-family: Arial; letter-spacing:0.15em;">
+                                            Due Date Processing :
+                                            </span>
+                                            <br/>
+                                            <span style="font-size:16px; font-weight: bold; font-family: Arial; letter-spacing:0.15em;" t-esc="(o.due_date_order - datetime.timedelta(days=15)).strftime('%d %b %Y') if o.due_date_order else ''"/>
+                                        </td>
+                                        <td  class="p-1 text-center">
+                                            <div class="text-center">
+                                                <img t-if="o.client_order_ref"
+                                                     t-att-src="'data:image/png;base64,%s' % o.get_qr_code(o.client_order_ref)"
+                                                     style="max-height: 83px; height: auto;"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <t t-set="no" t-value="0"/>
+                                <t t-foreach="o.order_line" t-as="line">
+                                    <t t-set="external_id" t-value="env['sale.id.external'].search([('product', '=', line.product_id.product_tmpl_id.id)], limit=1)"/>
+                                    <t t-set="no" t-value="no + 1"/>
+                                    <div class="line-paket" style="page-break-inside: avoid; break-inside: avoid; margin-bottom: 10px;">
+                                        <tbody style="page-break-inside: avoid; break-inside: avoid;">
+                                            <tr style="min-height: 35px; border-top: 1px solid black">
+                                                <td  class="p-1 text-center" rowspan="2">
+                                                    <span style="font-size:11px; font-family: Arial; letter-spacing:0.15em;" t-esc="no"/>
+                                                </td>
+                                                <td  class="p-1 text-center" rowspan="2">
+                                                    <span style="font-size:11px; font-family: Arial; letter-spacing:0.15em;" t-field="line.product_id.default_code"/>
+                                                </td>
+                                                <td class="p-1 text-center" rowspan="2" 
+                                                    style="padding:2px; white-space:normal; word-wrap:break-word; word-break:break-word;">
+                                                    <span style="
+                                                        font-size:11px;
+                                                        font-family:Arial;
+                                                        letter-spacing:0.1em;
+                                                        line-height:1;
+                                                        margin:0;
+                                                        padding:0;
+                                                        display:inline-block;
+                                                        white-space:normal;
+                                                        word-wrap:break-word;
+                                                        word-break:break-word;
+                                                        text-align:center;
+                                                    " t-field="line.product_id.name"/>
+                                                </td>
+                                                <td  class="p-1 text-center" rowspan="2">
+                                                    <span style="font-size:11px; font-family: Arial; letter-spacing:0.15em;" t-field="line.finish"/>
+                                                </td>
+                                                <td class="text-center align-middle" rowspan="2">
+                                                    <div class="w-100 h-100 d-table">
+                                                        <div class="d-table-cell align-middle">
+                                                            <img t-if="line.product_id.image_1920" t-att-src="image_data_uri(line.product_id.image_1920)" style="width: 100%; max-height: 50px;"/>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="p-1 text-center" rowspan="2" 
+                                                    style="padding:2px; white-space:normal; word-wrap:break-word; word-break:break-word;">
+                                                    <span style="
+                                                        font-size:11px;
+                                                        font-family:Arial;
+                                                        letter-spacing:0.1em;
+                                                        line-height:1;
+                                                        margin:0;
+                                                        padding:0;
+                                                        display:inline-block;
+                                                        white-space:normal;
+                                                        word-wrap:break-word;
+                                                        word-break:break-word;
+                                                        text-align:center;
+                                                    " t-field="line.info_to_production"/>
+                                                </td>
+                                                <td  class="p-1 text-center" rowspan="2">
+                                                    <span style="font-size:11px; font-family: Arial; letter-spacing:0.15em;"  t-esc="o.due_date_update_order.strftime('%d %b %Y') if o.due_date_update_order else ''"/>
+                                                </td>
+                                                <td  class="p-1 text-center" rowspan="2">
+                                                    <span style="font-size:11px; font-family: Arial; letter-spacing:0.15em;"  t-esc="line.due_date_item_update.strftime('%d %b %Y') if line.due_date_item_update else ''"/>
+                                                </td>
+                                                <td  class="p-1 text-center" rowspan="2">
+                                                    <span style="font-size:11px; font-family: Arial; letter-spacing:0.15em;"  t-esc="'%.0f'% line.product_uom_qty"/>
+                                                </td>
+                                                <td  class="p-1 text-center align-middle" rowspan="2">
+                                                </td>
+                                                <td  class="p-1 text-center align-middle" rowspan="2">
+                                                    <!-- <span style="font-size:11px; font-family: Arial; letter-spacing:0.15em;"  t-esc="o.due_date_order.strftime('%d %b %Y') if o.due_date_order else ''"/> -->
+                                                </td>
+                                                <td  class="p-1 text-center align-middle" rowspan="2">
+                                                    <hr style="margin: 0 -0.25rem; width: calc(100% + 0.5rem); border: 1px solid #000;"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </div>
+                                </t>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

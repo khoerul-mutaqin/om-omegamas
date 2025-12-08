@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Wizard Form View with Tabs -->
+        <record id="view_performance_guidelines_wizard_form" model="ir.ui.view">
+            <field name="name">performance.guidelines.wizard.form</field>
+            <field name="model">performance.guidelines.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Pedoman Penilaian Kerja">
+                    <sheet>
+                        <group>
+                            <field name="appraisal_id" invisible="1"/>
+                        </group>
+                        
+                        <notebook>
+                            <!-- Tab for Pedoman Penilaian Kerja Umum -->
+                            <page string="Pedoman Penilaian Perilaku Kerja" invisible="not performance_guidelines_umum_html">
+                                <div class="oe_readonly">
+                                    <field name="performance_guidelines_umum_html" widget="html" nolabel="1"/>
+                                </div>
+                            </page>
+                            
+                            <!-- Tab for Pedoman Penilaian Kerja Khusus -->
+                            <page string="Pedoman Penilaian Hasil Kerja" invisible="not performance_guidelines_khusus_html">
+                                <div class="oe_readonly">
+                                    <field name="performance_guidelines_khusus_html" widget="html" nolabel="1"/>
+                                </div>
+                            </page>
+                            
+                            <!-- Tab for Pedoman Penilaian Kepemimpinan (conditional) -->
+                            <page string="Pedoman Penilaian Kepemimpinan" invisible="not performance_guidelines_kepemimpinan_html">
+                                <div class="oe_readonly">
+                                    <field name="performance_guidelines_kepemimpinan_html" widget="html" nolabel="1"/>
+                                </div>
+                            </page>
+                        </notebook>
+                        
+                        <footer>
+                            <button name="action_close" string="Tutup" type="object" class="btn btn-primary"/>
+                            <button string="Batal" class="btn btn-secondary" special="cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Wizard Action -->
+        <record id="action_performance_guidelines_wizard" model="ir.actions.act_window">
+            <field name="name">Lihat Pedoman</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">performance.guidelines.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_performance_guidelines_wizard_form"/>
+        </record>
+    </data>
+</odoo>

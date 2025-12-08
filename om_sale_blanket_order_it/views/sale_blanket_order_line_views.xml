@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sale_blanket_order_line" model="ir.ui.view">
+        <field name="name">sale.blanket.order.form.inheritance</field>
+        <field name="model">sale.blanket.order</field>
+        <field name="inherit_id" ref="sale_blanket_order.view_blanket_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='price_unit']" position="after">
+                 <field name="sec_price" placeholder="0.00" optional="show"/>
+                 <field name="external_id" placeholder="Select Ext ID" optional="show"/>
+                 <field name="info_to_buyer" placeholder="Enter info for buyer" optional="show"/>
+                 <field name="info_to_production" placeholder="Enter info for production" optional="show"/>
+                 <field name="supp_order" optional="show" domain='[("category_id", "in", [2])]'/>
+                <field name="type_product" optional="show"/>
+                <field name="finish" optional="show"/>
+                <field name="color_attribute_size" optional="show"/>
+                <field name="due_date_item_update" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

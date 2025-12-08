@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_order_form_inherit_close" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit.close</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+                <!-- Tambahkan Ribbon Closed di pojok kanan atas form -->
+                <xpath expr="//form" position="inside">
+                    <div class="o_ribbon o_ribbon-danger" invisible="is_closed == False">CLOSED</div>
+                </xpath>
+
+
+                <!-- Tambahkan tombol Close Order setelah tombol yang ada di dalam header -->
+                <xpath expr="//form[1]/header[1]/button[@name='action_preview_sale_order']" position="after">
+                    <button name="action_close_order" type="object" string="Close Order"
+                        class="oe_highlight"  invisible="is_closed == True"/>
+                    <button name="%(om_sale_it.action_report_omd)d" type="action" string="OMD"
+                        class="btn-secondary"/>
+                </xpath>
+
+<!--                &lt;!&ndash; Tambahkan field is_closed setelah group pertama yang ada di dalam sheet &ndash;&gt;-->
+<!--                <xpath expr="//sheet//group" position="after">-->
+<!--                    <group>-->
+<!--                        <field name="is_closed"/>-->
+<!--                    </group>-->
+<!--                </xpath>-->
+            </field>
+        </record>
+    </data>
+</odoo>

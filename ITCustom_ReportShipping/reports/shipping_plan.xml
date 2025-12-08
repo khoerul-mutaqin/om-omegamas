@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Report Template -->
+        <template id="report_shipping_plan_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.basic_layout">
+                        <div class="page" style="font-size: 13px; font-family: 'Arial', sans-serif;">
+                            <div class="row">
+                                <div class="col-10">
+                                    <h3 style="font-weight: bold; margin-bottom: -3px;">SHIPPING PLAN FOR <t t-esc="doc.buyer_id.name"/></h3>
+                                    <h5 style="font-weight: bold; margin-bottom: -3px;">
+                                        <t t-esc="doc.description"/> - LOAD PLAN
+                                        <t t-esc="doc.jenis_kontainer"/>
+                                    </h5>
+                                    <h5 style="font-weight: bold; margin-bottom: -3px;">
+                                        Shipping Date : <t t-esc="doc.scheduled_date"/>
+                                    </h5>
+                                    <span style="font-weight: bold;">Update : <t t-esc="doc.scheduled_date"/></span>
+                                </div>
+                                <div class="col-2" style="text-align: center; top: 0">
+                                    <t t-if="doc.company_id.logo">
+                                        <img t-att-src="'data:image/png;base64,%s' % (doc.company_id.logo.decode())"
+                                             style="max-height: 100px; object-fit: contain;"
+                                             alt="Company Logo"/>
+                                    </t>
+                                    <div style="text-align: center; font-size: 9px; margin-top: -20px;">
+                                        <t t-set="now" t-value="datetime.datetime.utcnow() + datetime.timedelta(hours=7)"/>
+                                        <span>Printed on :
+                                            <t t-esc="now.strftime('%d %b %Y %H:%M:%S')"/> (UTC+7)
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- TABLE HEADER -->
+                            <table class="table table-borderless mt-4"
+                                    style="font-family: Arial;
+                                            font-size: 10px;
+                                            letter-spacing: 0.05em;
+                                            line-height: 1.1;
+                                            table-layout: fixed;
+                                            width: 100%;
+                                            border-collapse: collapse;">
+                                <thead>
+                                    <tr style="background-color:#a0a0a0; color:black; border:1px solid black; font-size:13px; line-height:1;"
+    class="text-center align-middle">
+                                        <th class="text-center" style="border:1px solid black; font-weight:bold; width:2.8%;" rowspan="2">No</th>
+                                        <th class="text-center" style="border:1px solid black; font-weight:bold; width:6.5%;" rowspan="2">PO #</th>
+                                        <th class="text-center" style="border:1px solid black; font-weight:bold; width:11%;" rowspan="2">PICTURE</th>
+                                        <th class="text-center" style="border:1px solid black; font-weight:bold; width:6.5%;" rowspan="2">OM CODE</th>
+                                        <th class="text-center" style="border:1px solid black; font-weight:bold; width:6.5%;" rowspan="2">BUYER ID</th>
+                                        <!-- Description tanpa width, otomatis pakai sisa ruang -->
+                                        <th class="text-center" style="border:1px solid black; font-weight:bold;" rowspan="2">Description</th>
+                                        <th class="text-center" style="border:1px solid black; font-weight:bold; width:5%;" rowspan="2">NW (kg) Per-Item</th>
+                                        <th class="text-center" style="border:1px solid black; font-weight:bold; width:5%;" rowspan="2">GW (kg)</th>
+                                        <th class="text-center" style="border:1px solid black; font-weight:bold; width:4.5%;" rowspan="2">QTY Ship</th>
+                                        <th class="text-center" style="border:1px solid black; font-weight:bold; width:13%" colspan="3">BOX SIZE (Cm)</th>
+                                        <th class="text-center" style="border:1px solid black; font-weight:bold; width:5%;" rowspan="2">M3</th>
+                                        <th class="text-center" style="border:1px solid black; font-weight:bold; width:3.8%;" rowspan="2">QTY BOX</th>
+                                        <th class="text-center" style="border:1px solid black; font-weight:bold; width:5%;" rowspan="2">TOTAL M3</th>
+                                    </tr>
+                                    <tr style="background-color:#a0a0a0; color:black; border:1px solid black; font-size:13px; line-height:1;"
+    class="text-center align-middle">
+                                        <th class="text-center" style="border:1px solid black; font-weight:bold;">H(T)</th>
+                                        <th class="text-center" style="border:1px solid black; font-weight:bold;">W(P)</th>
+                                        <th class="text-center" style="border:1px solid black; font-weight:bold;">D(L)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="height: 1px">
+                                        <td colspan="15"></td>
+                                    </tr>
+                                    <t t-set="product_groups" t-value="{}"/>
+                                    <t t-foreach="doc.picking_ids" t-as="picking">
+                                        <t t-foreach="picking.move_ids" t-as="move">
+                                            <t t-set="product_name" t-value="move.product_id.name"/>
+                                            <t t-set="client_order_ref" t-value="move.sale_line_id and move.sale_line_id.order_id.client_order_ref or ''"/>
+                                            <t t-set="buyer_id" t-value="move.sale_line_id and move.sale_line_id.order_id.get_external_id().get(move.sale_line_id.order_id.id, '') or ''"/>
+                                            <t t-set="packaging" t-value="move.product_id.packaging_ids and move.product_id.packaging_ids[0] or False"/>
+                                            <t t-set="package_type" t-value="packaging and packaging.package_type_id or False"/>
+                                            <t t-set="height" t-value="package_type and package_type.height or 0"/>
+                                            <t t-set="width" t-value="package_type and package_type.width or 0"/>
+                                            <t t-set="length" t-value="package_type and package_type.packaging_length or 0"/>
+                                            <t t-if="product_name not in product_groups">
+                                                <t t-set="m3_value" t-value="sum(p.cbm for p in move.product_id.packaging_ids) or 0"/>
+                                                <t t-set="qty_box" t-value="len(move.product_id.packaging_ids)"/>
+                                                <t t-set="product_groups" t-value="dict(product_groups, **{product_name: {'qty': 0, 'total_nw': 0, 'total_gw': 0, 'weight': move.product_id.weight, 'gross_weight': move.product_id.gross_weight, 'default_code': move.product_id.default_code, 'image': move.product_id.image_1920, 'po_number': client_order_ref, 'buyer_id': buyer_id, 'height': height, 'width': width, 'length': length, 'm3': m3_value, 'qty_box': qty_box}})"/>
+                                            </t>
+                                            <t t-set="product_groups" t-value="dict(product_groups, **{product_name: {'qty': product_groups[product_name]['qty'] + move.quantity, 'total_nw': product_groups[product_name]['total_nw'] + (move.product_id.weight * move.quantity), 'total_gw': product_groups[product_name]['total_gw'] + (move.product_id.gross_weight * move.quantity), 'weight': move.product_id.weight, 'gross_weight': move.product_id.gross_weight, 'default_code': move.product_id.default_code, 'image': move.product_id.image_1920, 'po_number': product_groups[product_name]['po_number'] or client_order_ref, 'buyer_id': product_groups[product_name]['buyer_id'] or buyer_id, 'height': height, 'width': width, 'length': length, 'm3': product_groups[product_name]['m3'], 'qty_box': product_groups[product_name]['qty_box']}})"/>
+                                        </t>
+                                    </t>
+                                    <t t-set="counter" t-value="1"/>
+                                    <t t-foreach="product_groups" t-as="product_name">
+                                        <t t-set="group_data" t-value="product_groups[product_name]"/>
+                                        <tr style="font-size: 12px">
+                                            <td style="border: 1px solid black" class="text-center">
+                                                <t t-esc="counter"/>
+                                            </td>
+                                            <td style="border: 1px solid black"><t t-esc="group_data['po_number'] or ''"/></td>
+                                            <td class="text-center align-middle" style="border: 1px solid black; min-height: 105px; vertical-align: middle; font-size: 8px; white-space: pre-line; page-break-inside: avoid;">
+                                                <div class="w-100 h-100 d-table">
+                                                    <div class="d-table-cell align-middle">
+                                                        <img t-if="group_data['image']" t-att-src="image_data_uri(group_data['image'])" style="max-width: 100%; height: auto; max-height: 70px; object-fit: scale-down;" alt="Product Image"/>
+                                                        <img t-else="" src="/ITCustom_ReportShipping/static/src/img/default.png" style="max-width: 100%; height: auto; max-height: 70px; object-fit: scale-down;" alt="Default Image"/>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td style="border: 1px solid black">
+                                                <t t-esc="group_data['default_code'] or ''"/>
+                                            </td>
+                                            <td style="border: 1px solid black"><t t-esc="group_data['buyer_id'] or ''"/></td>
+                                            <td style="border: 1px solid black; text-align:left; padding-left:4px;">
+                                                <t t-esc="product_name"/>
+                                            </td>
+                                            <td style="border: 1px solid black; text-align: right">
+                                                <t t-esc="'%.2f' % group_data['weight']"/>
+                                            </td>
+                                            <td style="border: 1px solid black; text-align: right">
+                                                <t t-esc="'%.2f' % group_data['gross_weight']"/>
+                                            </td>
+                                            <td style="border: 1px solid black; text-align: right">
+                                                <t t-esc="int(group_data['qty'])"/>
+                                            </td>
+                                            <td style="border: 1px solid black; text-align: right"><t t-esc="'%.1f' % group_data['height'] if group_data['height'] else ''"/></td>
+                                            <td style="border: 1px solid black; text-align: right"><t t-esc="'%.1f' % group_data['width'] if group_data['width'] else ''"/></td>
+                                            <td style="border: 1px solid black; text-align: right"><t t-esc="'%.1f' % group_data['length'] if group_data['length'] else ''"/></td>
+                                            <td style="border: 1px solid black; text-align: right"><t t-esc="'%.2f' % group_data['m3']"/></td>
+                                            <td style="border: 1px solid black; text-align: right"><t t-esc="int(group_data['qty_box'] * group_data['qty'])"/></td>
+                                            <td style="border: 1px solid black; text-align: right"><t t-esc="'%.2f' % (group_data['m3'] * group_data['qty'])"/></td>
+                                        </tr>
+                                        <t t-set="counter" t-value="counter + 1"/>
+                                    </t>
+                                    <t t-set="total_qty" t-value="int(sum(doc.picking_ids.mapped('move_ids.quantity')))"/>
+                                    <t t-set="total_gw" t-value="sum(sum(move.product_id.gross_weight * move.quantity for move in picking.move_ids) for picking in doc.picking_ids)"/>
+                                    <t t-set="total_nw" t-value="sum(sum(move.product_id.weight * move.quantity for move in picking.move_ids) for picking in doc.picking_ids)"/>
+                                    <t t-set="total_qty_box" t-value="sum(product_groups[p]['qty_box'] for p in product_groups)"/>
+                                    <t t-set="total_m3" t-value="sum(product_groups[p]['m3'] * product_groups[p]['qty'] for p in product_groups)"/>
+                                    <tr style="font-size: 12px">
+                                        <td colspan="8"></td>
+                                        <td style="border: 1px solid black; text-align: right">
+                                            <t t-esc="total_qty"/>
+                                        </td>
+                                        <td colspan="4"></td>
+                                        <td style="border: 1px solid black; text-align: right">
+                                            <t t-esc="int(sum(product_groups[p]['qty_box'] * product_groups[p]['qty'] for p in product_groups))"/>
+                                        </td>
+                                        <td style="border: 1px solid black; text-align: right">
+                                            <t t-esc="'%.2f' % total_m3"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,31 @@
+/* Hide ADD buttons in skills one2many field */
+.o_skills_group {
+    .btn-secondary {
+        &.btn-sm {
+            display: none !important;
+        }
+    }
+}
+
+.o_skills_group_footer {
+    .btn-secondary {
+        display: none !important;
+    }
+}
+
+/* Hide specific ADD buttons */
+button[role="button"].btn-secondary {
+    display: none !important;
+}
+
+/* Hide create new skills buttons */
+.o_skills_group_create {
+    display: none !important;
+}
+
+/* Hide all ADD related buttons in skills field */
+.o_field_one2many_skills {
+    .btn-secondary {
+        display: none !important;
+    }
+}

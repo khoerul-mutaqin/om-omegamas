@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_pengobatan_klaim,access_pengobatan_klaim,model_pengobatan_klaim,base.group_user,1,1,1,1
+access_pengobatan_alokasi,access_pengobatan_alokasi,model_pengobatan_alokasi,base.group_user,1,1,1,1
+access_export_klaim_wizard,access.export.klaim.wizard,model_export_klaim_wizard,,1,1,1,0

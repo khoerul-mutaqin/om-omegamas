@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_add_products_wizard_form" model="ir.ui.view">
+        <field name="name">add.products.wizard.form</field>
+        <field name="model">add.products.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Add Products from Purchase Order">
+                <sheet>
+                    <group>
+                        <field name="picking_id" invisible="1"/>
+                        <field name="partner_id" options="{'no_create': True}"/>
+                        <field name="purchase_order_id" widget="many2many_tags" options="{'no_create': True}"/>
+                    </group>
+                    <field name="line_ids">
+                        <list editable="bottom" create="0" delete="0">
+                            <field name="selected"/>
+                            <field name="po_name" readonly="1" width="150"/>
+                            <field name="product_id" widget="product_label_section_and_note_field" domain="[('purchase_ok', '=', True), '|', ('company_id', '=', False), ('company_id', 'parent_of', parent.company_id)]" context="{'partner_id': parent.partner_id, 'quantity': quantity, 'company_id': parent.company_id}" force_save="1"/>
+                            <field name="product_description" readonly="1"/>
+                            <field name="ordered_qty" readonly="1"/>
+                            <field name="received_qty" readonly="1"/>
+                            <field name="quantity"/>
+                            <field name="purchase_line_id" invisible="1"/>
+                        </list>
+                    </field>
+                </sheet>
+                <footer>
+                    <button name="action_confirm" string="Confirm" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_add_products_wizard" model="ir.actions.act_window">
+        <field name="name">Add Products from Purchase Order</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">add.products.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

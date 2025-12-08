@@ -1,0 +1,29 @@
+<data>
+    <!-- Inherit account.move form -->
+    <record id="view_account_move_form_pi_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='invoice_tab']/field[@name='invoice_line_ids']/list/field[@name='product_id']" position="after">
+                <field name="analytic_distribution_pi" optional="show" widget="analytic_distribution" groups="analytic.group_analytic_accounting"/>
+                <field name="depart_per_prod_pi" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+<!--     Inherit account.move.line tree view (Journal Items List)-->
+    <record id="view_move_line_form_ttb_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='aml_tab']/field[@name='line_ids']/list/field[@name='product_id']" position="after">
+                <field name="analytic_distribution_ttb" optional="show" widget="analytic_distribution" groups="analytic.group_analytic_accounting"/>
+                <field name="depart_per_prod_ttb" optional="show" />
+                <field name="analytic_distribution_sale" optional="show" widget="analytic_distribution" groups="analytic.group_analytic_accounting"/>
+            </xpath>
+        </field>
+    </record>
+
+</data>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="product_template_form_views" model="ir.ui.view">
+            <field name="name">product.template.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='barcode']" position="after">
+                    <div>
+                        <group col="2">
+                            <label for="sku"/>
+                            <div>
+                                <field name="sku" class="oe_inline"/>
+                            </div>
+                            <label for="height"/>
+                            <div>
+                                <field name="height" class="oe_inline"/>
+                                <span> cm</span>
+                            </div>
+                            <label for="width"/>
+                            <div>
+                                <field name="width" class="oe_inline"/>
+                                <span> cm</span>
+                            </div>
+                            <label for="depth"/>
+                            <div>
+                                <field name="depth" class="oe_inline"/>
+                                <span> cm</span>
+                            </div>
+                        </group>
+                    </div>
+                </xpath>
+                
+                <xpath expr="//field[@name='invoice_policy']" position="after">
+                    <field name="external_id"/>
+                </xpath>
+            </field>
+        </record>
+        <!-- Inherit view dari stock_delivery.product_template_hs_code untuk tambah hs_code_usa -->
+        <record id="product_template_form_hs_code_inherit_custom" model="ir.ui.view">
+            <field name="name">product.template.form.hs_code.inherit.custom</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock_delivery.product_template_hs_code"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='hs_code']" position="after">
+                    <field name="hs_code_usa"/>
+                </xpath>
+                <xpath expr="//label[@for='weight']" position="before">
+                    <label for="gross_weight"/>
+                    <div class="o_row">
+                        <field name="gross_weight" class="oe_inline"/>
+                        <field name="weight_uom_name"/>
+                    </div>
+                </xpath>
+                <xpath expr="//label[@for='weight']" position="replace">
+                    <label for="weight" string="Nett Weight"/>
+                </xpath>
+                <xpath expr="//div[@name='volume']" position="replace">
+                    <div class="o_row" name="volume">
+                        <field name="volume" class="oe_inline"/>
+                    </div>
+                </xpath>
+                <xpath expr="//div[@name='volume']" position="after">
+                    <label for="volume_packing"/>
+                    <div class="o_row">
+                        <field name="volume_packing" class="oe_inline"/>
+                        <field name="volume_packing_uom_name"/>
+                    </div>
+                    <label for="volume_kayu"/>
+                    <div class="o_row">
+                        <field name="volume_kayu" class="oe_inline"/>
+                        <field name="volume_kayu_uom_name"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Inherit product.product form view untuk custom field logistics -->
+        <record id="product_product_form_inherit_custom" model="ir.ui.view">
+            <field name="name">product.product.form.inherit.custom</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_variant_easy_edit_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="sku"/>
+                </xpath>
+                <xpath expr="//group[@name='weight']" position="replace">
+                    <group name="weight" string="Logistics" invisible="type != 'consu'">
+                        <label for="gross_weight"/>
+                        <div class="o_row">
+                            <field name="gross_weight" class="oe_inline"/>
+                            <field name="weight_uom_name"/>
+                        </div>
+                        <label for="weight" string="Nett Weight"/>
+                        <div class="o_row">
+                            <field name="weight" class="oe_inline"/>
+                            <field name="weight_uom_name"/>
+                        </div>
+                        <label for="volume_packing"/>
+                        <div class="o_row">
+                            <field name="volume_packing" class="oe_inline"/>
+                            <field name="volume_packing_uom_name"/>
+                        </div>
+                        <label for="volume_kayu"/>
+                        <div class="o_row">
+                            <field name="volume_kayu" class="oe_inline"/>
+                            <field name="volume_kayu_uom_name"/>
+                        </div>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Inherit product.packaging tree view to add height, width, packaging_length, volume columns and hide qty, product_uom_id -->
+        <record id="product_packaging_tree_inherit_custom" model="ir.ui.view">
+            <field name="name">product.packaging.tree.inherit.custom</field>
+            <field name="model">product.packaging</field>
+            <field name="inherit_id" ref="product.product_packaging_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='qty']" position="replace"/>
+                <xpath expr="//field[@name='product_uom_id']" position="replace"/>
+                <xpath expr="//field[@name='package_type_id']" position="replace">
+                    <field name="package_type_id" optional="show"/>
+                </xpath>
+                <xpath expr="//field[@name='package_type_id']" position="after">
+                    <field name="height" optional="show"/>
+                    <field name="width" optional="show"/>
+                    <field name="packaging_length" optional="show"/>
+                    <field name="cbm" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

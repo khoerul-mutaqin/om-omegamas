@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Inherit sale.order form view to hide Confirm button based on user -->
+        <record id="view_sale_order_form_hide_button" model="ir.ui.view">
+            <field name="name">sale.order.form.hide.button</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <!-- Hide Confirm button for draft state -->
+                <xpath expr="//button[@name='action_confirm' and not(@id)]" position="attributes">
+                    <attribute name="invisible">state != 'draft' or hide_confirm_button</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

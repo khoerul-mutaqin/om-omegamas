@@ -1,0 +1,61 @@
+<!-- /Users/admin/Documents/odoo-18E/omegamas/ITCustom_Payroll_button_mandiri_bca/views/custom_payroll_views.xml -->
+<odoo>
+    <!-- Action Server untuk Export Pajak -->
+    <record id="action_export_pajak_server" model="ir.actions.server">
+        <field name="name">Export Pajak</field>
+        <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
+        <field name="state">code</field>
+        <field name="code">action = records.export_pajak()</field>
+    </record>
+    <!-- Action Server untuk Export Mandiri -->
+    <record id="action_export_mandiri_server" model="ir.actions.server">
+        <field name="name">Export Mandiri</field>
+        <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
+        <field name="state">code</field>
+        <field name="code">action = model.export_to_mandiri()</field>
+    </record>
+    <!-- Action Server untuk Export BCA -->
+    <record id="action_export_bca_server" model="ir.actions.server">
+        <field name="name">Export BCA</field>
+        <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
+        <field name="state">code</field>
+        <field name="code">action = model.export_to_bca()</field>
+    </record>
+    <!-- Action Server untuk Export Laporan -->
+    <record id="action_export_laporan_server" model="ir.actions.server">
+        <field name="name">Export laporan</field>
+        <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
+        <field name="state">code</field>
+        <field name="code">action = model.export_to_laporan()</field>
+    </record>
+    <!-- Action Server untuk Export Bank -->
+    <record id="action_export_bank_server" model="ir.actions.server">
+        <field name="name">Export Bank</field>
+        <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
+        <field name="state">code</field>
+        <field name="code">action = model.export_to_bank()</field>
+    </record>
+    <!-- Modifikasi Tampilan Tree View Payslip -->
+    <record id="view_hr_payslip_tree" model="ir.ui.view">
+        <field name="name">hr.payslip.list.custom</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_print_payslip']" position="before">
+                <button string="Export Mandiri" name="open_export_mandiri_modal" type="object" class="btn-primary" />
+            </xpath>
+            <xpath expr="//header/button[@name='action_print_payslip']" position="before">
+                <button string="Export BCA" name="open_export_bca_modal" type="object" class="btn-primary" />
+            </xpath>
+            <xpath expr="//header/button[@name='action_print_payslip']" position="before">
+                <button string="Export Laporan" name="open_export_laporan_modal" type="object" class="btn-primary" />
+            </xpath>
+            <xpath expr="//header/button[@name='action_print_payslip']" position="before">
+                <button string="Export Bank" name="export_to_bank" type="object" class="btn-primary" />
+            </xpath>
+            <xpath expr="//header/button[@name='action_print_payslip']" position="before">
+                <button string="Export Pajak" name="export_pajak" type="object" class="btn-primary" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

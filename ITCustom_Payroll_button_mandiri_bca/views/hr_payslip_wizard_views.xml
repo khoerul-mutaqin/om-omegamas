@@ -1,0 +1,80 @@
+<!-- /Users/admin/Documents/odoo-18E/omegamas/ITCustom_Payroll_button_mandiri_bca/views/hr_payslip_wizard_views.xml -->
+<odoo>
+    <!-- Wizard untuk Export Mandiri -->
+    <record id="view_hr_payslip_wizard_mandiri_form" model="ir.ui.view">
+        <field name="name">hr.payslip.wizard.mandiri.form</field>
+        <field name="model">hr.payslip.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Pilih Tanggal Pembayaran Mandiri">
+                <group>
+                    <field name="export_date"/>
+                </group>
+                <footer>
+                    <button string="Export" name="action_confirm" type="object" class="btn-primary"/>
+                    <button string="Batal" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_hr_payslip_wizard_mandiri" model="ir.actions.act_window">
+        <field name="name">Export Mandiri</field>
+        <field name="res_model">hr.payslip.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_hr_payslip_wizard_mandiri_form"/>
+        <field name="target">new</field>
+    </record>
+    <!-- Wizard untuk Export BCA -->
+    <record id="view_hr_payslip_wizard_bca_form" model="ir.ui.view">
+        <field name="name">hr.payslip.wizard.bca.form</field>
+        <field name="model">hr.payslip.wizard.bca</field>
+        <field name="arch" type="xml">
+            <form string="Pilih Tanggal Pembayaran BCA">
+                <group>
+                    <field name="export_date"/>
+                </group>
+                <footer>
+                    <button string="Export" name="action_confirm" type="object" class="btn-primary"/>
+                    <button string="Batal" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_hr_payslip_wizard_bca" model="ir.actions.act_window">
+        <field name="name">Export BCA</field>
+        <field name="res_model">hr.payslip.wizard.bca</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_hr_payslip_wizard_bca_form"/>
+        <field name="target">new</field>
+    </record>
+    <record id="view_hr_payslip_wizard_laporan_form" model="ir.ui.view">
+        <field name="name">hr.payslip.wizard.laporan.form</field>
+        <field name="model">hr.payslip.wizard.laporan</field>
+        <field name="arch" type="xml">
+            <form string="Pilih Tanggal Pembayaran Laporan">
+                <group>
+                    <field name="export_date"/>
+                    <field name="export_type" widget="radio"/>
+                </group>
+                <group col="2">
+                    <group string="Tunjangan">
+                        <field name="tunjangan_fields" widget="many2many_checkboxes" options="{'no_create': True}"/>
+                    </group>
+                    <group string="Potongan">
+                        <field name="potongan_fields" widget="many2many_checkboxes" options="{'no_create': True}"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="Export" name="action_confirm" type="object" class="btn-primary"/>
+                    <button string="Batal" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_hr_payslip_wizard_laporan" model="ir.actions.act_window">
+        <field name="name">Export Laporan</field>
+        <field name="res_model">hr.payslip.wizard.laporan</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_hr_payslip_wizard_laporan_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

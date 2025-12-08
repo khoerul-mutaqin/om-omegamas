@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_add_so_products_wizard_form" model="ir.ui.view">
+        <field name="name">add.so.products.wizard.form</field>
+        <field name="model">add.so.products.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Add Products from Sales Order">
+                <sheet>
+                    <group>
+                        <field name="picking_id" invisible="1"/>
+                        <field name="sale_order_id" options="{'no_create': True}"/>
+                    </group>
+                    <field name="line_ids">
+                        <list editable="bottom" create="0" delete="0">
+                            <field name="selected"/>
+                            <field name="product_id" readonly="1" force_save="1"/>
+                            <field name="ordered_qty" readonly="1"/>
+                            <field name="delivered_qty" readonly="1"/>
+                            <field name="quantity"/>
+                            <field name="sale_line_id" invisible="1"/>
+                        </list>
+                    </field>
+                </sheet>
+                <footer>
+                    <button name="action_confirm" string="Confirm" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_add_so_products_wizard" model="ir.actions.act_window">
+        <field name="name">Add Products from Sales Order</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">add.so.products.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

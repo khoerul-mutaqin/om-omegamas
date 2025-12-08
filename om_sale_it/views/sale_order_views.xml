@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_inherit" model="ir.ui.view">
+        <field name="name">sale.order.form.inheritance</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!--Child from partner_details in order-->
+            <xpath expr="//group[@name='partner_details']" position="inside">
+                <field name="confirmation_date_order"  readonly="state == 'cancel'"/>
+                <field name="due_date_order" readonly="state == 'cancel'"/>
+                <label for="production_time"/>
+                <div>
+                    <field name="production_time" class="oe_inline"/>
+                    <span> Week</span>
+                </div>
+            </xpath>
+
+            <!-- Child from order_details in order -->
+            <xpath expr="//group[@name='order_details']" position="inside">
+                <field name="due_date_update_order" readonly="state in ['sent', 'draft'] or locked"/>
+                <field name="count_revisi_order" readonly="state in ['draft', 'sent'] or locked"/>
+                <field name="date_revisi_order" readonly="state in ['draft', 'sent'] or locked"/>
+            </xpath>
+
+            <xpath expr="//form/sheet/div[@name='button_box']" position="after">
+                    <widget name="web_ribbon" title="Closed" bg_color="text-bg-danger" invisible="not is_closed"/>
+            </xpath>
+
+            <!-- <xpath expr="//header" position="inside">
+                <button
+                    name="button_close"
+                    string="Close"
+                    type="object"
+                    class="btn-secondary"
+                    invisible= "is_closed"
+                    groups="!__export__.res_groups_156_7dbda6e9"
+                />
+            </xpath> -->
+
+            <xpath expr="//field[@name='client_order_ref']" position="attributes">
+                <attribute name="readonly">state == 'cancel'</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='client_order_ref']" position="after">
+                <field name="po_cust"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_sale_order_form_add_qty" model="ir.ui.view">
+        <field name="name">sale.order.form.add.qty</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']" position="after">
+                <div name="total_qty">
+                    <div name="total_order">
+                        <label class="me-1 fw-semibold" for="total_order_qty" string="Total Sale Order :"/>
+                        <field class="fw-bold" name="total_order_qty" readonly="1"/>
+                    </div>
+                    <div name="total_delivery">
+                        <label class="me-1 fw-semibold" for="total_delivery_qty" string="Total Delivery Order :"/>
+                        <field class="fw-bold" name="total_delivery_qty" readonly="1"/>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+    
+</odoo>

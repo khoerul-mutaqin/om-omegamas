@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Report with photo -->
+    <record id="action_report_pro_forma_invoice_with_photo" model="ir.actions.report">
+        <field name="name">Pro Forma Invoice (With Photo)</field>
+        <field name="model">sale.blanket.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">om_sale_blanket_order_it.report_pro_forma_invoice_template_with_photo</field>
+        <field name="report_file">om_sale_blanket_order_it.report_pro_forma_invoice_template_with_photo</field>
+        <field name="print_report_name">'Pro Forma Invoice (With Photo) - %s' % object.name</field>
+        <field name="binding_model_id" ref="sale_blanket_order.model_sale_blanket_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- report no photo -->
+    <record id="action_report_pro_forma_invoice_no_photo" model="ir.actions.report">
+        <field name="name">Pro Forma Invoice (No Photo)</field>
+        <field name="model">sale.blanket.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">om_sale_blanket_order_it.report_pro_forma_invoice_template_no_photo</field>
+        <field name="report_file">om_sale_blanket_order_it.report_pro_forma_invoice_template_no_photo</field>
+        <field name="print_report_name">'Pro Forma Invoice (No Photo) - %s' % object.name</field>
+        <field name="binding_model_id" ref="sale_blanket_order.model_sale_blanket_order"/>
+        <field name="binding_type">report</field>
+    </record>
+    <record id="action_report_mto" model="ir.actions.report">
+        <field name="name">Master SO Report</field>
+        <field name="model">sale.blanket.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">om_sale_blanket_order_it.report_mto_template</field>
+        <field name="report_file">om_sale_blanket_order_it.report_mto_template</field>
+        <field name="print_report_name">'MTO Report - %s' % object.name</field>
+        <field name="binding_model_id" ref="sale_blanket_order.model_sale_blanket_order"/>
+        <field name="binding_type">report</field>
+    </record>
+    <record id="action_report_mto_draft" model="ir.actions.report">
+        <field name="name">Master SO Report (Draft)</field>
+        <field name="model">sale.blanket.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">om_sale_blanket_order_it.report_mto_draft_template</field>
+        <field name="report_file">om_sale_blanket_order_it.report_mto_draft_template</field>
+        <field name="print_report_name">'MTO Report (Draft) - %s' % object.name</field>
+        <field name="binding_model_id" ref="sale_blanket_order.model_sale_blanket_order"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

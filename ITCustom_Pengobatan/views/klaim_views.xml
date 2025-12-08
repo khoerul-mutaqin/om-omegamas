@@ -1,0 +1,91 @@
+<!-- /Users/admin/Documents/odoo-18E/omegamas/ITCustom_Pengobatan/views/klaim_views.xml -->
+<odoo>
+    <!-- Tree View -->
+    <record id="view_pengobatan_karyawan_tree" model="ir.ui.view">
+        <field name="name">pengobatan.karyawan.tree</field>
+        <field name="model">pengobatan.klaim</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="employee_id" widget="many2one_avatar"/>
+                <field name="nominal"/>
+                <field name="tanggal_klaim"/>
+                <field name="state" widget="badge" decoration-success="state == 'approve'" decoration-primary="state == 'paid'" decoration-danger="state == 'cancel'"/>
+            </list>
+        </field>
+    </record>
+    <!-- Form View -->
+    <record id="view_pengobatan_karyawan_form" model="ir.ui.view">
+        <field name="name">pengobatan.karyawan.form</field>
+        <field name="model">pengobatan.klaim</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_approve" type="object" string="Approve"
+            invisible="state != 'draft'"/>
+                    <button name="action_paid" type="object" string="Mark as Paid"
+            invisible="state != 'approve'"/>
+                    <button name="action_set_draft" type="object" string="Reset to Draft"
+            invisible="state not in ['approve', 'paid', 'cancel']"/>
+                    <button name="action_cancel" type="object" string="Cancel"
+            invisible="state in ['cancel']"/>
+                    <!-- Add Cancel button -->
+                    <field name="state" widget="statusbar"
+            invisible="state not in ['draft', 'approve', 'paid', 'cancel']"/>
+                    <!-- Include cancel in the statusbar -->
+                </header>
+                <sheet>
+                    <div class="oe_title" style="margin-bottom: 20px;">
+                        <h1>
+                            <field name="name" class="oe_inline" placeholder="Nama Karyawan..."/>
+                        </h1>
+                    </div>
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col-md-6">
+                            <group string="Employee Information">
+                                <field name="employee_id" widget="many2one_avatar_employee" class="oe_inline"/>
+                            </group>
+                        </div>
+                        <div class="col-md-6">
+                            <group string="Claim Details">
+                                <field name="tanggal_klaim" required="1" class="oe_inline"/>
+                                <field name="nominal" required="1" class="oe_inline"/>
+                            </group>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col-md-6">
+                            <group string="Category">
+                                <field name="kategori" required="1" class="oe_inline"/>
+                                <field name="kacamata" invisible="kategori != 'kacamata'" class="oe_inline"/>
+                            </group>
+                        </div>
+                        <div class="col-md-6">
+                            <group string="Additional Information">
+                                <field name="keterangan" placeholder="Masukkan Keterangan..." class="oe_inline"/>
+                            </group>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <group string="Attachments" class="oe_attachment">
+                                <field name="upload_file" filename="filename" invisible="upload_file"/>
+                                <field name="upload_file" widget="image" invisible="not is_image or not upload_file" style="width: 70%; height: auto;"/>
+                                <field name="upload_file" widget="pdf_viewer" invisible="not is_pdf or not upload_file" style="width: 70%; height: 500px;"/>
+                            </group>
+                        </div>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- Remove the old server action if it exists -->
+    <delete model="ir.actions.server" id="ITCustom_Pengobatan.action_export_klaim" />
+    <!-- Then create the new window action -->
+    <record id="action_export_klaim" model="ir.actions.act_window">
+        <field name="name">Export Klaim</field>
+        <field name="res_model">export.klaim.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_pengobatan_klaim"/>
+    </record>
+</odoo>

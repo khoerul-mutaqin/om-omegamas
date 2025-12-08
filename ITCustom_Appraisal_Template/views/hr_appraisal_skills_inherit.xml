@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit the hr.appraisal form to add Get Data and Lihat Pedoman buttons in Skills tab -->
+    <record id="view_hr_appraisal_form_skills_inherit" model="ir.ui.view">
+        <field name="name">hr.appraisal.form.skills.inherit</field>
+        <field name="model">hr.appraisal</field>
+        <field name="inherit_id" ref="hr_appraisal_skills.view_hr_appraisal_form"/>
+        <field name="arch" type="xml">
+            <!-- Replace the entire page_skills content with our custom layout -->
+            <xpath expr="//page[@name='page_skills']" position="replace">
+                <page string="Skills" name="page_skills" invisible="state == 'new'">
+                    <div class="o_hr_skills_group o_group_skills col-lg-12 ps-0 pe-0 position-relative w-100">
+                        <div class="row">
+                            <div class="col-lg-9">
+                                <div class="oe_button_box mb-2">
+                                    <button name="action_get_skills_data" 
+                                            string="Get Data" 
+                                            type="object" 
+                                            class="btn btn-primary"
+                                            icon="fa-download"
+                                            help="Get skills data for this appraisal"/>
+                                    <button name="action_view_guidelines" 
+                                            string="Lihat Pedoman" 
+                                            type="object" 
+                                            class="btn btn-secondary"
+                                            icon="fa-book"
+                                            help="Lihat pedoman penilaian kerja"/>
+                                </div>
+                                <field mode="list" nolabel="1" name="skill_ids"
+                                        widget="appraisal_skills_one2many"
+                                        context="{'appraisal_state': state}"
+                                        readonly="state != 'pending' or ('uid' not in manager_user_ids and not is_manager)"
+                                        class="o_appraisal_skill o_field_appraisal_skills_one2many">
+                                    <list editable="bottom">
+                                        <field name="skill_type_id" optional="hidden"/>
+                                        <field name="skill_id" width="200px"
+                                                options="{'no_create_edit': True}"
+                                                context="{'from_skill_dropdown': True}"/>
+                                        <field name="skill_level_id"
+                                                domain="[('skill_type_id', '=', skill_type_id)]"
+                                                width="100px"
+                                                options="{'no_create': True}"
+                                                context="{'from_skill_level_dropdown': True}"/>
+                                        <field name="level_progress" widget="progressbar" width="200px"/>
+                                        <field name="justification"/>
+                                    </list>
+                                </field>
+                            </div>
+                            <div class="col-lg-3" groups="__export__.res_groups_153_31fac826">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title">Skill Type Averages</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <field name="skill_type_averages" widget="html" nolabel="1"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

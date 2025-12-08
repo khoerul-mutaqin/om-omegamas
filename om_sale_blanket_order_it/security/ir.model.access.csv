@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_supp_order,supp.order,model_supp_order,"",1,1,1,1
+access_wizard_request_dp_blanket_order,wizard.request.dp.blanket.order,model_wizard_request_dp_blanket_order,,1,1,1,1

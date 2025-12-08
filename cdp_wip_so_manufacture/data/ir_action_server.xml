@@ -1,0 +1,15 @@
+<odoo>
+	<data>
+		<!-- Set In Deferred Expense -->
+	    <record model="ir.actions.server" id="make_mo_wip_from_mo">
+	        <field name="name">Make Mo WIP and put finish product WIP</field>
+	        <field name="model_id" ref="mrp.model_mrp_production"/>
+	        <field name="binding_model_id" ref="mrp.model_mrp_production"/>
+	        <field name="state">code</field>
+	        <field name="code">
+	        for rec in records:
+	            rec.cdp_create_mo_wip_and_input_finish_product()
+	        </field>
+	    </record>
+	</data>
+</odoo>

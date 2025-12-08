@@ -1,0 +1,43 @@
+<odoo>
+    <record id="view_pengobatan_alokasi_tree" model="ir.ui.view">
+        <field name="name">pengobatan.alokasi.tree</field>
+        <field name="model">pengobatan.alokasi</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="employee_id" widget="many2one_avatar"/>
+                <field name="jatah_pengobatan"/>
+                <field name="sisa"/>
+                <field name="berlaku_mulai"/>
+                <field name="berlaku_sampai"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_pengobatan_alokasi_form" model="ir.ui.view">
+        <field name="name">pengobatan.alokasi.form</field>
+        <field name="model">pengobatan.alokasi</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title" style="margin-bottom: 30px;">
+                        <h1>
+                            <field name="employee_id" widget="many2one_avatar_employee" 
+                                options="{'no_open': True}" class="oe_inline" required="1"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="jatah_pengobatan" required="1"/>
+                            <field name="sisa"/>
+                        </group>
+                        <group>
+                            <field name="berlaku_mulai" required="1"/>
+                            <field name="berlaku_sampai" required="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

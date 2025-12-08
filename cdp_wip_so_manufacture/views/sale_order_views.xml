@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="cdp_wip_so_manufacture_inherit_sale_views" model="ir.ui.view">
+            <field name="name">cdp.wip.so.manufacture.inherit.sale.views</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <field name="source_id" position="after">
+                    <field name="cdp_product_wip_id"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

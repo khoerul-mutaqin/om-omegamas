@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_appraisal_template_user,access.appraisal.template,model_appraisal_template,base.group_user,1,1,1,1
+access_performance_guidelines_user,access.performance.guidelines,model_performance_guidelines,base.group_user,1,1,1,1
+access_performance_guidelines_wizard_user,access.performance.guidelines.wizard,model_performance_guidelines_wizard,base.group_user,1,1,1,1
+access_hr_skill_type_user,access.hr.skill.type,hr_skills.model_hr_skill_type,base.group_user,1,1,1,1
+access_hr_skill_user,access.hr.skill,hr_skills.model_hr_skill,base.group_user,1,1,1,1

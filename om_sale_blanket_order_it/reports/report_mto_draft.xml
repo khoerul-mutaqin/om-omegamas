@@ -1,0 +1,218 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <template id="om_sale_blanket_order_it.report_mto_draft_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <style>
+                            @media print {
+                                .line-paket {
+                                    page-break-inside: avoid !important;
+                                    break-inside: avoid !important;
+                                }
+                                .line-paket tbody {
+                                    page-break-inside: avoid !important;
+                                    break-inside: avoid !important;
+                                }
+                                .line-paket tr {
+                                    page-break-inside: avoid !important;
+                                }
+                                .line-paket tr:first-child {
+                                    page-break-after: avoid !important;
+                                }
+                                .line-paket tr:nth-child(2) {
+                                    page-break-after: avoid !important;
+                                }
+                                .line-paket tr:nth-child(3) {
+                                    page-break-after: avoid !important;
+                                }
+                                .line-paket tr:last-child {
+                                    page-break-before: avoid !important;
+                                    page-break-after: auto !important;
+                                }
+                                .total-paket {
+                                    page-break-inside: avoid !important;
+                                    break-inside: avoid !important;
+                                }
+                                /* Pastikan rowspan tidak terpotong */
+                                .line-paket td[rowspan], .line-paket th[rowspan] {
+                                    page-break-inside: avoid !important;
+                                }
+                            }
+                        </style>
+                        <div class="page" t-att-style="'orientation: landscape; page-break-inside: avoid;'">
+                            <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+                            <div class="row justify-content-between">
+                                <div class="col-6">
+                                    <div class="text-left fs-5 fw-bolder" style="margin-bottom: -10px;">PO #
+                                        <span t-field="o.client_order_ref"/>
+                                    </div>
+                                    <div class="text-left fs-5 fw-bolder">PO CUST #
+                                        <span t-field="o.po_cust"/>
+                                    </div>
+                                    <b class="pb-0" style="font-size:13px;">Bill To:</b>
+                                    <span t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <div class="text-end fs-4 fw-bolder" style="margin-bottom: -10px;">Master SO #
+                                        <span t-field="o.name"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-borderless mt-0" style="min-height: 80px; height: 90px;">
+                                <tr class="p-0" style="height: 80px;">
+                                    <td class="p-1" style="font-size:13px; height: 80px; min-height: 80px; vertical-align: middle; width:10%">
+                                        <div class="text-center">
+                                            <img t-if="o.client_order_ref"
+                                                 t-att-src="'data:image/png;base64,%s' % o.get_qr_code(o.client_order_ref)"
+                                                 style="max-height: 100px; height: auto;"/>
+                                        </div>
+                                    </td>
+                                    <td class="p-1" style="font-size: 12px; height: 80px; width:80%;">Note :
+                                        <span t-field="o.note"/>
+                                    </td>
+                                    <td class="p-1" style="font-size:13px; height: 80px; min-height: 80px; vertical-align: middle; width:10%">
+                                        <div class="text-center">
+                                            <img t-if="o.name"
+                                                 t-att-src="'data:image/png;base64,%s' % o.get_qr_code(o.name)"
+                                                 style="max-height: 100px; height: auto;"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="row mt-2">
+                                <div class="col-4">
+                                    <div style="display: table; font-size:13px; border: none;">
+                                        <div style="display: table-row; border: none;">
+                                            <div style="display: table-cell; border: none;">
+                                                <b>Order Date </b>
+                                            </div>
+                                            <div class="text-left" style="display: table-cell; border: none; text-align: left;">:
+                                                <span t-field="o.date_create_blanket_order"/>
+                                            </div>
+                                        </div>
+                                        <div style="display: table-row; border: none;">
+                                            <div style="display: table-cell; border: none;">
+                                                <b>Confirmation Date </b>
+                                            </div>
+                                            <div class="text-left" style="display: table-cell; border: none; text-align: left;">:
+                                                <span t-field="o.confirmation_date_order"/>
+                                            </div>
+                                        </div>
+                                        <div style="display: table-row; border: none;">
+                                            <div style="display: table-cell; border: none;">
+                                                <b>Due Date </b>
+                                            </div>
+                                            <div class="text-left" style="display: table-cell; border: none; text-align: left;">:
+                                                <span t-field="o.due_date_order"/>
+                                            </div>
+                                        </div>
+                                        <div style="display: table-row; border: none;">
+                                            <div style="display: table-cell; border: none;">
+                                                <b>Production Time</b>
+                                            </div>
+                                            <div class="text-left" style="display: table-cell; border: none; text-align: left;">:
+                                                <span t-field="o.production_time"/> Week
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                </div>
+                                <div class="col-4 text-end">
+                                    <div style="display: table; font-size:13px; border: none; margin-left: auto;">
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-borderless mt-4" style="font-family: Arial; letter-spacing:0.15em; table-layout: fixed; width: 100%;">
+                                <thead>
+                                    <tr style="background-color: #181a1c; color: white; font-size:11px;" class="text-center table-dark align-middle p-1">
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 16%;" class="text-center align-middle p-1" colspan="2">PRODUCT ID</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 20%;" class="text-center align-middle p-1" colspan="2">PRODUCT NAME</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 5%;" class="text-center align-middle p-1" rowspan="3">QTY</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 7%;" class="text-center align-middle p-1" rowspan="3">FINISH</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 15%;" class="text-center align-middle p-1" colspan="3">ITEM DIMS (CM)</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 23%;" class="text-center align-middle p-1" rowspan="3">PRODUCT EXTRA INFO TO FACTORY PRODUCTION</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 15%;" class="text-center align-middle" rowspan="3">PICTURE</th>
+                                    </tr>
+                                    <tr style="background-color: #181a1c; color: white; font-size:11px;" class="text-center table-dark align-middle p-1">
+                                        <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1" colspan="2">CUST STYLE</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1" colspan="2" rowspan="2">PRODUCT SPECIAL/DUE DATE UPDATE</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1" rowspan="2">H</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1" rowspan="2">W</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1" rowspan="2">D</th>
+                                    </tr>
+                                    <tr style="background-color: #181a1c; color: white; font-size:11px;" class="text-center table-dark align-middle p-1">
+                                        <th style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1" colspan="2">Color/Attribute/Size</th>
+                                    </tr>
+                                </thead>
+                                <t t-foreach="o.line_ids" t-as="line">
+                                    <div class="line-paket" style="page-break-inside: avoid; break-inside: avoid; margin-bottom: 10px;">
+                                        <tbody style="page-break-inside: avoid; break-inside: avoid;">
+                                            <tr style="min-height: 35px; page-break-after: avoid; page-break-inside: avoid;">
+                                                <td  class="p-1 text-center" style="background-color: #181a1c; color: white; min-height: 35px; vertical-align: middle; page-break-inside: avoid;" colspan="2">
+                                                    <span style="font-size:11px; font-family: Arial; letter-spacing:0.15em;" t-field="line.supp_order"/>
+                                                </td>
+                                                <td class="p-1 text-center" colspan="2" style="min-height: 35px; vertical-align: middle; page-break-inside: avoid;" rowspan="3">
+                                                    <span style="font-size:11px; font-family: Arial; letter-spacing:0.15em;" t-field="line.product_id.name"/>
+                                                </td>
+                                                <td class="p-1 text-center" style="min-height: 35px; vertical-align: middle; font-size: 9px; page-break-inside: avoid;" rowspan="3">
+                                                    <span style="font-size:9px; font-family: Arial;" t-esc="'%.0f'% line.original_uom_qty"/>
+                                                </td>
+                                                <td class="p-1 text-center" style="min-height: 35px; vertical-align: middle; font-size: 9px; page-break-inside: avoid;" rowspan="3">
+                                                    <span style="font-size:9px; font-family: Arial;" t-field="line.finish"/>
+                                                </td>
+                                                <td class="p-1 text-center" style="min-height: 35px; vertical-align: middle; font-size: 9px; page-break-inside: avoid;" rowspan="3">
+                                                    <span style="font-size:9px; font-family: Arial; letter-spacing:0.15em;" t-field="line.product_id.height"/>
+                                                </td>
+                                                <td class="p-1 text-center" style="min-height: 35px; vertical-align: middle; font-size: 9px; page-break-inside: avoid;" rowspan="3">
+                                                    <span style="font-size:9px; font-family: Arial; letter-spacing:0.15em;" t-field="line.product_id.width"/>
+                                                </td>
+                                                <td class="p-1 text-center" style="min-height: 35px; vertical-align: middle; font-size: 9px; page-break-inside: avoid;" rowspan="3">
+                                                    <span style="font-size:9px; font-family: Arial; letter-spacing:0.15em;" t-esc="line.product_id.depth"/>
+                                                </td>
+                                                <td class="p-1 text-center" style="min-height: 35px; vertical-align: middle; font-size: 9px; page-break-inside: avoid;" rowspan="3">
+                                                    <span style="font-size:9px; font-family: Arial; letter-spacing:0.15em;" t-field="line.info_to_production"/>
+                                                </td>
+                                                <td class="text-center align-middle" rowspan="3" style="min-height: 105px; vertical-align: middle; font-size: 8px; white-space: pre-line; page-break-inside: avoid;">
+                                                    <div class="w-100 h-100 d-table">
+                                                        <div class="d-table-cell align-middle">
+                                                            <img t-if="line.product_id.image_1920" t-att-src="image_data_uri(line.product_id.image_1920)" style="width: 100%; height: auto; max-height: 70px;"/>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-1 text-center" style="min-height: 35px; vertical-align: middle; page-break-inside: avoid;" colspan="2">
+                                                    <span style="font-size:11px; font-family: Arial; letter-spacing:0.15em;" t-field="line.product_id.default_code"/>
+                                                </td>
+                                            </tr>
+                                            <tr style="page-break-after: avoid; page-break-inside: avoid;">
+                                                <td class="p-1 text-center" style="min-height: 35px; vertical-align: middle; text-align: center; page-break-inside: avoid; border-bottom: 1px solid #000;" colspan="2">
+                                                    <t t-set="external_id" t-value="env['sale.id.external'].search([('product', '=', line.product_id.product_tmpl_id.id)], limit=1)"/>
+                                                    <span style="font-size:11px; font-family: Arial; letter-spacing:0.15em;" t-field="external_id.primary_id"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </div>
+                                </t>
+                                <t t-set="total_qty" t-value="sum(line.original_uom_qty for line in o.line_ids)"/>
+                                <div class="total-paket" style="page-break-inside: avoid; break-inside: avoid; margin-top: 10px;">
+                                    <tbody style="page-break-inside: avoid; break-inside: avoid;">
+                                        <tr style="background-color: #181a1c; color: white; font-size:11px; page-break-inside: avoid;" class="text-center table-dark align-middle">
+                                            <th style="background-color: white; font-size:11px;" class="text-left align-middle p-1" colspan="4">Total QTY</th>
+                                            <th style="background-color: white; font-size:11px;" class="text-center align-middle p-1">
+                                                <span t-esc="'%.0f' % total_qty"/>
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                </div>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_purchase_order_discount_wizard,purchase.order.discount model access,model_purchase_order_discount,,1,1,1,1
+access_alert_confirm_purchase_order,alert.confirm.purchase.order,model_alert_confirm_purchase_order,,1,1,1,1

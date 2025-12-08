@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="ITCustom_ReportShipping.report_invoice_doc_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.basic_layout">
+                        <div class="page" style="font-size: 12px; font-family: 'Arial', sans-serif;">
+                            <div class="row">
+                                <div class="col-6">
+                                </div>
+                                <div class="col-6">
+                                    <table class="table table-sm table-borderless" style="border-collapse: collapse; line-height: 1.2;">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width: 40%; padding: 0;">
+                                                    <strong>Invoice Doc | <t t-esc="doc.description"/></strong>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 40%; padding: 0;">
+                                                    <strong style="font-size: 14px">PACKING/WEIGHT LIST.</strong>
+                                                </td>
+                                                <td style="padding: 0;">
+                                                    <strong style="font-size: 14px">: <t t-set="roman_months" t-value="['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII']"/><t t-set="number" t-value="(doc.name.split('/')[-1].lstrip('0') if doc.name else '')"/><t t-esc="f'{number}/TDP/NZ445/EXP/{roman_months[doc.scheduled_date.month]}/{doc.scheduled_date.year % 100}'"/></strong>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 0;">
+                                                    <strong>Date</strong>
+                                                </td>
+                                                <td style="padding: 0;">: <t t-esc="doc.scheduled_date.strftime('%d %B %Y') if doc.scheduled_date else ''"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 0;">
+                                                    <strong>Shipped per</strong>
+                                                </td>
+                                                <td style="padding: 0;">: <t t-esc="doc.feeder or ''"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 0;">
+                                                    <strong>Sailling On</strong>
+                                                </td>
+                                                <td style="padding: 0;">: <t t-esc="doc.etd_feeder.strftime('%d %B %Y') if doc.etd_feeder else ''"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <hr class="w-100"/>
+                            <div class="row">
+                                <div class="col-6" style="line-height: 1.2; font-size: 15px; font-weight: bold">
+                                    <strong>TO:</strong>
+                                    <br/>
+                                    <span>The Design Project,</span>
+                                    <br/>
+                                    <span>Home Ideas Centre, 165 The Strand,</span>
+                                    <br/>
+                                    <span>Parnell 1010, Phone 0275202727 - New Zealand</span>
+                                    <br/>
+                                    <span>Attn. Marg Farrell</span>
+                                </div>
+                            </div>
+                            <table class="table table-borderless table-sm mt-3" style="font-size: 12px; border-collapse: collapse; line-height: 1.1;">
+                                <thead class="text-center" style="font-weight: bold; background-color: #181a1c;">
+                                    <tr>
+                                        <td style="background-color: #181a1c; color: white; border: 1px solid white; width: 5%;">Shipping Marks</td>
+                                        <td style="background-color: #181a1c; color: white; border: 1px solid white; width: 56%; vertical-align: middle">Description</td>
+                                        <td style="background-color: #181a1c; color: white; border: 1px solid white; width: 5%;">Quantity PCS</td>
+                                        <td style="background-color: #181a1c; color: white; border: 1px solid white; width: 9%;">Unit/Price <t t-esc="doc.currencies"/></td>
+                                        <td style="background-color: #181a1c; color: white; border: 1px solid white; width: 8%;">Amount <t t-esc="doc.currencies"/></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="5" style="height: 1px">
+                                        </td>
+                                    </tr>
+                                    <t t-set="hs_descriptions" t-value="{'4420.19.00': 'Accessories Furniture', '9403.60.90': 'Wooden Furniture'}"/>
+                                    <t t-set="hs_groups" t-value="{}"/>
+                                    <t t-foreach="doc.picking_ids" t-as="picking">
+                                        <t t-foreach="picking.move_ids" t-as="move">
+                                            <t t-set="hs_code" t-value="move.product_id.hs_code or 'N/A'"/>
+                                            <t t-if="hs_code not in hs_groups">
+                                                <t t-set="hs_groups" t-value="dict(hs_groups, **{hs_code: {'qty': 0, 'amount': 0, 'moves': []}})"/>
+                                            </t>
+                                            <t t-set="sale_lines" t-value="move.picking_id.sale_id and move.picking_id.sale_id.order_line.filtered(lambda l: l.product_id == move.product_id) or []"/>
+                                            <t t-set="unit_price" t-value="sale_lines and sale_lines[0].price_unit or move.product_id.list_price"/>
+                                            <t t-set="amount" t-value="unit_price * move.quantity"/>
+                                            <t t-set="hs_groups" t-value="dict(hs_groups, **{hs_code: {'qty': hs_groups[hs_code]['qty'] + move.quantity, 'amount': hs_groups[hs_code]['amount'] + amount, 'moves': hs_groups[hs_code]['moves'] + [{'name': move.product_id.name, 'qty': move.quantity, 'unit_price': unit_price, 'amount': amount}]}} )"/>
+                                        </t>
+                                    </t>
+                                    <t t-set="sorted_hs_groups" t-value="sorted(hs_groups.items(), key=lambda item: hs_descriptions.get(item[0], 'Furniture'))"/>
+                                    <t t-set="counter" t-value="1"/>
+                                    <t t-foreach="sorted_hs_groups" t-as="hs_item">
+                                        <t t-set="hs_code" t-value="hs_item[0]"/>
+                                        <t t-set="dynamic_description" t-value="hs_descriptions.get(hs_code, 'Furniture')"/>
+                                        <tr style="background-color: #a0a0a0;">
+                                            <td colspan="5" style="border: 1px solid black">
+                                                <span style="font-weight: bold; font-size: 12px"><t t-esc="dynamic_description"/> | <t t-esc="hs_code"/></span>
+                                            </td>
+                                        </tr>
+                                        <t t-foreach="hs_groups[hs_code]['moves']" t-as="move_detail">
+                                            <tr>
+                                                <td style="border: 1px solid black" class="text-center"><t t-esc="counter"/></td>
+                                                <td style="border: 1px solid black"><t t-esc="move_detail['name']"/></td>
+                                                <td style="border: 1px solid black; text-align: right"><t t-esc="int(move_detail['qty'])"/></td>
+                                                <td style="border: 1px solid black; text-align: right"><t t-esc="'%.2f' % move_detail['unit_price']"/></td>
+                                                <td style="border: 1px solid black; text-align: right"><t t-esc="'%.2f' % move_detail['amount']"/></td>
+                                            </tr>
+                                            <t t-set="counter" t-value="counter + 1"/>
+                                        </t>
+                                        <tr style="font-size: 13px">
+                                            <td style="border: 1px solid black; text-align: right; font-weight: bold" colspan="2">Total Kode <t t-esc="hs_code"/>:</td>
+                                            <td style="border: 1px solid black; text-align: right; font-weight: bold"><t t-esc="int(hs_groups[hs_code]['qty'])"/></td>
+                                            <td style="border: 1px solid black; text-align: right; font-weight: bold"></td>
+                                            <td style="border: 1px solid black; text-align: right; font-weight: bold"><t t-esc="'%.2f' % hs_groups[hs_code]['amount']"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5" style="height: 1px">
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <t t-set="total_qty" t-value="sum(hs_groups[hs]['qty'] for hs in hs_groups)"/>
+                                    <t t-set="total_amount" t-value="sum(hs_groups[hs]['amount'] for hs in hs_groups)"/>
+                                    <tr style="background-color: #a0a0a0; font-size: 14px">
+                                        <td style="border: 1px solid black; text-align: right; font-weight: bold" colspan="2">Grand Total:</td>
+                                        <td style="border: 1px solid black; text-align: right"><t t-esc="int(total_qty)"/></td>
+                                        <td style="border: 1px solid black; text-align: right"></td>
+                                        <td style="border: 1px solid black; text-align: right; font-weight: bold"><t t-esc="'%.2f' % total_amount"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <strong>NOTE</strong>
+                                    <br/>
+                                    <t t-set="currency" t-value="doc.picking_ids and doc.picking_ids[0].sale_id.currency_id or env.company.currency_id"/>
+                                    <span>TOTAL SAY: <t t-esc="currency.amount_to_text(total_amount).rsplit(' ', 1)[0]"/></span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

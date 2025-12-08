@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Action -->
+    <record id="action_surat_peringatan" model="ir.actions.act_window">
+        <field name="name">Data Pelanggaran</field>
+        <field name="res_model">employee.surat.peringatan</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <!-- Menu Item -->
+    <menuitem 
+        id="menu_surat_peringatan" 
+        name="Data Pelanggaran" 
+        parent="hr.menu_hr_employee_payroll"
+        action="action_surat_peringatan"
+        groups="hr.group_hr_user"
+        sequence="65"/>
+</odoo>

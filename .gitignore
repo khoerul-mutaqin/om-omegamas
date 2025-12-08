@@ -1,0 +1,11 @@
+*.pyc
+.vscode
+find "*.pyc" -exec git rm -f "{}" \;
+find . -name "*.pyc" -exec git rm {} \;
+LICENSE
+README.md
+TODO.md
+custom_addons/**/*.pyc
+st_modules/**/*.pyc
+**/*.pyc
+*.idea/workspace.xml

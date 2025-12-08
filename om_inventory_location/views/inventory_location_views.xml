@@ -1,0 +1,25 @@
+<odoo>
+    <!-- <record id="view_location_form_inherit_internal_accounts" model="ir.ui.view">
+        <field name="name">stock.location.form.internal.accounts</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form"/>
+        <field name="arch" type="xml"> -->
+
+            <!-- Sisipkan setelah group Additional Information -->
+            <!-- <xpath expr="//group[@name='additional_info']" position="after">
+                <group string="Accounting Information" invisible="[('usage', '!=', 'internal')]">
+                    <field name="account_in_id"/>
+                    <field name="account_out_id"/>
+                </group>
+            </xpath> -->
+
+            <!-- <xpath expr="//group[@name='additional_info']" position="after">
+                <group string="Accounting Information" invisible="usage not in ('internal')">
+                    <field name="account_in_id" options="{'no_create': True}"/>
+                    <field name="account_out_id" options="{'no_create': True}"/>
+                </group>
+            </xpath> -->
+
+        <!-- </field>
+    </record> -->
+</odoo>

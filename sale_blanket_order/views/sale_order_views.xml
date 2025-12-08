@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+<!-- 
+    <record id="inherit_view_id_inherit_om_sale_manual_delivery" model="ir.ui.view">
+        <field name="name">sale.order.view.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="om_sale_manual_delivery.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='manual_delivery']" position="attributes">
+                 <attribute name="readonly">locked</attribute>
+            </xpath>
+        </field>
+    </record> -->
+
+        <record id="sale_report_view_tree_inherit" model="ir.ui.view">
+            <field name="name">sale.report.view.tree.inherit</field>
+            <field name="model">sale.report</field>
+            <field name="inherit_id" ref="sale.sale_report_view_tree"/>
+            <field name="arch" type="xml">
+                 <field name="product_uom_qty" position="after">
+                    <field name="dp_blanket" optional="show"/>
+                    <field name="dp_order" optional="show"/>
+                    <field name="dp_sisa" optional="show"/>
+                </field>
+               
+            </field>
+        </record>
+
+    <record id="inherit_view_id_inherit_sale_stock" model="ir.ui.view">
+        <field name="name">sale.order.view.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='incoterm']" position="attributes">
+                 <attribute name="readonly" >locked</attribute>
+            </xpath>
+            <xpath expr="//field[@name='incoterm_location']" position="attributes">
+                 <attribute name="readonly" >locked</attribute>
+            </xpath>
+        </field>
+    </record>
+    
+
+    <record id="view_sale_order_form" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d']" position="attributes">
+                <attribute name="context">{'default_dp_blanket': dp_blanket, 'default_dp_order': dp_order, 'default_dp_sisa': dp_sisa}</attribute>
+            </xpath>
+
+            
+            <xpath expr="//button[@id='create_invoice_percentage']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@id='create_invoice']" position="attributes">
+                <attribute name="invisible">invoice_status != 'to invoice' and not blanket_order_id or invoice_status == 'invoiced'</attribute>
+            </xpath>
+
+
+            <!-- <xpath expr="//header/button[@name='action_cancel']" position="after">
+                <button string="Lock" name="action_lock" type="object" class="oe_highlight" invisible="locked"/>
+            </xpath> -->
+
+            <xpath expr="//sheet/group/group[1]/field[@name='partner_id']" position="attributes">
+                <attribute name="readonly" >"state in ['cancel', 'sale'] or locked"</attribute>
+            </xpath>
+            <xpath expr="//sheet/group/group[2]/field[@name='payment_term_id']" position="attributes">
+                <attribute name="readonly" >locked</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='other_information']/group/group[1]/field[@name='user_id']" position="attributes">
+                <attribute name="readonly" >locked</attribute>
+            </xpath>
+            <xpath expr="//page[@name='other_information']/group/group[1]/field[@name='team_id']" position="attributes">
+                <attribute name="readonly" >locked</attribute>
+            </xpath>
+            <xpath expr="//page[@name='other_information']/group/group[1]/field[@name='client_order_ref']" position="attributes">
+                <attribute name="readonly" >locked</attribute>
+            </xpath>
+            <xpath expr="//page[@name='other_information']/group/group[1]/field[@name='tag_ids']" position="attributes">
+                <attribute name="readonly" >locked</attribute>
+            </xpath>
+            <xpath expr="//page[@name='other_information']/group/group[2]/div/field[@name='fiscal_position_id']" position="attributes">
+                <attribute name="readonly" >locked</attribute>
+            </xpath>
+            <xpath expr="//page[@name='other_information']/group/group[3]/div/field[@name='commitment_date']" position="attributes">
+                <attribute name="readonly" >locked</attribute>
+            </xpath>
+            <xpath expr="//page[@name='other_information']/group/group[4]/field[@name='origin']" position="attributes">
+                <attribute name="readonly" >locked</attribute>
+            </xpath>
+            <xpath expr="//page[@name='other_information']/group/group[4]/field[@name='campaign_id']" position="attributes">
+                <attribute name="readonly" >locked</attribute>
+            </xpath>
+            <xpath expr="//page[@name='other_information']/group/group[4]/field[@name='medium_id']" position="attributes">
+                <attribute name="readonly" >locked</attribute>
+            </xpath>
+            <xpath expr="//page[@name='other_information']/group/group[4]/field[@name='source_id']" position="attributes">
+                <attribute name="readonly" >locked</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='customer_signature']/group/field[@name='signed_by']" position="attributes">
+                <attribute name="readonly" >locked</attribute>
+            </xpath>
+            <xpath expr="//page[@name='customer_signature']/group/field[@name='signed_on']" position="attributes">
+                <attribute name="readonly" >locked</attribute>
+            </xpath>
+            <xpath expr="//page[@name='customer_signature']/group/field[@name='signature']" position="attributes">
+                <attribute name="readonly" >locked</attribute>
+            </xpath>
+
+            <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/list/field[@name='analytic_distribution']" position="attributes">
+                <attribute name="string">Proyek</attribute>
+            </xpath>
+
+        </field>
+    </record>
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">sale.order.from.blanket.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <field name="currency_id" position="after">
+                <field name="blanket_order_id" invisible="1" />
+                <field name="is_done_blanket_order" invisible="1" />
+                <field name="dp_blanket" readonly="locked or is_done_blanket_order"/>
+                <field name="dp_order"/>
+                <field name="dp_sisa"/>
+                <field name="amount_total" invisible="1"/>
+            </field>
+            <xpath
+                expr="//field[@name='order_line']//list/field[@name='product_id']"
+                position="after"
+            >
+                <field
+                    name="blanket_order_line"
+                    context="{'from_sale_order': True}"
+                    column_invisible="not parent.blanket_order_id"
+                />
+                <field name="dp_blanket_line" column_invisible="1" optional_hide="1"/>
+                <field name="dp_order_line" column_invisible="1" optional_hide="1"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']" position="attributes">
+                <attribute name="context">{'from_sale_order': True}</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_order_form_disable_adding_lines" model="ir.ui.view">
+        <field name="name">sale.order.from.blanket.form - disable adding lines</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']//list" position="attributes">
+                <t groups="sale_blanket_order.blanket_orders_disable_adding_lines">
+                    <attribute name="create">blanket_order_id==False</attribute>
+                </t>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_sale_order_dp_tree" model="ir.ui.view">
+        <field name="name">sale.order.dp.tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="inside">
+                <field name="blanket_order_id"/>
+                <field name="dp_blanket"/>
+                <field name="dp_order"/>
+                <field name="dp_sisa"/>
+            </xpath>
+        </field>
+    </record>
+
+<!--    <record id="st_view_order_form" model="ir.ui.view">-->
+<!--        <field name="model">sale.order</field>-->
+<!--        <field name="inherit_id" ref="sale.view_order_form" />-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d']" position="attributes">-->
+<!--                <attribute name="context">{'default_dp_blanket': dp_blanket, 'default_dp_order': dp_order, 'default_dp_sisa': dp_sisa}</attribute>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+</odoo>

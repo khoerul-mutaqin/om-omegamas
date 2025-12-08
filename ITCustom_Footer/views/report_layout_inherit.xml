@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Inherit external_layout_standard -->
+        <template id="external_layout_standard_inherit" inherit_id="web.external_layout_standard">
+            <xpath expr="//div[contains(@class, 'footer') or contains(@t-attf-class, 'footer')]//div[contains(@class, 'o_footer_content') or contains(@t-attf-class, 'o_footer_content')]" position="inside">
+                <div style="text-align: left; font-size: 11px; margin-top: -18px;">Printed on: <t t-esc="(datetime.datetime.now() + datetime.timedelta(hours=7)).strftime('%H:%M:%S - %Y-%m-%d')"/></div>
+            </xpath>
+        </template>
+
+        <!-- Inherit external_layout_boxed -->
+        <template id="external_layout_boxed_inherit" inherit_id="web.external_layout_boxed">
+            <xpath expr="//div[contains(@class, 'footer') or contains(@t-attf-class, 'footer')]//div[contains(@class, 'o_footer_content') or contains(@t-attf-class, 'o_footer_content')]" position="inside">
+                <div style="text-align: left; font-size: 11px; margin-top: -18px;">Printed on: <t t-esc="(datetime.datetime.now() + datetime.timedelta(hours=7)).strftime('%H:%M:%S - %Y-%m-%d')"/></div>
+            </xpath>
+        </template>
+
+        <!-- Inherit external_layout_bold -->
+        <template id="external_layout_bold_inherit" inherit_id="web.external_layout_bold">
+            <xpath expr="//div[contains(@class, 'footer') or contains(@t-attf-class, 'footer')]//div[contains(@class, 'o_footer_content') or contains(@t-attf-class, 'o_footer_content')]" position="inside">
+                <div style="text-align: left; font-size: 11px; margin-top: -18px;">Printed on: <t t-esc="(datetime.datetime.now() + datetime.timedelta(hours=7)).strftime('%H:%M:%S - %Y-%m-%d')"/></div>
+            </xpath>
+        </template>
+
+        <!-- Inherit external_layout_striped -->
+        <template id="external_layout_striped_inherit" inherit_id="web.external_layout_striped">
+            <xpath expr="//div[contains(@class, 'footer') or contains(@t-attf-class, 'footer')]//div[contains(@class, 'o_footer_content') or contains(@t-attf-class, 'o_footer_content')]" position="inside">
+                <div style="text-align: left; font-size: 11px; margin-top: -18px;">Printed on: <t t-esc="(datetime.datetime.now() + datetime.timedelta(hours=7)).strftime('%H:%M:%S - %Y-%m-%d')"/></div>
+            </xpath>
+        </template>
+
+        <!-- Inherit external_layout_folder -->
+        <template id="external_layout_folder_inherit" inherit_id="web.external_layout_folder">
+            <xpath expr="//div[contains(@class, 'footer') or contains(@t-attf-class, 'footer')]//div[contains(@class, 'o_footer_content') or contains(@t-attf-class, 'o_footer_content')]" position="inside">
+                <div style="text-align: left; font-size: 11px; margin-top: -18px;">Printed on: <t t-esc="(datetime.datetime.now() + datetime.timedelta(hours=7)).strftime('%H:%M:%S - %Y-%m-%d')"/></div>
+            </xpath>
+        </template>
+
+        <!-- Inherit external_layout_wave -->
+        <template id="external_layout_wave_inherit" inherit_id="web.external_layout_wave">
+            <xpath expr="//div[contains(@class, 'footer') or contains(@t-attf-class, 'footer')]//div[contains(@class, 'o_footer_content') or contains(@t-attf-class, 'o_footer_content')]" position="inside">
+                <div style="text-align: left; font-size: 11px; margin-top: -18px;">Printed on: <t t-esc="(datetime.datetime.now() + datetime.timedelta(hours=7)).strftime('%H:%M:%S - %Y-%m-%d')"/></div>
+            </xpath>
+        </template>
+
+        <!-- Inherit external_layout_bubble -->
+        <template id="external_layout_bubble_inherit" inherit_id="web.external_layout_bubble">
+            <xpath expr="//div[contains(@class, 'footer') or contains(@t-attf-class, 'footer')]//div[contains(@class, 'o_footer_content') or contains(@t-attf-class, 'o_footer_content')]" position="inside">
+                <div style="text-align: left; font-size: 11px; margin-top: -18px;">Printed on: <t t-esc="(datetime.datetime.now() + datetime.timedelta(hours=7)).strftime('%H:%M:%S - %Y-%m-%d')"/></div>
+            </xpath>
+        </template>
+    </data>
+</odoo>

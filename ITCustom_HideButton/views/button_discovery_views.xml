@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Button Discovery Wizard -->
+        <record id="view_button_discovery_wizard" model="ir.ui.view">
+            <field name="name">itcustom.button.discovery.wizard</field>
+            <field name="model">itcustom.button.discovery</field>
+            <field name="arch" type="xml">
+                <form string="Discover Buttons">
+                    <p>This wizard will scan all installed form views and discover available buttons that can be hidden for users.</p>
+                    <footer>
+                        <button string="Discover Buttons" type="object" name="action_discover_buttons" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action for Button Discovery Wizard -->
+        <record id="action_button_discovery" model="ir.actions.act_window">
+            <field name="name">Discover Buttons</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">itcustom.button.discovery</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Menu Item for Button Discovery -->
+        <menuitem id="menu_button_discovery" name="Discover Buttons" action="action_button_discovery"
+                  parent="menu_itcustom_button" sequence="20"/>
+    </data>
+</odoo>

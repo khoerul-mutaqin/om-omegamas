@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_appraisal_skill_form_inherit" model="ir.ui.view">
+        <field name="name">hr.appraisal.skill.form.inherit</field>
+        <field name="model">hr.appraisal.skill</field>
+        <field name="inherit_id" ref="hr_appraisal_skills.hr_appraisal_skills_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='skill_type_id']" position="before">
+                <field name="sequence" invisible="1"/>
+                <field name="bobot_penilaian_percentage" string="Bobot Penilaian"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <record id="view_hr_appraisal_skills_list_inherit" model="ir.ui.view">
+        <field name="name">hr.appraisal.skills.list.inherit</field>
+        <field name="model">hr.appraisal</field>
+        <field name="inherit_id" ref="hr_appraisal_skills.view_hr_appraisal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='page_skills']//field[@name='skill_ids']/list/field[@name='skill_id']" position="before">
+                <field name="bobot_penilaian_percentage" string="Bobot Penilaian" width="100px"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <record id="view_hr_appraisal_form_skills_order_inherit" model="ir.ui.view">
+        <field name="name">hr.appraisal.form.skills.order.inherit</field>
+        <field name="model">hr.appraisal</field>
+        <field name="inherit_id" ref="hr_appraisal_skills.view_hr_appraisal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='page_skills']//field[@name='skill_ids']" position="attributes">
+                <attribute name="order">sequence, id</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

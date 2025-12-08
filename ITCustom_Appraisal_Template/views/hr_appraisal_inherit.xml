@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_appraisal_form_inherit_memiliki_bawahan" model="ir.ui.view">
+        <field name="name">hr.appraisal.form.inherit.memiliki.bawahan</field>
+        <field name="model">hr.appraisal</field>
+        <field name="inherit_id" ref="hr_appraisal.view_hr_appraisal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='manager_ids']" position="after">
+                <label for="memiliki_bawahan" string="Kepemimpinan"/>
+                <field name="memiliki_bawahan" widget="boolean_toggle" nolabel="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

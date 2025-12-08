@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- tree view -->
+        <record id="view_stock_summary_tree" model="ir.ui.view">
+            <field name="name">fal_stock_summary_tree</field>
+            <field name="model">fal.stock.summary</field>
+            <field name="arch" type="xml">
+                <list decoration-info="state == 'draft'" decoration-muted="state == 'done'" string="list stock_summary">
+                    <field name="name"/>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="fal_option"/>
+                    <field name="location_id"/>
+                    <field name="state"/>
+                    <field name="user_id"/>
+                </list></field>
+        </record>
+        <!-- form view -->
+        <record id="view_stock_summary_form" model="ir.ui.view">
+            <field name="name">fal_stock_summary_form</field>
+            <field name="model">fal.stock.summary</field>
+            <field name="arch" type="xml">
+                <form string="stock_summary form">
+                    <header>
+                        <button class="oe_highlight" invisible="state not in ['draft']" name="action_calculate" string="Calculate" type="object"/>
+                        <button class="oe_highlight" invisible="state not in ['draft']" name="action_confirm" string="Confirm" type="object"/>
+                        <button class="oe_highlight" invisible="state not in ['open']" name="action_done" string="Done" type="object"/>
+                        <button class="oe_highlight" invisible="state not in ['done']" name="post_journal" string="Post Journal" type="object"/>
+                        <button invisible="state not in ['open','done','post']" name="action_draft" string="Cancel" type="object"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label class="oe_edit_only" for="name" string="Location"/>
+                            <h1>
+                                <field name="location_id"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="fal_option"/>
+                                <field name="date_start"/>
+                                <field name="date_end"/>
+                            </group>
+                            <group>
+                                <field name="name"/>
+                                <field name="user_id"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Lines">
+                                <field name="line_ids" readonly="1">
+                                    <list editable="bottom" string="Detail Lines">
+                                        <field name="product_id"/>
+                                        <field name="expired_date"/>
+                                        <field name="qty_start"/>
+                                        <field name="qty_in"/>
+                                        <field name="qty_out"/>
+                                        <field name="qty_balance"/>
+                                        <field name="product_uom_id"/>
+                                    </list></field>
+                            </page>
+                            <page string="Other Info">
+                                <group>
+                                    <field name="journal_id"/>
+                                    <field name="stock_valuation_acc" readonly="state == 'post'"/>
+                                    <field name="expense_acc" readonly="state == 'post'"/>
+                                    <field name="move_id" readonly="1"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter></chatter>
+                </form></field>
+        </record>
+        <!-- ini definisi search stock_summary -->
+        <record id="view_stock_summary_filter" model="ir.ui.view">
+            <field name="name">stock_summary.filter</field>
+            <field name="model">fal.stock.summary</field>
+            <field name="arch" type="xml">
+                <search string="Search Stock summary">
+                    <field name="location_id"/>
+                    <field name="name"/>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="user_id"/>
+                    <group expand="1" string="Group By...">
+                        <filter context="{'group_by':'location_id'}" domain="[]" icon="terp-personal" name="location" string="Location"/>
+                    </group>
+                </search></field>
+        </record>
+    </data>
+</odoo>

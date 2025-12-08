@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- list View -->
+        <record id="view_stock_report_list" model="ir.ui.view">
+            <field name="name">stock.report.line.list</field>
+            <field name="model">stock.report.line</field>
+            <field name="arch" type="xml">
+                <list string="Stock Report" create="0" edit="0" delete="0" export_xlsx="1">
+                    <field name="currency_id" invisible="1"/>
+                    <button name="action_open_move_history" type="object" icon="fa-search" string="Details"/>
+                    <field name="product_id"/>
+                    <field name="category_id"/>
+                    <field name="uom_id"/>
+                    <field name="opening_qty" sum="Total Opening Qty" digits="[16,4]"/>
+                    <field name="opening_value" sum="Total Opening Value" widget="monetary" digits="[16,2]"/>
+                    <field name="qty_in" sum="Total Qty In" digits="[16,4]"/>
+                    <field name="value_in" sum="Total Value In" widget="monetary" digits="[16,2]"/>
+                    <field name="qty_out" sum="Total Qty Out" digits="[16,4]"/>
+                    <field name="value_out" sum="Total Value Out" widget="monetary" digits="[16,2]"/>
+                    <field name="closing_qty" sum="Total Closing Qty" digits="[16,4]"/>
+                    <field name="closing_value" sum="Total Closing Value" widget="monetary" digits="[16,2]"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Search View -->
+        <record id="view_stock_report_search" model="ir.ui.view">
+            <field name="name">stock.report.line.search</field>
+            <field name="model">stock.report.line</field>
+            <field name="arch" type="xml">
+                <search string="Stock Report">
+                    <field name="product_id"/>
+                    <field name="category_id"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Category" 
+                                name="groupby_category" 
+                                context="{'group_by': 'category_id'}"/>
+                        <filter string="Product" 
+                                name="groupby_product" 
+                                context="{'group_by': 'product_id'}"/>
+                        <filter string="UoM" 
+                                name="groupby_uom" 
+                                context="{'group_by': 'uom_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_stock_report" model="ir.actions.act_window">
+            <field name="name">Stock Movement Report</field>
+            <field name="res_model">stock.report.line</field>
+            <field name="view_mode">list</field>
+            <field name="search_view_id" ref="view_stock_report_search"/>
+            <field name="context">{
+                'search_default_groupby_category': 1,
+                'search_default_with_movements': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No stock movements found
+                </p>
+                <p>
+                    Use the Stock Movement and Value Report wizard to generate the report.
+                </p>
+            </field>
+        </record>
+
+        <!-- Action open Move History -->
+        <record id="action_open_move_history_filtered" model="ir.actions.act_window">
+            <field name="name">Move History</field>
+            <field name="res_model">stock.move.line</field>
+            <field name="view_mode">list,form</field>
+            <field name="target">current</field>
+            <field name="context">{}</field>
+        </record>
+
+    </data>
+</odoo>

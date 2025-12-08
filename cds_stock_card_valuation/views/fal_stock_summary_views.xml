@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- View fal.stock.summary form -->
+    <record id="view_fal_stock_summary_form" model="ir.ui.view">
+        <field name="name">view.fal.stock.summary.form</field>
+        <field name="model">fal.stock.summary</field>
+        <field name="inherit_id" ref="fal_stock_card.view_stock_summary_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='line_ids']//list/field[@name='qty_balance']" position="after">
+                <field name="currency_id" column_invisible='1'/>
+                <field name="start_valuation" />
+                <field name="in_valuation" />
+                <field name="out_valuation" />
+                <field name="total_valuation"/>
+            </xpath>
+            
+        </field>
+    </record>
+
+</odoo>

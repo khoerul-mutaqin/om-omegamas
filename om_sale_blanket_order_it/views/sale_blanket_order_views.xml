@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_sale_blanket_order_back_date" model="ir.ui.view">
+            <field name="name">sale.blanket.order.form.inheritance</field>
+            <field name="model">sale.blanket.order</field>
+            <field name="inherit_id" ref="sale_blanket_order.view_blanket_order_form"/>
+            <field name="arch" type="xml">
+                <!-- Masukkan semua modifikasi view di sini -->
+                <xpath expr="//button[@name='1124']" position="before">
+                    <button name="action_wizard_dp_blanket_order"
+                            string="Request DP"
+                            type="object"
+                            class="oe_info"
+                            invisible="state in ['done', 'open', 'expired']"/>
+                </xpath>
+                <!--Child from group_left in order-->
+                <xpath expr="//group[@name='group_left']" position="inside">
+                    <field name="confirmation_date_order" readonly="state in ['cancel', 'sale']"/>
+                    <field name="due_date_order" readonly="state in ['cancel', 'sale']"/>
+                    <label for="production_time"/>
+                    <div>
+                        <field name="production_time" class="oe_inline"/>
+                        <span> Week</span>
+                    </div>
+                </xpath>
+                <xpath expr="//field[@name='validity_date']" position="after">
+                    <field name="date_create_blanket_order" readonly="state in ['open', 'done', 'expired']"/>
+                    <field name="partner_bank_id" invisible="state in ['draft', 'expired']"/>
+                    <field name="req_dp_amount" readonly="1"/>
+                    <field name="ket_request_dp" readonly="1"/>
+                    <field name="due_date_update_order"/>
+                </xpath>
+                <xpath expr="//field[@name='client_order_ref']" position="after">
+                    <field name="po_cust"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

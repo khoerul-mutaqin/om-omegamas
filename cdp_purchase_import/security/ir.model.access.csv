@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_purchase_import,access_purchase_import,model_purchase_import,base.group_user,1,1,1,1
+access_purchase_import_specific,access_purchase_import_specific,model_purchase_import,cdp_purchase_import.group_import,1,1,1,1
