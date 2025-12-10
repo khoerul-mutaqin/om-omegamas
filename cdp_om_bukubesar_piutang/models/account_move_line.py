@@ -1,4 +1,5 @@
 from odoo import api, fields, models, Command, _
+import datetime
 
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
@@ -7,6 +8,7 @@ class AccountMoveLine(models.Model):
     # SECTION PIUTANG
 
     x_year = fields.Integer(
+        'Year',
         compute='func_year',
     )
     def func_year(self):        
@@ -23,6 +25,7 @@ class AccountMoveLine(models.Model):
                 record['x_year'] = 0
 
     x_akhir = fields.Integer(
+        'Tanggal',        
         compute='func_akhir',
     )
     def func_akhir(self):
@@ -54,6 +57,7 @@ class AccountMoveLine(models.Model):
             record['x_akhir'] = jumlah_hari_bulan_sebelumnya
 
     x_month = fields.Integer(
+        'Bulan',          
         compute='func_month',
     )
     def func_month(self):
@@ -69,7 +73,8 @@ class AccountMoveLine(models.Model):
 
     # 1 SECTION PIUTANG
     x_saldo_awal_piutang = fields.Monetary(
-        currency_field='fun_x_saldo_awal_piutang',
+        'Saldo Awal Piutang',
+        compute='fun_x_saldo_awal_piutang',
     )
    
     @api.depends('date','parent_state')
@@ -100,7 +105,8 @@ class AccountMoveLine(models.Model):
 
     # 3 SECTION PIUTANG            
     x_studio_penerimaan_penjualan = fields.Monetary(
-        currency_field='fun_x_studio_penerimaan_penjualan',
+        'Penerimaan Penjualan',        
+        compute='fun_x_studio_penerimaan_penjualan',
     )
    
     @api.depends('date','move_id')
@@ -113,7 +119,8 @@ class AccountMoveLine(models.Model):
 
     # 4 SECTION PIUTANG
     x_return_piutang = fields.Monetary(
-        currency_field='fun_x_return_piutang',
+        'Return Piutang',             
+        compute='fun_x_return_piutang',
     )   
 
     @api.depends('move_id')
@@ -129,7 +136,8 @@ class AccountMoveLine(models.Model):
 
     # 5 SECTION PIUTANG
     x_uang_muka_piutang = fields.Monetary(
-        currency_field='fun_x_uang_muka_piutang',
+        'Uang Muka Piutang',            
+        compute='fun_x_uang_muka_piutang',
     )   
 
     @api.depends('move_id')
@@ -147,7 +155,8 @@ class AccountMoveLine(models.Model):
 
     # 6 section piutang
     x_bukti_jurnal_piutang = fields.Monetary(
-        currency_field='fun_x_bukti_jurnal_piutang',
+        'Bukti Jurnal Piutang',            
+        compute='fun_x_bukti_jurnal_piutang',
     )   
     @api.depends('move_id')
     def fun_x_bukti_jurnal_piutang(self):
@@ -165,7 +174,8 @@ class AccountMoveLine(models.Model):
      
     # 7 section piutang                    
     x_saldo_piutang = fields.Monetary(
-        currency_field='fun_x_saldo_piutang',
+        'Saldo Piutang',   
+        compute='fun_x_saldo_piutang',
     )   
     @api.depends('x_amount_total','x_studio_penerimaan_penjualan','x_return_piutang','x_uang_muka_piutang','x_bukti_jurnal_piutang')  
     def fun_x_saldo_piutang(self):
@@ -192,7 +202,8 @@ class AccountMoveLine(models.Model):
     
     # 1 SECTION UTANG
     x_saldo_awal_utang = fields.Monetary(
-        currency_field='fun_x_saldo_awal_utang',
+        'Saldo Awal Utang',           
+        compute='fun_x_saldo_awal_utang',
     )
     
     @api.depends('move_id')
@@ -235,7 +246,8 @@ class AccountMoveLine(models.Model):
             
     # 3 SECTION UTANG                
     x_pembayaran_pemasok_utang = fields.Monetary(
-        currency_field='fun_x_pembayaran_pemasok_utang',
+        'Pembayaran Pemasok Utang',             
+        compute='fun_x_pembayaran_pemasok_utang',
     )   
     @api.depends('move_id')    
     def fun_x_pembayaran_pemasok_utang(self):
@@ -252,7 +264,8 @@ class AccountMoveLine(models.Model):
             
     # 4 SECTION UTANG    
     x_return_pembelian_utang = fields.Monetary(
-        currency_field='fun_x_return_pembelian_utang',
+        'Return Pembelian Utang',          
+        compute='fun_x_return_pembelian_utang',
     )   
     @api.depends('move_id')       
     def fun_x_return_pembelian_utang(self):
@@ -268,7 +281,8 @@ class AccountMoveLine(models.Model):
              
     # 5 SECTION UTANG                    
     x_uang_muka_utang = fields.Monetary(
-        currency_field='fun_x_uang_muka_utang',
+        'Uang Muka Utang',          
+        compute='fun_x_uang_muka_utang',
     )   
     @api.depends('move_id')       
     def fun_x_uang_muka_utang(self):
@@ -285,7 +299,8 @@ class AccountMoveLine(models.Model):
             
     # 6 SECTION UTANG                  
     x_bukti_jurnal_utang = fields.Monetary(
-        currency_field='fun_x_bukti_jurnal_utang',
+        'Bukti Jurnal Utang',          
+        compute='fun_x_bukti_jurnal_utang',
     )   
     def fun_x_bukti_jurnal_utang(self):
         # x_bukti_jurnal_utang
@@ -301,7 +316,8 @@ class AccountMoveLine(models.Model):
                 
     # 7 SECTION UTANG                   
     x_saldo_utang = fields.Monetary(
-        currency_field='fun_x_saldo_utang',
+        'Saldo Utang',            
+        compute='fun_x_saldo_utang',
     )  
     @api.depends('x_faktur_pembelian_utang','x_pembayaran_pemasok_utang','x_return_pembelian_utang','x_uang_muka_utang','x_bukti_jurnal_utang')   
     def fun_x_saldo_utang(self):

@@ -1,53 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="aml_view_search_inherit" model="ir.ui.view">
+        <field name="name">account.move.line.search.inherit</field>
+        <field name="model">account.move.line</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="account.view_account_move_line_filter"/>
+        <field name="arch" type="xml">
+            <filter name="unposted" position="after">
+                <!--PIUTANG-->
+                <filter string="PIUTANG" name="piutang" domain="[('parent_state', '=', 'posted')]" help="Posted Journal Items"/>
+                <filter string="UTANG" name="utang" domain="[('move_id.move_type', '=', 'in_invoice')]" help="Posted Journal Items"/>
+            </filter>
+        </field>
+    </record>
+    
+    <record id="cdp_account_move_form" model="ir.ui.view">
+        <field name="name">account.move.line.inherit.Form</field>
+        <field name="model">account.move.line</field>
+        <field name="arch" type="xml">
+            <form edit="0" create="0">
+                <sheet>
+                    <group>
+                        <group>
+                <field name="x_saldo_piutang" />
+                <field name="x_akhir" optional="show" />
+                <field name="x_month" optional="show" />
+                <field name="x_year" optional="show" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
     <!-- https://www.falinwa.com/odoo/my-tickets/12067 -->
     <!-- PIUTANG -->
-    <record id="sml_form_inherit" model="ir.ui.view">
-        <field name="name">stock.move.line.inherit.Piutang</field>
-        <field name="model">stock.move.line</field>
+    <record id="sml_form_inherit_piutang" model="ir.ui.view">
+        <field name="name">account.move.line.inherit.Piutang</field>
+        <field name="model">account.move.line</field>
         <!-- <field name="inherit_id" ref="account.view_pos_pos_form"/> -->
         <field name="arch" type="xml">
             <list name="move_line_tree" string="PIUTANG">
                 <!--<list name="move_line_tree" string="PIUTANG" create="false" edit="true" expand="context.get('expand', False)" multi_edit="1" sample="1">-->
-                <field name="move_id" optional="hide" string="INVOICE"/>
-                <field name="partner_id" optional="show" readonly="move_type != 'entry'"/>
-                <field name="company_currency_id"/>
+                <field name="move_id" optional="show" string="INVOICE" />
+                <field name="partner_id" optional="show" readonly="move_type != 'entry'" />
+                <field name="product_id" optional="show" />      
+                <field name="company_currency_id" />
                 <!--<field name="x_total_return"/>-->
-                <field name="x_saldo_awal_piutang" optional="show" string="Saldo Awal"/>
-                <field name="x_amount_total" optional="show" string="Faktur Penjualan"/>
-                <field name="x_studio_penerimaan_penjualan" string="Penerimaan Penjualan" optional="show" readonly="move_type != 'entry'"/>
-                <field name="x_return_piutang"/>
+                <field name="x_saldo_awal_piutang" optional="show" string="Saldo Awal" />
+                <field name="x_amount_total" optional="show" string="Faktur Penjualan" />
+                <field name="x_studio_penerimaan_penjualan" string="Penerimaan Penjualan" optional="show" readonly="move_type != 'entry'" />
+                <field name="x_return_piutang" />
                 <!--belum sesuai-->
-                <field name="x_uang_muka_piutang"/>
-                <field name="x_bukti_jurnal_piutang"/>
-                <field name="x_saldo_piutang"/>
-                <field name="x_akhir" optional="hide"/>
-                <field name="x_month" optional="hide"/>
-                <field name="x_year" optional="hide"/>
+                <field name="x_uang_muka_piutang" />
+                <field name="x_bukti_jurnal_piutang" />
+                <field name="x_saldo_piutang" />
+                <field name="x_akhir" optional="hide" />
+                <field name="x_month" optional="hide" />
+                <field name="x_year" optional="hide" />
             </list>
         </field>
     </record>
-    
+
     <!-- https://www.falinwa.com/odoo/my-tickets/12068 -->
     <!-- UTANG -->
     <record id="sml_form_inherit_utang" model="ir.ui.view">
-        <field name="name">stock.move.line.inherit.utang</field>
-        <field name="model">stock.move.line</field>
+        <field name="name">account.move.line.inherit.utang</field>
+        <field name="model">account.move.line</field>
         <field name="arch" type="xml">
             <list name="move_line_tree" string="UTANG">
-                <field name="move_id" optional="hide" string="INVOICE"/>
-                <field name="partner_id" optional="show" readonly="move_type != 'entry'"/>
-                <field name="company_currency_id"/>
-                <field name="x_saldo_awal_utang"/>
-                <field name="x_faktur_pembelian_utang"/>
-                <field name="x_pembayaran_pemasok_utang"/>
-                <field name="x_return_pembelian_utang"/>
-                <field name="x_uang_muka_utang"/>
-                <field name="x_bukti_jurnal_utang"/>
-                <field name="x_saldo_utang"/>
-                <field name="x_akhir" optional="hide"/>
-                <field name="x_month" optional="hide"/>
-                <field name="x_year" optional="hide"/>
+                <field name="move_id" optional="show" string="INVOICE" />
+                <field name="partner_id" optional="show" readonly="move_type != 'entry'" />
+                <field name="product_id" optional="show" />                
+                <field name="company_currency_id" />
+                <field name="x_saldo_awal_utang" />
+                <field name="x_faktur_pembelian_utang" />
+                <field name="x_pembayaran_pemasok_utang" />
+                <field name="x_return_pembelian_utang" />
+                <field name="x_uang_muka_utang" />
+                <field name="x_bukti_jurnal_utang" />
+                <field name="x_saldo_utang" />
+                <field name="x_akhir" optional="hide" />
+                <field name="x_month" optional="hide" />
+                <field name="x_year" optional="hide" />
             </list>
         </field>
     </record>
@@ -59,6 +94,10 @@
         <field name="view_mode">list,form</field>
         <field name="context">{'journal_type':'general', 'search_default_piutang':1}</field>
         <!-- <field name="domain">[('display_type', 'not in', ('line_section', 'line_note')), ('parent_state', '!=', 'cancel'), ("partner_id", "!=", False)]</field> -->
+        <field name="view_ids" eval="[(5, 0, 0),
+        (0, 0, {'view_mode': 'list', 'view_id': ref('sml_form_inherit_piutang')}),
+        (0, 0, {'view_mode': 'form', 'view_id': ref('cdp_account_move_form')})]" />
+        
         <field name="domain">[]</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">
@@ -74,6 +113,10 @@
         <field name="view_mode">list,form</field>
         <field name="context">{'journal_type':'general', 'search_default_utang':1}</field>
         <!-- <field name="domain">[('display_type', 'not in', ('line_section', 'line_note')), ('parent_state', '!=', 'cancel'), ("partner_id", "!=", False)]</field> -->
+        <field name="view_ids" eval="[(5, 0, 0),
+        (0, 0, {'view_mode': 'list', 'view_id': ref('sml_form_inherit_piutang')}),
+        (0, 0, {'view_mode': 'form', 'view_id': ref('cdp_account_move_form')})]" />
+        
         <field name="domain">[]</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">
@@ -83,80 +126,9 @@
     </record>
 
     <!-- Search action_utang_om -->
-    <record id="action_utang_om_search" model="ir.ui.view">
-        <field name="name">action_utang_om_search.search</field>
-        <field name="res_model">account.move.line</field>
-        <field name="arch" type="xml">
-            <search string="Search Journal Items">
-                <field name="name" string="Journal Item" filter_domain="[                         '|', '|', '|',                         ('name', 'ilike', self), ('ref', 'ilike', self), ('account_id', 'ilike', self), ('partner_id', 'ilike', self)]"/>
-                <field name="name"/>
-                <field name="ref"/>
-                <field name="invoice_date"/>
-                <field name="date"/>
-                <field name="date_maturity" string="Due Date"/>
-                <field name="discount_date" string="Discount Date"/>
-                <field name="balance" string="Amount" filter_domain="['|', ('credit', '=', raw_value), ('debit', '=', raw_value)]"/>
-                <field name="account_id"/>
-                <field name="account_type"/>
-                <field name="partner_id"/>
-                <field name="journal_id"/>
-                <field name="journal_group_id"/>
-                <field name="product_id"/>
-                <field name="product_category_id"/>
-                <field name="move_id" string="Journal Entry" filter_domain="[                         '|', ('move_id.name', 'ilike', self), ('move_id.ref', 'ilike', self)]"/>
-                <field name="tax_ids"/>
-                <field name="tax_line_id" string="Originator Tax"/>
-                <field name="reconcile_model_id"/>
-                <separator/>
-                <filter string="Unposted" name="unposted" domain="[('parent_state', '=', 'draft')]" help="Unposted Journal Items"/>
-                <filter string="Posted" name="posted" domain="[('parent_state', '=', 'posted')]" help="Posted Journal Items"/>
-                <!--PIUTANG-->
-                <filter string="PIUTANG" name="piutang" domain="[('parent_state', '=', 'posted')]" help="Posted Journal Items"/>
-                <filter string="UTANG" name="utang" domain="[('move_id.move_type', '=', 'in_invoice')]" help="Posted Journal Items"/>
-                <separator groups="account.group_account_secured,base.group_no_one"/>
-                <filter name="not_secured" string="Not Secured" domain="[('move_id.secured', '=', False), ('move_id.state', '=', 'posted')]" groups="account.group_account_secured,base.group_no_one"/>
-                <separator/>
-                <filter string="To check" name="to_check" domain="[('move_id.checked', '=', False), ('parent_state', '!=', 'draft')]"/>
-                <separator/>
-                <filter string="Unreconciled" domain="[('balance', '!=', 0), ('account_id.reconcile', '=', True), '|', ('matching_number', '=', False), ('matching_number', '=like', 'P%')]" name="reconcilable_account" help="Journal items where the account allows reconciliation no matter the residual amount"/>
-                <filter string="With residual" domain="[('amount_residual', '!=', 0), ('account_id.reconcile', '=', True)]" help="Journal items where matching number isn't set" name="unreconciled"/>
-                <separator/>
-                <filter string="Sales" name="sales" domain="[('journal_id.type', '=', 'sale')]" context="{'default_journal_type': 'sale'}"/>
-                <filter string="Purchases" name="purchases" domain="[('journal_id.type', '=', 'purchase')]" context="{'default_journal_type': 'purchase'}"/>
-                <filter string="Bank" name="bank" domain="[('journal_id.type', '=', 'bank')]" context="{'default_journal_type': 'bank'}"/>
-                <filter string="Cash" name="cash" domain="[('journal_id.type', '=', 'cash')]" context="{'default_journal_type': 'cash'}"/>
-                <filter string="Credit" name="credit" domain="[('journal_id.type', '=', 'credit')]" context="{'default_journal_type': 'credit'}"/>
-                <filter string="Miscellaneous" domain="[('journal_id.type', '=', 'general')]" name="misc_filter" context="{'default_journal_type': 'general'}"/>
-                <separator/>
-                <filter string="Payable" domain="[('account_id.account_type', '=', 'liability_payable'), ('account_id.non_trade', '=', False)]" help="From Trade Payable accounts" name="trade_payable"/>
-                <filter string="Receivable" domain="[('account_id.account_type', '=', 'asset_receivable'), ('account_id.non_trade', '=', False)]" help="From Trade Receivable accounts" name="trade_receivable"/>
-                <filter string="Non Trade Payable" domain="[('account_id.account_type', '=', 'liability_payable'), ('account_id.non_trade', '=', True)]" help="From Non Trade Receivable accounts" name="non_trade_payable" invisible="1"/>
-                <filter string="Non Trade Receivable" domain="[('account_id.account_type', '=', 'asset_receivable'), ('account_id.non_trade', '=', True)]" help="From Non Trade Receivable accounts" name="non_trade_receivable" invisible="1"/>
-                <filter string="P&amp;L Accounts" domain="[('account_id.internal_group', 'in', ('income', 'expense'))]" help="From P&amp;L accounts" name="pl_accounts"/>
-                <filter string="No Bank Transaction" domain="[('statement_line_id', '=', False), ('payment_id', '=', False)]" name="no_st_line_id" invisible="1"/>
-                <separator/>
-                <filter string="Date" name="date" date="date"/>
-                <filter string="Invoice Date" name="invoice_date" date="invoice_date"/>
-                <separator/>
-                <filter string="Report Dates" name="date_between" domain="[('date', '&gt;=', context.get('date_from')), ('date', '&lt;=', context.get('date_to'))]" invisible="1"/>
-                <filter string="Report Dates" name="date_before" domain="[('date', '&lt;=', context.get('date_to'))]" invisible="1"/>
-                <separator/>
-                <filter string="Analytic Accounts" name="analytic_accounts" domain="[('analytic_distribution', 'in', context.get('analytic_ids'))]" invisible="1"/>
-                <group expand="0" string="Group By">
-                    <filter string="Journal Entry" name="group_by_move" domain="[]" context="{'group_by': 'move_name'}"/>
-                    <filter string="Account" name="group_by_account" domain="[]" context="{'group_by': 'account_id'}"/>
-                    <filter string="Partner" name="group_by_partner" domain="[]" context="{'group_by': 'partner_id'}"/>
-                    <filter string="Journal" name="journal" domain="[]" context="{'group_by': 'journal_id'}"/>
-                    <filter string="Date" name="groupby_date" domain="[]" context="{'group_by': 'date'}"/>
-                    <filter string="Invoice Date" name="groupby_invoice_date" domain="[]" context="{'group_by': 'invoice_date'}"/>
-                    <filter string="Taxes" name="group_by_taxes" domain="[]" context="{'group_by': 'tax_ids'}"/>
-                    <filter string="Tax Grid" name="group_by_tax_tags" domain="[]" context="{'group_by': 'tax_tag_ids'}"/>
-                    <filter string="Matching" name="group_by_matching" domain="[]" context="{'group_by': 'matching_number'}"/>
-                </group>
-                <searchpanel class="account_root w-auto">
-                    <field name="account_root_id" icon="fa-filter" groupby="account_id" limit="0"/>
-                </searchpanel>
-            </search>
-        </field>
-    </record>
+    
+
+    <menuitem id="cdp_piutang" name="Reporting: Ringkasan Buku Besar Piutang" parent="account.account_reports_legal_statements_menu" action="action_piutang_om" sequence="50" />
+    <menuitem id="cdp_utang" name="Reporting: Ringkasan Buku Besar Utang" parent="account.account_reports_legal_statements_menu" action="action_utang_om" sequence="55" />
+
 </odoo>

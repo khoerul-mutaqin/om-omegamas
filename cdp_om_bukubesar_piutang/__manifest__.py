@@ -15,10 +15,11 @@
         'base',
         'account',
         'stock',
+        'stock_account',        
     ],
     "data": [
         "views/account_move_line.xml",
-        "views/stock_move_views.xml",
+        "views/stock_valuation_layer.xml",
     ],
     'images': [],
     'demo': [],
