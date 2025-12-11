@@ -93,12 +93,83 @@ class StockSummary(models.Model):
     def action_calculate(self):
         res = super(StockSummary, self).action_calculate()
         self.sudo().update_valuation()
+        # Sync lines for missing products
+        self.sudo().cdp_sync_stock_summary_lines_for_missing_products()
+        # Set initial valuation from previous summary
+        self.sudo().cdp_set_initial_valuation_from_previous()
         return res
 
+    def cdp_set_initial_valuation_from_previous(self):
+        # For each summary, find the previous summary and map valuations
+        array = []
+        for summary in self:
+            domain = [
+                ("location_id", "=", summary.location_id.id),
+                ("date_start", "<", summary.date_start)
+            ]
+            # Get the latest previous summary
+            previous_summary = summary.env[summary._name].search(
+                domain,
+                limit=1
+            )
+            # if found, map product valuations
+            if previous_summary:
+                valuation_map = {
+                    line.product_id.id: (line.total_valuation)
+                    for line in previous_summary.line_ids
+                }
+                # Assign values to current summary lines
+                for smr_line in summary.line_ids:
+                    product_id = smr_line.product_id.id
+                    # Avoid duplicate assignment
+                    if product_id not in array:
+                        array.append(smr_line.product_id.id)
+                        value_to_assign = valuation_map.get(product_id, 0.0)
+                        # Assign the value
+                        smr_line['cdp_start_valuation'] = value_to_assign
+    
+    def cdp_sync_stock_summary_lines_for_missing_products(self):
+        master_data = self.env[self._name].search([])
+        bigger_array = []
+        current_array = []
+        for record in self:
+            # Find the most big product array from all master data
+            most_big_product = -1 
+            for master in master_data:
+                # Get product ids from master record
+                product_ids = master.line_ids.mapped('product_id').ids
+                sum_product = len(product_ids)
+                # and assign to bigger_array
+                if sum_product > most_big_product:
+                    most_big_product = sum_product
+                    # Assign the biggest array
+                    bigger_array = master.line_ids.mapped('product_id').ids
+            for summary in record:
+                # Get current product ids
+                current_array = summary.line_ids.mapped('product_id').ids
+            for product_id_to_check in bigger_array:                
+                # If product not in current array, create new line
+                if product_id_to_check not in current_array:
+                    # 1. Browse the product record
+                    product_record = self.env['product.product'].browse(product_id_to_check) 
+                    if product_record: 
+                        # 2. Create new line with 0 values                   
+                        new_record = self.env['fal.stock.summary.line'].create({
+                            'stock_summary_id': record.id,
+                            'product_id': product_record.id,
+                            'start_valuation':0.0,
+                            'in_valuation': 0.0,
+                            'out_valuation': 0.0,
+                            'total_valuation': 0.0,
+                        })
 
 class StockSummaryLine(models.Model):
     _inherit = "fal.stock.summary.line"
-
+    
+    cdp_start_valuation = fields.Float(
+        string="Start Valuation Before",
+    )
+    
     currency_id = fields.Many2one(
         'res.currency',
         string='Currency',
