@@ -1,0 +1,34 @@
+# Available variables:
+#  - env: environment on which the action is triggered
+#  - model: model of the record on which the action is triggered; is a void recordset
+#  - record: record on which the action is triggered; may be void
+#  - records: recordset of all records on which the action is triggered in multi-mode; may be void
+#  - time, datetime, dateutil, timezone: useful Python libraries
+#  - float_compare: utility function to compare floats based on specific precision
+#  - b64encode, b64decode: functions to encode/decode binary data
+#  - log: log(message, level='info'): logging function to record debug information in ir.logging table
+#  - _logger: _logger.info(message): logger to emit messages in server logs
+#  - UserError: exception class for raising user-facing warning messages
+#  - Command: x2many commands namespace
+# To return an action, assign: action = {...}
+
+# Use mapped() to get all move IDs in one line without manual loops
+
+self = records
+move_ids = self.mapped('move_ids_without_package.id')
+if self.sale_id:
+    action =  {
+        'name': 'Report Valuation',
+        'type': 'ir.actions.act_window',
+        'res_model': 'stock.valuation.layer',
+        'view_mode': 'list,form',
+        'target': 'current',
+        'domain': [('stock_move_id', 'in', records.mapped('move_ids_without_package.id'))],
+        'context': {
+            'search_default_group_by_product_id': 1,
+            'expand': 1
+        },
+    }
+else:
+    raise UserError("Transfer Tidak memiliki Sale Order")
+    
