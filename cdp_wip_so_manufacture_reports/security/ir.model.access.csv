@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cdp_wip_so_manufacture_report_user,cdp.wip.so.manufacture.report.user,model_cdp_report_valuation,base.group_user,1,0,0,0
+access_cdp_wip_so_manufacture_report_manager,cdp.wip.so.manufacture.report.manager,model_cdp_report_valuation,base.group_system,1,1,1,1
+access_cdp_wip_so_manufacture_report_line_user,cdp.wip.so.manufacture.report.line.user,model_cdp_report_valuation_line,base.group_user,1,0,0,0
+access_cdp_wip_so_manufacture_report_line_manager,cdp.wip.so.manufacture.report.line.manager,model_cdp_report_valuation_line,base.group_system,1,1,1,1

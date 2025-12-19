@@ -1,0 +1,68 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="cdp_report_valuation_view_list">
+            <field name="name">cdp.report.valuation.list</field>
+            <field name="model">cdp.report.valuation</field>
+            <field name="arch" type="xml">
+              <list>
+                  <field name="name" optional="hide"/>
+                  <field name="product_id" string="Product"/>
+                  <field name="product_uom_qty"/>
+                  <field name="price_unit"/>                    
+                  <field name="company_id" groups="base.group_multi_company"/>
+              </list>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="cdp_report_valuation_view_form">
+            <field name="name">cdp.report.valuation.form</field>
+            <field name="model">cdp.report.valuation</field>
+            <field name="arch" type="xml">
+              <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="product_id" placeholder="Report Reference..."/></h1>
+                        </div>
+                         <group>
+                            <group>
+                                <field name="product_id" string="Product"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                            </group>
+                            <group>
+                                <field name="name" invisible="1"/>
+                                <field name="product_uom_qty" invisible="1"/>
+                                <field name="price_unit" invisible="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Products/Materials" name="lines">
+                                <field name="line_ids">
+                                    <list editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="product_id"/>
+                                        <!--<field name="name"/>-->
+                                        <field name="product_uom_qty"/>
+                                        <!--<field name="product_uom"/>-->
+                                        <field name="price_unit"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>            
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="cdp_report_valuation_action">
+            <field name="name">Valuation Report</field>
+            <field name="res_model">cdp.report.valuation</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <menuitem name="Valuation Report" id="cdp_menu_root" sequence="10"/>
+        <menuitem name="Reports" id="cdp_menu_main" parent="cdp_menu_root"/>
+        <menuitem name="Valuations" id="cdp_menu_valuation" 
+                  parent="cdp_menu_main" 
+                  action="cdp_report_valuation_action"/>
+    </data>
+</odoo>

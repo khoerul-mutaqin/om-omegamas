@@ -61,62 +61,7 @@ class Picking(models.Model):
         })
         return lot
 
-    def _create_shadow_mo(self, wip_product, wip_lot, picking, so):
-        """Build values for a shadow MO where finished product is WIP (qty=1 lot),
-        raw moves derived from picking.move_line_ids_without_package's qty_done.
-        """
-        Mrp = self.env['mrp.production'].sudo()
-        raw_moves = []
-        # gather raw material usage from picking move lines (qty_done)
-        production_location = self.env['stock.location'].search([('usage', '=', 'production')], limit=1)
-        for ml in picking.move_line_ids_without_package:
-            prod = ml.product_id
-            qty_done = ml.qty_done or 0.0
-            if qty_done <= 0:
-                continue
-            raw_moves.append((0, 0, {
-                'name': f'Raw for {wip_product.name}',
-                'product_id': prod.id,
-                'product_uom_qty': qty_done,
-                'product_uom': prod.uom_id.id,
-                'location_id': ml.location_dest_id.id,
-                'location_dest_id': production_location.id,
-                
-            }))
-
-        # pick a reasonable picking_type (use mrp production picking type if exists)
-        parent_mo = picking.production_ids[:1]  # kalau ada beberapa, ambil yang pertama
-        if not parent_mo:
-            raise UserError(f"Tidak ditemukan MO parent untuk picking {picking.name}")
-
-        picking_type = parent_mo.picking_type_id
-        if not picking_type:
-            raise UserError(f"MO {parent_mo.name} tidak punya picking type")
-                
-        seq_name = self.env["ir.sequence"].next_by_code("cdp.wip.mrp.production")
-
-        mo_vals = {
-            'name': seq_name,  # pakai sequence WIP custom
-            'product_id': wip_product.id,
-            'product_uom_id': wip_product.uom_id.id,
-            'product_qty': 1,
-            'origin': f"{so.name if so else picking.origin}:{picking.name}",
-            'bom_id': False,
-            'move_raw_ids': raw_moves,
-            'picking_type_id': picking_type.id,
-            'cdp_is_shadow_mo': True,
-            'location_src_id': parent_mo.location_src_id.id,
-            'location_dest_id': parent_mo.location_src_id.id,
-        }
-
-        new_mo = Mrp.create(mo_vals)
-        # store lot info somewhere : use produced lot assignment later
-        # new_mo._cdp_wip_lot_id = wip_lot.id 
-        
-        # new_mo.write({
-        #     'location_dest_id': new_mo.location_src_id.id
-        # })
-        return new_mo
+    
     
     def _confirm_and_finish_shadow_mo(self, mo, wip_lot):
         # confirm mo , terus assign wip_lot ke lot_producing_id , terus set done mo shadow
