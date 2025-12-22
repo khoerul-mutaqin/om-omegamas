@@ -3,11 +3,10 @@ from odoo.exceptions import UserError
 import logging
 
 _logger = logging.getLogger(__name__)
-
-
 class Picking(models.Model):
     _inherit = 'stock.picking'
     
+                    
     def cdp_create_report_valuation(self):
         """
         Mengambil referensi Sale Order dari Stock Picking, lalu mengumpulkan
@@ -19,7 +18,8 @@ class Picking(models.Model):
                 lot_ids = rec.mapped('move_ids_without_package.lot_ids')
                 product_id = rec.mapped('move_ids_without_package.product_id.id')
                 # raise UserError(f"{product_id} -  {lot_ids}")
-                so.cdp_create_report_valuation(lot_ids=lot_ids,product_id=product_id,origin=rec.name)
+                # so.cdp_create_report_valuation(lot_ids=lot_ids,product_id=product_id,origin=rec.name)
+                so.cdp_create_report_valuation_custom(lot_ids=lot_ids,product_id=product_id,origin=rec.name)
          
     def cdp_open_report_valuation(self):
         """
@@ -30,6 +30,7 @@ class Picking(models.Model):
         if so:
             # buat atau update dulu report valuation
             self.cdp_create_report_valuation()
+            # self.cdp_create_report_valuation_custom()
             line_id = self.mapped('name')
             model = 'cdp.report.valuation'
             domain = [('name', '=', line_id)]            
@@ -81,6 +82,97 @@ class SaleOrder(models.Model):
         else:
             raise UserError("Transfer Tidak memiliki Sale Order")
 
+    def cdp_create_report_valuation_custom(self, lot_ids=None, product_id=None, origin=None):
+        cdp_report_valuation_action = self.env['cdp.report.valuation'].sudo()
+        cdp_report_valuation_line_action = self.env['cdp.report.valuation.line'].sudo()
+        mrp_production_action = self.env['mrp.production'].sudo()
+        stock_valuation_layer_mdl = self.env['stock.valuation.layer'].sudo()
+    
+        for record in self:
+            # 1. Ambil semua MO asli (bukan shadow) terkait SO ini
+            real_mos = mrp_production_action.search([
+                ('id', 'in', record.mrp_production_ids.ids), 
+                ('cdp_is_shadow_mo', '=', False)
+            ])
+    
+            # 2. Filter baris SO berdasarkan produk yang dipilih
+            selected_so = record.order_line.filtered(lambda m: m.product_id.id in product_id)
+            
+            for line in selected_so:
+                master_valuation = cdp_report_valuation_action.search([
+                    ('product_id', '=', line.product_id.id),
+                    ('company_id', '=', record.company_id.id),
+                    ('name', '=', f"{origin}")
+                ], limit=1)
+    
+                vals = {
+                    'name': f"{origin}",
+                    'product_id': line.product_id.id,
+                    'company_id': record.company_id.id,
+                    'lot_ids': [(6, 0, lot_ids.ids)] if lot_ids else False,
+                }
+    
+                if master_valuation:
+                    master_valuation.write(vals)
+                    master_valuation.line_ids.unlink()
+                else:
+                    master_valuation = cdp_report_valuation_action.create(vals)
+                
+                mo_line_values = []
+    
+                # 3. Filter MO yang memproduksi Lot FG ini
+                target_mos = real_mos.filtered(lambda m: m.lot_producing_id.id in lot_ids.ids)
+                
+                for mo in target_mos:
+                    # Pisahkan WIP dan Valid RM
+                    valid_rm_moves = mo.move_raw_ids.filtered(lambda m: not m.product_id.categ_id.cdp_for_product_wip)
+                    wip_rm_moves = mo.move_raw_ids.filtered(lambda m: m.product_id.categ_id.cdp_for_product_wip)
+                    
+                    # Hitung rasio konsumsi
+                    move_lines = wip_rm_moves.mapped('move_line_ids')
+                    count_move_lines = len(move_lines) or 1 # Cegah division by zero
+                    total_product_uom_qty = sum(wip_rm_moves.mapped('product_uom_qty'))
+                    to_consume = total_product_uom_qty / count_move_lines
+                    
+                    id_wip_products = wip_rm_moves.mapped('product_id.id')
+    
+                    # 4. Loop Raw Material
+                    for rm in valid_rm_moves:
+                        # PERBAIKAN: Cari MO WIP yang menghasilkan salah satu 'id_wip_products'
+                        # DAN yang menggunakan bahan baku 'rm' ini.
+                        mo_wip = mrp_production_action.search([
+                            ("product_id", "in", id_wip_products),
+                            ("move_raw_ids.product_id", "=", rm.product_id.id),
+                            ("state", "=", "done")
+                        ], limit=1)
+    
+                        # Gunakan Lot dari MO WIP yang ditemukan, jika tidak ada gunakan Lot MO FG
+                        current_mo_ref = mo_wip if mo_wip else mo
+                        current_lot_id = current_mo_ref.lot_producing_id.id
+                        
+                        # 5. Cari valuation layer berdasarkan MO yang spesifik tadi
+                        target_svl = stock_valuation_layer_mdl.search([
+                            ("product_id", "=", rm.product_id.id), 
+                            ("reference", "=", current_mo_ref.name)
+                        ], limit=1)
+    
+                        mo_line_values.append({
+                            'order_id': master_valuation.id,
+                            'name': rm.product_id.display_name,
+                            'product_id': rm.product_id.id,
+                            'mo_fg': mo.id,
+                            'lot_producing_id': current_lot_id, # Lot akan berbeda sesuai MO WIP-nya
+                            'product_uom_qty': target_svl.quantity * to_consume if target_svl else 0.0,
+                            'price_unit': target_svl.value * to_consume if target_svl else 0.0,
+                            'company_id': rm.company_id.id,
+                            'currency_id': rm.company_id.currency_id.id,
+                        })           
+    
+                # 6. Create baris secara batch
+                if mo_line_values:
+                    cdp_report_valuation_line_action.create(mo_line_values)
+                
+                master_valuation.cdp_calculate_qty_value(counter=lot_ids)
 
 
     def cdp_create_report_valuation(self,lot_ids=None,product_id=None,origin=None):
@@ -138,7 +230,6 @@ class SaleOrder(models.Model):
                 # 3. Cari Raw Material (RM) yang HANYA untuk FG ini
                 target_mos = real_mos.filtered(lambda m: m.lot_producing_id in lot_ids)
                 
-                # if target_mos:
                 for mo in target_mos:
                     # Ambil Lot dari MO ini untuk digunakan di setiap line RM-nya
                     # current_lot_id = mo.lot_producing_id.id
@@ -146,18 +237,18 @@ class SaleOrder(models.Model):
                     # Filter RM: exclude WIP products based on category flag
                     valid_rm_moves = mo.move_raw_ids.filtered(lambda m: not m.product_id.categ_id.cdp_for_product_wip)
                     wip_rm_moves =  mo.move_raw_ids.filtered(lambda m: m.product_id.categ_id.cdp_for_product_wip)
-                    # _logger.warning(f"ini wip_rm_moves {wip_rm_moves} {wip_rm_moves.name}")
                     # raise UserError(f"rm wip_rm_moves {wip_rm_moves.mapped('move_line_ids')}")
                     move_lines = wip_rm_moves.mapped('move_line_ids')
                     count_move_lines = len(move_lines)
-                    total_product_uom_qty =  0
-                    id_wip =  []
-                    for wip_product_uom_qty in wip_rm_moves:
-                        total_product_uom_qty += wip_product_uom_qty.product_uom_qty
-                        id_wip.append(wip_product_uom_qty.product_id.id)
                     to_consume = 0
-                    to_consume = total_product_uom_qty /count_move_lines
-                    # raise UserError(f"rm to_consume {to_consume}")
+                    count_product_uom_qty = 0
+                    id_mo = []
+                    for count in wip_rm_moves:
+                        count_product_uom_qty += count.product_uom_qty
+                        id_mo.append(count.product_id.id)
+                        
+                    to_consume = count_product_uom_qty /count_move_lines
+
 
                     # cari mo_wip
                     # 1. Ambil semua MO asli (bukan shadow)
@@ -167,38 +258,37 @@ class SaleOrder(models.Model):
                     
                     array_use = []                
                     # only create for not wip product             
-                    # for rm in valid_rm_moves:                    
-                    if valid_rm_moves:                    
-                        
-                        domain = [("product_id", "in", id_wip)]
-                        # domain = [("product_id", "in", id_wip), ("move_raw_ids.product_id", "in", [rm.product_id.id])]
-                        # INI MO WIP nYA
+                    for rm in valid_rm_moves:                                      
+                        # domain = [("move_raw_ids.product_id", "in", [rm.product_id.id])]
+                        domain = [("product_id", "in", id_mo)]
+                        # _logger.warning(f"mo_wip {mo_wip.name}")
+                        # domain = [("product_id", "in", id_mo), ("move_raw_ids.product_id", "in", [rm.product_id.id])]
                         mo_wip = mrp_production_action.search(domain,limit=1) # ini akan berisi 3 jika sudah dipake masukan ke array_use
                         current_lot_id = mo_wip.lot_producing_id.id
                         # 4. Cari valuation
                         domain = [
-                            # ("product_id", "=", rm.product_id.id), 
+                            ("product_id", "=", rm.product_id.id), 
                             ("reference", "in", mo_wip.mapped('name'))
                         ]                        
                         target_svl = stock_valuation_layer_mdl # reset
                         target_svl = stock_valuation_layer_mdl.search(domain,limit=1) 
-                        # raise UserError(f"rm target_svl {mo_wip} mo {mo_wip.name}")
-                        _logger.warning(f"rm to_consume {to_consume} {target_svl}")
-                        for rm in mo_wip.move_raw_ids:
-                            # hanya wip yang memiliki value consume
-                            # target_svl = real_svl if rm.product_id.categ_id.cdp_for_product_wip else False
-                            mo_line_values.append({
-                                'order_id': master_valuation.id,
-                                'name': rm.product_id.display_name,
-                                'product_id': rm.product_id.id,
-                                'lot_producing_id': current_lot_id,
-                                # 'product_uom_qty': rm.product_uom_qty,  # sebelumnya ambil dari rm product_uom_qty 
-                                # 'price_unit': rm.product_uom_qty,  # sebelumnya ambil dari rm price_unit 
-                                'product_uom_qty': target_svl.quantity * to_consume if target_svl else 0.0,  # ambil dari valuation jadi hanya product wip nya yang kepakai berapa
-                                'price_unit': target_svl.value * to_consume if target_svl else 0.0,  # ambil dari valuation jadi hanya product wip nya yang kepakai berapa
-                                'company_id': rm.company_id.id,
-                                'currency_id': rm.company_id.currency_id.id,
-                            })          
+
+                        
+                        # hanya wip yang memiliki value consume
+                        # target_svl = real_svl if rm.product_id.categ_id.cdp_for_product_wip else False
+                        mo_line_values.append({
+                            'order_id': master_valuation.id,
+                            # 'mo_fg': master_valuation.id,
+                            'name': rm.product_id.display_name,
+                            'product_id': rm.product_id.id,
+                            'lot_producing_id': current_lot_id,
+                            # 'product_uom_qty': rm.product_uom_qty,  # sebelumnya ambil dari rm product_uom_qty 
+                            # 'price_unit': rm.product_uom_qty,  # sebelumnya ambil dari rm price_unit 
+                            'product_uom_qty': target_svl.quantity * to_consume if target_svl else 0.0,  # ambil dari valuation jadi hanya product wip nya yang kepakai berapa
+                            'price_unit': target_svl.value * to_consume if target_svl else 0.0,  # ambil dari valuation jadi hanya product wip nya yang kepakai berapa
+                            'company_id': rm.company_id.id,
+                            'currency_id': rm.company_id.currency_id.id,
+                        })          
 
                 # 4. Create baris baru (setelah yang lama dihapus di atas jika prosesnya Update)
                 if mo_line_values:
@@ -213,7 +303,7 @@ class CdpReportValuation(models.Model):
     _description = "Cdp Report Valuation"
     _rec_name = 'product_id'
 
-    def cdp_calculate_qty_value(self):
+    def cdp_calculate_qty_value(self,counter=None):
         """
         Menghitung total kuantitas dan total harga unit dari seluruh 
         baris detail (line_ids) untuk dimasukkan ke dalam header valuation.
@@ -222,17 +312,16 @@ class CdpReportValuation(models.Model):
         for rec in self:
             total_qty = 0.0
             total_price = 0.0
-            total_lot = len(rec.lot_ids)
-            
+            counter = len(counter)
+            # raise UserError(f"{self} -  {counter}")
             for line in rec.line_ids:
                 total_qty += line.product_uom_qty
                 total_price += line.price_unit
             
             # Update field pada record terkait
-            
             rec.update({
                 # 'product_uom_qty': total_qty,
-                'price_unit': total_price * total_lot,
+                'price_unit': total_price * counter,
             })     
     
     name = fields.Char(string='Name', required=True)
@@ -256,6 +345,8 @@ class CdpReportValuation(models.Model):
         default=lambda self: self.env.company,
         required=True,
     )
+    
+    
     currency_id = fields.Many2one(
         "res.currency", string="Currency",
         related='company_id.currency_id', # Simplified
@@ -273,6 +364,10 @@ class CdpReportValuationLine(models.Model):
     _inherit = ['analytic.mixin']
     _description = "Cdp Report Valuation Line"
 
+    mo_fg = fields.Many2one(
+        "mrp.production", string="MO FG",
+    )
+    
     order_id = fields.Many2one(
         'cdp.report.valuation', string="Parent Reference", 
         required=True, ondelete='cascade'
