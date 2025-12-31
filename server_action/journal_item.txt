@@ -1,0 +1,32 @@
+# 1. Kumpulkan semua baris dari semua dokumen yang dipilih
+all_lines = records
+
+# 2. Filter baris:
+# - Harus akun yang 'Allow Reconciliation'
+# - Belum punya Matching Number
+# - Move harus sudah 'Posted'
+reconcilable_lines = all_lines.filtered(
+    lambda l: l.account_id.reconcile and not l.full_reconcile_id and l.move_id.state == 'posted'
+)
+
+# 3. Ambil daftar akun unik (misal: Stock Interim In/Out)
+accounts = reconcilable_lines.mapped('account_id')
+for acc in accounts:
+    lines_for_this_account = reconcilable_lines.filtered(lambda l: l.account_id == acc)
+    
+    if len(lines_for_this_account) > 1:
+        # Hitung total debit dan total kredit secara terpisah untuk analisa
+        total_debit = sum(lines_for_this_account.mapped('debit'))
+        total_credit = sum(lines_for_this_account.mapped('credit'))
+        total_balance = total_debit - total_credit
+        
+        if abs(total_balance) < 0.0001:
+            # FULL RECONCILIATION (Akan muncul Matching Number seperti A1, A2)
+            lines_for_this_account.reconcile()
+        else:
+            # OPSI A: Lewati jika tidak balance (Ganti raise dengan logger)
+            # _logger.warning(f"Account {acc.name} tidak balance. Selisih: {total_balance}")
+            
+            # OPSI B: Paksa Partial Reconcile (Hapus raise UserError)
+            # Odoo akan mencatatnya sebagai partial tanpa Matching Number Full
+            lines_for_this_account.reconcile()
